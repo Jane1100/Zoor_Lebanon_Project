@@ -15,16 +15,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.4" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\Tourist\Controllers\" />
     <Folder Include="Areas\Tourist\Data\" />
     <Folder Include="Areas\Tourist\Models\" />
@@ -33,7 +29,6 @@
     <Folder Include="Areas\TourOperator\Data\" />
     <Folder Include="Areas\TourOperator\Models\" />
     <Folder Include="Areas\TourOperator\Views\" />
-    <Folder Include="wwwroot\admin\" />
     <Folder Include="wwwroot\tourist\" />
     <Folder Include="wwwroot\tourOperator\" />
   </ItemGroup>
