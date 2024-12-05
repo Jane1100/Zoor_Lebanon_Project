@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.Admin.Controllers
+namespace Zoor_Lebanon.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AccountController : Controller

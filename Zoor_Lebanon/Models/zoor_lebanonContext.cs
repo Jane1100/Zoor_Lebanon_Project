@@ -40,8 +40,8 @@ namespace Zoor_Lebanon.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", Microsoft.EntityFrameworkCore.ServerVersion.Parse("9.0.0-mysql"));
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=Marie.kh1", ServerVersion.Parse("9.1.0-mysql"));
             }
         }
 
@@ -548,3 +548,9 @@ namespace Zoor_Lebanon.Models
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+
+
+
+
+
+

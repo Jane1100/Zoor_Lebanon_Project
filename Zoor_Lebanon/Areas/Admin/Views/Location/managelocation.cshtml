@@ -1,0 +1,445 @@
+﻿@{
+    ViewData["Title"] = "Manage Locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Locations | Admin Dashboard</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="~/admin/home/index3" class="brand-link">
+                <img src="~/admin/dist/img/AdminLTELogo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Admin Dashboard</span>
+            </a>
+
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/admin/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Admin User</a>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link ">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+
+                                <li class="nav-item">
+                                    <a href="~/admin/home/index2" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Admin Dashboard</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/package/widgets" class="nav-link">
+                                <i class="nav-icon fas fa-box"></i>
+                                <p>
+                                    Manage Packages
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/managelocation" class="nav-link active">
+                                <i class="nav-icon fas fa-map-marker-alt"></i>
+                                <p>Manage Locations</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/user/tourists" class="nav-link ">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Manage Tourists</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/index3" class="nav-link">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>Generate Reports</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/loyalty" class="nav-link">
+                                <i class="nav-icon fas fa-gift"></i>
+                                <p>Loyalty Points System</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/operators" class="nav-link">
+                                <i class="nav-icon fas fa-briefcase"></i>
+                                <p>Manage Tour Operators</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/calendar" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Calendar
+                                    <span class="badge badge-info right">2</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/home/mailbox" class="nav-link  ">
+                                <i class="nav-icon far fa-envelope"></i>
+                                <p>
+                                    Mailbox
+
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link ">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Charts
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="~/admin/home/chartjs" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>ChartJS</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/admin/home/flot" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Flot</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/admin/home/inline" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Inline</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/admin/home/uplot" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>uPlot</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="padding: 20px; width: 100%;">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Manage Locations</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="~/admin/home/index3">Home</a></li>
+                                <li class="breadcrumb-item active">Manage Locations</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Location Button -->
+            <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-12 text-right">
+                        <button id="add-location-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Location
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Map Section -->
+                        <div class="col-md-6">
+                            <div class="card shadow-lg">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title">Lebanon Map</h3>
+                                </div>
+                                <div class="card-body" style="height: 600px;">
+                                    <div id="lebanon-map" style="height: 450px; width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Locations Overview Section -->
+                        <div class="col-md-6">
+                            <!-- Increase from col-md-6 to col-md-7 -->
+                            <div class="card shadow-lg" >
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title">Locations Overview</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead class="thead-dark text-center">
+                                            <tr>
+                                                <th>City</th>
+                                                <th>State</th>
+                                                <th>Actions</th>
+                                                <th>Status</th>
+                                                <th>Packages</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (ViewData["LocationsJson"] != null)
+                                            {
+                                                var locations = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(ViewData["LocationsJson"].ToString());
+                                                foreach (var location in locations)
+                                                {
+                                                    var status = location.Packages.Count > 0 ? "Active" : "Not Active";
+                                                    <tr id="row-@location.LocationId">
+                                                        <td class="align-middle text-center">
+                                                            <span id="city-display-@location.LocationId">@location.City</span>
+                                                            <input type="text" id="city-edit-@location.LocationId" class="form-control d-none" value="@location.City" />
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span id="state-display-@location.LocationId">@location.State</span>
+                                                            <input type="text" id="state-edit-@location.LocationId" class="form-control d-none" value="@location.State" />
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-sm btn-warning mx-1" onclick="enableEdit(@location.LocationId)">
+                                                                <i class="fas fa-edit"></i> Edit
+                                                            </button>
+                                                            <button class="btn btn-sm btn-success mx-1 d-none" id="save-btn-@location.LocationId" onclick="saveEdit(@location.LocationId)">
+                                                                <i class="fas fa-save"></i> Save
+                                                            </button>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span class="badge @((status == "Active") ? "badge-success" : "badge-danger")">@status</span>
+                                                        </td>
+                                                        <td class="align-middle text-center">@location.Packages.Count</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5" class="text-center">No locations available.</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/admin/dist/js/adminlte.js"></script>
+
+    <!-- Leaflet Map Script -->
+   @section Scripts {
+        <script>
+            function enableEdit(locationId) {
+                // Hide display spans
+                document.getElementById(`city-display-${locationId}`).classList.add("d-none");
+                document.getElementById(`state-display-${locationId}`).classList.add("d-none");
+
+                // Show input fields
+                document.getElementById(`city-edit-${locationId}`).classList.remove("d-none");
+                document.getElementById(`state-edit-${locationId}`).classList.remove("d-none");
+
+                // Show Save button and hide Edit button
+                document.getElementById(`save-btn-${locationId}`).classList.remove("d-none");
+            }
+
+            function saveEdit(locationId) {
+                const cityInput = document.getElementById(`city-edit-${locationId}`).value;
+                const stateInput = document.getElementById(`state-edit-${locationId}`).value;
+
+                // Make an AJAX request to update the location
+                $.ajax({
+                    url: '/Admin/Location/Edit',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        LocationId: locationId,
+                        City: cityInput,
+                        State: stateInput
+                    }),
+                    success: function () {
+                        alert("Location updated successfully!");
+                        // Update display spans
+                        document.getElementById(`city-display-${locationId}`).textContent = cityInput;
+                        document.getElementById(`state-display-${locationId}`).textContent = stateInput;
+
+                        // Hide input fields
+                        document.getElementById(`city-edit-${locationId}`).classList.add("d-none");
+                        document.getElementById(`state-edit-${locationId}`).classList.add("d-none");
+
+                        // Show display spans
+                        document.getElementById(`city-display-${locationId}`).classList.remove("d-none");
+                        document.getElementById(`state-display-${locationId}`).classList.remove("d-none");
+
+                        // Hide Save button
+                        document.getElementById(`save-btn-${locationId}`).classList.add("d-none");
+                    },
+                    error: function () {
+                        alert("Error updating location.");
+                    }
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize the map centered on Lebanon
+                var map = L.map('lebanon-map').setView([33.8547, 35.8623], 8);
+
+                // Add map tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // Get locations from the server-side ViewData
+                var locations = @Html.Raw(ViewData["LocationsJson"]);
+
+                console.log("Locations data:", locations); // Debugging
+
+                // Add markers for active locations
+                locations.forEach(function (location) {
+                    var coords = getCoordinatesForCity(location.City);
+                    if (coords) {
+                        // Add marker to the map
+                        L.marker(coords).addTo(map)
+                            .bindPopup(`<strong>${location.City}</strong><br>${location.State}`);
+                    } else {
+                        console.warn(`Coordinates not found for city: ${location.City}`);
+                    }
+                });
+
+                // Helper function to get coordinates for a city
+                function getCoordinatesForCity(city) {
+                    var coordinates = {
+                        "Hamra": [33.8946, 35.4753],
+                        "Mar Elias": [33.8848, 35.4822],
+                        "Kfardebian": [34.0058, 35.8376],
+                        "Hermel": [34.3893, 36.3789],
+                        "Tyre": [33.2737, 35.2033],
+                        "Zahle": [33.8463, 35.9055],
+                        "Verdun": [33.8852, 35.4786],
+                        "Achrafieh": [33.8895, 35.5156],
+                        "Batroun": [34.2556, 35.6585]
+                    };
+                    return coordinates[city] || null;
+                }
+           
+
+                // Add Location Button Click
+                document.getElementById("add-location-btn").addEventListener("click", function () {
+                    alert("Click on the map to add a new location.");
+
+                    map.on("click", function (e) {
+                        var lat = e.latlng.lat;
+                        var lng = e.latlng.lng;
+                        var city = prompt("Enter City Name:");
+                        var state = prompt("Enter Region Name:");
+                        if (city && state) {
+                            // Save to database
+                            $.ajax({
+                                url: '/Admin/Location/addnew',
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ City: city, State: state }),
+                                success: function () {
+                                    alert("Location added successfully!");
+                                    location.reload();
+                                },
+                                error: function () {
+                                    alert("Error adding location.");
+                                }
+                            });
+                        }
+                    });
+                });
+              
+            });
+
+        </script>
+    }
+    <style>
+        #lebanon-map {
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .content-wrapper {
+            padding: 0;
+            margin: 0;
+        }
+
+        .card-body {
+            overflow: auto;
+        }
+
+        .table th, .table td {
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .col-md-7 {
+            flex: 0 0 70%;
+            max-width: 70%;
+        }
+
+        .col-md-5 {
+            flex: 0 0 30%;
+            max-width: 30%;
+        }
+    </style>
+
+
+</body>
+</html>

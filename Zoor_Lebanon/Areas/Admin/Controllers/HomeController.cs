@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Zoor_Lebanon.Models.ViewModels;
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.Admin.Controllers
+namespace Zoor_Lebanon.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller
@@ -9,10 +10,12 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.Admin.Controllers
         {
             return View();
         }
-      /*  public IActionResult Index3()
+        public IActionResult Index3()
         {
             return View();
-        }*/
+        }
+
+        [HttpGet]
         public IActionResult Index2()
         {
             return View();

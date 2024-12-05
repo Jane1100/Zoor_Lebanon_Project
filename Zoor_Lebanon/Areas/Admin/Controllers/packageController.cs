@@ -1,150 +1,60 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Zoor_Lebanon_Booking_Platform.Models.Database;
-using System.Linq;
-using System.Threading.Tasks;
-using Zoor_Lebanon_Booking_Platform;
+﻿using Microsoft.AspNetCore.Mvc;using Microsoft.EntityFrameworkCore;using Zoor_Lebanon.Models;using Zoor_Lebanon.Models.ViewModels;namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public class PackageController : Controller    {        private readonly zoor_lebanonContext _context;        public PackageController(zoor_lebanonContext context)        {            _context = context;        }
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.Admin.Controllers
-{
-    [Area("Admin")]
-    public class PackageController : Controller
-    {
-        private readonly ZoorLebanonContext _context;
+        // GET: Add Package
+        [HttpGet]        public async Task<IActionResult> AddPackage()        {            var viewModel = new PackageViewModel            {                Package = new Package(),                PackageTypes = await _context.PackageTypes.ToListAsync(),                States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync()            };            return View(viewModel);        }
 
-        // Constructor to inject the database context
-        public PackageController(ZoorLebanonContext context)
-        {
-            _context = context;
-        }
-        /* public IActionResult Loyalty()
-         {
-             var loyaltyData = _context.Users
-                 .Where(u => u.Bookings.Any()) // Include only users with bookings
-                 .Select(u => new Models.viewmodels.LoyaltyViewModel
-                 {
-                     UserName = $"{u.Firstname} {u.Lastname}",
-                     NumberOfBookings = u.Bookings.Count,
-                     LoyaltyPoints = u.Bookings.Count * 10 // Example: 10 points per booking
-                 })
-                 .ToList();
-
-             return View(loyaltyData);
-         }*/
-        // GET: Calendar
-        /*   public IActionResult Calendar()
-           {
-               // Fetch packages from the database
-               var packages = _context.Package.ToList(); // Assuming _context is your DbContext
-               return View(packages); // Pass packages to the view
-           }*/
-        /*        public IActionResult Index3()
-                {
-                    var viewModel = new TourismReportViewModel
-                    {
-                        VisitorCount = 820, // Example value
-                        VisitorGrowthRate = 12.5m,
-                        TopPackages = _context.Package
-                            .Take(5) // Limit the results to top 5 packages
-                            .Select(p => new PackageSummary
-                            {
-                                PackageName = p.PackageName,
-                                UnitPrice = p.UnitPrice ?? 0, // Use default value if null
-                                BookingsCount = p.Bookings.Count() // Count the number of bookings
-                            }).ToList(),
-                        TotalSales = _context.Bookings.Sum(b => b.TotalPrice ?? 0), // Total sales sum
-                        SalesGrowthRate = 33.1m,
-                        VisitorChartData = new ChartData
-                        {
-                            Dates = new List<string> { "18th", "20th", "22nd", "24th", "26th", "28th" },
-                            Values = new List<int> { 100, 150, 180, 170, 160, 140 }
-                        },
-                        SalesChartData = new ChartData
-                        {
-                            Dates = new List<string> { "June", "July", "August", "September", "October", "November", "December" },
-                            Values = new List<int> { 1000, 1500, 2000, 2500, 3000, 3500, 4000 }
-                        }
-                    };
-
-                    return View(viewModel);
-                }
-        */
-        public IActionResult Index3()
-        {
-            return View();
-        }
-
-        // GET: Add New Package
-
-        [HttpGet]
-        public IActionResult AddPackage()
-        {
-            // Fetch Package Types from the database
-            var packageTypes = _context.PackageType.ToList();
-
-            // Debugging: Check if package types are fetched correctly
-            Console.WriteLine("Fetched Package Types:");
-            foreach (var type in packageTypes)
+        // POST: Add Package with Location
+        [HttpPost]        public async Task<IActionResult> AddPackage(PackageViewModel model, string state, string city)        {
+            // Validate dates: Ensure start_date is today or later
+            if (model.Package.StartDate.HasValue &&
+                model.Package.StartDate.Value.ToDateTime(TimeOnly.MinValue) < DateTime.Today)
             {
-                Console.WriteLine($"ID: {type.PackageTypeId}, Name: {type.PackageType1}");
+                ModelState.AddModelError("Package.StartDate", "Start date cannot be in the past.");
+                model.PackageTypes = await _context.PackageTypes.ToListAsync();
+                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+                return View(model);
             }
 
-            // Pass Package Types to the ViewBag for the dropdown
-            ViewBag.PackageTypes = new SelectList(packageTypes, "PackageTypeId", "PackageType1");
-
-            return View();
-        }
-
-
-        // POST: Add New Package
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPackage(Package package)
-        {
-            // Ensure dropdown is always repopulated
-            ViewBag.PackageTypes = new SelectList(_context.PackageType.ToList(), "PackageTypeId", "PackageType1");
-
-            if (ModelState.IsValid)
+            if (model.Package.EndDate <= model.Package.StartDate)
             {
-                try
-                {
-                    // Add package to the database
-                    _context.Package.Add(package);
-                    await _context.SaveChangesAsync();
-                    Console.WriteLine("Package saved successfully.");
-                    return RedirectToAction("Widgets");
-                }
-                catch (Exception ex)
-                {
-                    // Log exception and display error
-                    Console.WriteLine($"Error saving package: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while saving the package. Please try again.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid ModelState detected.");
-                // Log validation errors
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine($"ModelState Error: {error.ErrorMessage}");
-                }
+                ModelState.AddModelError("Package.EndDate", "End date must be after the start date.");
+                model.PackageTypes = await _context.PackageTypes.ToListAsync();
+                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+                return View(model);
             }
 
-            // Return to the view with the model and repopulated dropdown
-            return View(package);
+            // Fetch LocationId based on selected State and City
+            var location = await _context.Locations
+.FirstOrDefaultAsync(l => l.State == state && l.City == city);            if (location == null)            {                ModelState.AddModelError("", "Invalid Location selection.");                model.PackageTypes = await _context.PackageTypes.ToListAsync();                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();                return View(model);            }
+
+            // Create Package Object
+            var package = new Package            {                PackageName = model.Package.PackageName,                Description = model.Package.Description,                UnitPrice = model.Package.UnitPrice,                TotalSpots = model.Package.TotalSpots,                AverageDuration = model.Package.AverageDuration,                StartDate = model.Package.StartDate,                EndDate = model.Package.EndDate,                LocationId = location.LocationId, // Foreign key for Location
+                PackageTypeId = model.Package.PackageTypeId // Foreign key for PackageType
+            };            _context.Packages.Add(package);            await _context.SaveChangesAsync();
+            return RedirectToAction("Index2", "Home", new { area = "admin" });        }
+
+        // GET: Fetch Cities by State (Ajax)
+        [HttpGet]        public async Task<IActionResult> GetCitiesByState(string state)        {            var cities = await _context.Locations                .Where(l => l.State == state)                .Select(l => l.City)                .Distinct()                .ToListAsync();            return Json(cities);        }
+
+        // GET: Fetch LocationId (Ajax)
+        [HttpGet]        public async Task<IActionResult> GetLocationId(string state, string city)        {            var locationId = await _context.Locations                .Where(l => l.State == state && l.City == city)                .Select(l => l.LocationId)                .FirstOrDefaultAsync();            return Json(locationId);        }
+
+        // GET: View Widgets (Packages)
+        [HttpGet]        public async Task<IActionResult> Widgets()        {            var packages = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .OrderByDescending(p => p.PackageId)                .ToListAsync();            return View(packages); // Ensure the view file is named "Widgets.cshtml"
         }
 
-        // Optional: View All Packages (Widgets View)
-        public IActionResult Widgets()
-        {
-            // Fetch all packages from the database
-            var packages = _context.Package.ToList();
-            ViewBag.TotalPackages = packages.Count;
+        // GET: Manage Packages
+       /* [HttpGet]        public async Task<IActionResult> ManagePackages()        {            var packages = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .OrderByDescending(p => p.PackageId)                .ToListAsync();            return View(packages);        }*/
 
-            return View(packages);
+        // GET: Search Package
+        [HttpGet]        public async Task<IActionResult> SearchPackage(string packageName)        {            if (string.IsNullOrWhiteSpace(packageName))            {                TempData["ErrorMessage"] = "Please enter a valid package name.";                return RedirectToAction(nameof(Widgets));            }            var package = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .FirstOrDefaultAsync(p => EF.Functions.Like(p.PackageName, $"{packageName}%"));            if (package == null)            {                TempData["ErrorMessage"] = $"No package found with the name '{packageName}'.";                return RedirectToAction(nameof(Widgets));            }            return View("PackageDetails", package); // Ensure you have a view named "PackageDetails.cshtml"
         }
-    }
-}
+
+        // GET: Package Details
+        [HttpGet]        public async Task<IActionResult> PackageDetails(int id)        {            var package = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .FirstOrDefaultAsync(p => p.PackageId == id);            if (package == null)            {                TempData["ErrorMessage"] = "Package not found.";                return RedirectToAction(nameof(Widgets));            }            return View(package);        }
+
+        // POST: Edit Package
+        [HttpPost]        [ValidateAntiForgeryToken]        public async Task<IActionResult> EditPackage(int id, PackageViewModel model)        {            if (id != model.Package.PackageId)            {                return NotFound();            }            if (ModelState.IsValid)            {                try                {                    _context.Update(model.Package);                    await _context.SaveChangesAsync();                }                catch (DbUpdateConcurrencyException)                {                    if (!PackageExists(id))                    {                        return NotFound();                    }                    throw;                }                return RedirectToAction(nameof(Widgets));            }            model.PackageTypes = await _context.PackageTypes.ToListAsync();            model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();            return View(model);        }
+
+        // POST: Delete Package
+        [HttpPost]        [ValidateAntiForgeryToken]        public async Task<IActionResult> DeletePackage(int id)        {            var package = await _context.Packages.FindAsync(id);            if (package == null)            {                return NotFound();            }            _context.Packages.Remove(package);            await _context.SaveChangesAsync();            return RedirectToAction(nameof(Widgets));        }        private bool PackageExists(int id)        {            return _context.Packages.Any(e => e.PackageId == id);        }    }}

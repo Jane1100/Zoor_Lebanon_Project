@@ -168,10 +168,12 @@
         <div class="content-wrapper">
             <section class="content">
                 <div class="container-fluid">
+
                     <!-- Latest Bookings Section -->
                     <div class="card">
                         <div class="card-header border-transparent">
                             <h3 class="card-title">Latest Bookings</h3>
+                           
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
@@ -186,7 +188,13 @@
                                             <th>User ID</th>
                                             <th>Users</th>
                                             <th>Email</th>
-                                            <th>Status</th>
+                                            <th>Status</th>                                         
+                                            <th>Actions</th>
+                                            <th>
+                                                <button class="btn btn-sm btn-primary float-right" onclick="addTourist()">
+                                                    <i class="fas fa-user-plus"></i> Add Tourist
+                                                </button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -207,17 +215,22 @@
                                                             @user.Status
                                                         </span>
                                                     </td>
+                                                    <!-- Add Action Column -->
+                                                    <td>
+                                                        <button class="btn btn-sm btn-warning" onclick="editUser(@user.UserId)">Edit</button>
+                                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(@user.UserId)">Delete</button>
+                                                    </td>
                                                 </tr>
                                             }
                                         }
                                         else
                                         {
                                             <tr>
-                                                <td colspan="4" class="text-center">No users available.</td>
+                                                <td colspan="5" class="text-center">No users available.</td>
                                             </tr>
                                         }
-
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -237,6 +250,8 @@
             <strong>Copyright &copy; 2024 <a href="#">Your Company</a>.</strong>
             All rights reserved.
         </footer>
+    
+
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
@@ -244,5 +259,7 @@
     <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="~/admin/dist/js/adminlte.js"></script>
+
+
 </body>
 </html>

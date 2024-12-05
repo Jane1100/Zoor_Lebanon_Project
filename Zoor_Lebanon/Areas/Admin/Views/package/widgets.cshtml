@@ -1,7 +1,6 @@
-﻿@model List<Zoor_Lebanon_Booking_Platform.Models.Database.Package>
+﻿@model List<Zoor_Lebanon.Models.Package>
 
-
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -286,7 +285,7 @@
                                 </li>
                             </ul>
                         </li>
-                        </li>
+                       
                     </ul>
                 </nav>
             </div>
@@ -325,12 +324,12 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Package Name</th>
                                             <th>Description</th>
                                             <th>Unit Price</th>
-                                            <th>Available Spots</th>
+                                            <th>Start Date</th>
                                             <th>Total Spots</th>
+                                            <th>Location</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -338,26 +337,27 @@
                                         @foreach (var package in Model)
                                         {
                                             <tr>
-                                                <td>@package.PackageId</td>
                                                 <td>@package.PackageName</td>
                                                 <td>@package.Description</td>
                                                 <td>@package.UnitPrice</td>
-                                                <td>@package.AvailableSpots</td>
+                                                <td>@package.StartDate</td>
                                                 <td>@package.TotalSpots</td>
+                                                 <td>@package.Location.City</td>
                                                 <td>
                                                     <a href="@Url.Action("EditPackage", new { id = package.PackageId })" class="btn btn-info btn-sm">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                     Edit
                                                     </a>
-                                                    <form asp-action="DeletePackage" method="post" style="display:inline">
-                                                        <input type="hidden" name="id" value="@package.PackageId" />
-                                                        <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash">
-                                                        </i>
-                                                        Delete
-                                                        </button>
-                                                    </form>
+                                                <form asp-area="Admin" asp-controller="Package" asp-action="DeletePackage" method="post" style="display:inline">
+                                                    <input type="hidden" name="id" value="@package.PackageId" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </form>
+
+
+
                                                 </td>
                                             </tr>
                                         }

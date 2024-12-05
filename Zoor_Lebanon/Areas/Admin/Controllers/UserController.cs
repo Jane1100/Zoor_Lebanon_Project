@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zoor_Lebanon_Booking_Platform.Models.Database;
+using Zoor_Lebanon.Models;
 using System.Linq;
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.Admin.Controllers
+namespace Zoor_Lebanon.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UserController : Controller
     {
-        private readonly ZoorLebanonContext _context;
+        private readonly zoor_lebanonContext _context;
 
-        public UserController(ZoorLebanonContext context)
+        public UserController(zoor_lebanonContext context)
         {
             _context = context;
         }
