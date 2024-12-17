@@ -25,15 +25,12 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Tourist\Controllers\" />
     <Folder Include="Areas\Tourist\Data\" />
     <Folder Include="Areas\Tourist\Models\" />
-    <Folder Include="Areas\Tourist\Views\" />
     <Folder Include="Areas\TourOperator\Controllers\" />
     <Folder Include="Areas\TourOperator\Data\" />
     <Folder Include="Areas\TourOperator\Models\" />
     <Folder Include="Areas\TourOperator\Views\" />
-    <Folder Include="wwwroot\tourist\" />
     <Folder Include="wwwroot\tourOperator\" />
   </ItemGroup>
 

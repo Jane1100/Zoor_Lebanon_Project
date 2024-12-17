@@ -29,20 +29,23 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         public IActionResult ManageLocation()
         {
             var locations = _context.Locations
-          .Include(l => l.Packages) // Include related packages
-          .Select(l => new
-          {
-              l.City,
-              l.State,
-              IsActive = l.Packages.Any(), // Determine if the location is active based on packages
-              Packages = l.Packages.Select(p => new { p.PackageId })
-          })
-          .OrderByDescending(l => l.IsActive) // Order active locations first
-          .ToList();
+              .Include(l => l.Packages) // Include related packages
+              .Select(l => new
+              {
+                  l.City,
+                  l.State,
+                  IsActive = l.Packages.Any(p => p.Status == "Active"), // Check if there's any active package
+                  Packages = l.Packages
+                              .Where(p => p.Status == "Active")
+                              .Select(p => new { p.PackageId }) // Select only active packages
+              })
+              .OrderByDescending(l => l.IsActive) // Order by active locations first
+              .ToList();
 
             ViewData["LocationsJson"] = JsonConvert.SerializeObject(locations);
             return View();
         }
+
 
 
 

@@ -191,7 +191,7 @@
                                             <th>Status</th>                                         
                                             <th>Actions</th>
                                             <th>
-                                                <button class="btn btn-sm btn-primary float-right" onclick="addTourist()">
+                                                <button class="btn btn-sm btn-primary float-right" onclick="redirectToAddTourist()">
                                                     <i class="fas fa-user-plus"></i> Add Tourist
                                                 </button>
                                             </th>
@@ -260,6 +260,11 @@
     <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="~/admin/dist/js/adminlte.js"></script>
 
+    <script>
+        function redirectToAddTourist() {
+            window.location.href = '/admin/accountU/addU'; // Update this path if necessary
+        }
+    </script>
 
 </body>
 </html>

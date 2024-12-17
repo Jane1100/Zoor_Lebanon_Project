@@ -6,6 +6,7 @@ namespace Zoor_Lebanon.Models.ViewModels
 {
     public class PackageViewModel
     {
+        public int PackageId { get; set; }
         public Package Package { get; set; } // For Package Details
         public List<PackageType> PackageTypes { get; set; } // Dropdown for Package Types
         public List<Location> Locations { get; set; } // Dropdown for Locations

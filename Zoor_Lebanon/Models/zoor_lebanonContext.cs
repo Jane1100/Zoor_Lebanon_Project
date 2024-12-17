@@ -227,9 +227,20 @@ namespace Zoor_Lebanon.Models
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
                     .HasColumnName("description");
+                entity.Property(e => e.StartDate)
+      .HasColumnName("start_date")
+      .HasConversion(
+          v => v.HasValue ? v.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null, // Convert DateOnly to DateTime when saving to the database
+          v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null           // Convert DateTime to DateOnly when reading from the database
+      );
 
-                entity.Property(e => e.EndDate).HasColumnName("end_date");
 
+                entity.Property(e => e.EndDate)
+         .HasColumnName("end_date")
+         .HasConversion(
+             v => v.HasValue ? v.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null, // Convert DateOnly to DateTime when saving to the database
+             v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null           // Convert DateTime to DateOnly when reading from the database
+         );
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
 
                 entity.Property(e => e.PackageName)
@@ -238,9 +249,15 @@ namespace Zoor_Lebanon.Models
 
                 entity.Property(e => e.PackageTypeId).HasColumnName("package_type_id");
 
-                entity.Property(e => e.StartDate).HasColumnName("start_date");
+             
 
                 entity.Property(e => e.TotalSpots).HasColumnName("total_spots");
+
+                entity.Property(e => e.Status) // Map the new Status column
+        .HasColumnName("status")
+        .HasMaxLength(50)
+        .HasDefaultValue("Pending"); // Set a default value if desired
+
 
                 entity.Property(e => e.UnitPrice)
                     .HasPrecision(10, 2)

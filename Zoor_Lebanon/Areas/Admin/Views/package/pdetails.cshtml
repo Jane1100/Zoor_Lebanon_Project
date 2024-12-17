@@ -23,7 +23,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="~/admin/package/widgets" class="nav-link">Home</a>
+                    <a href="~/admin/package/pdetails" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -191,7 +191,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/package/widgets" class="nav-link active">
+                            <a href="~/admin/package/widgets" class="nav-link ">
                                 <i class="nav-icon fas fa-box"></i>
                                 <p>
                                     Manage Packages
@@ -224,7 +224,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/operators" class="nav-link">
+                            <a href="~/admin/home/operators" class="nav-link ">
                                 <i class="nav-icon fas fa-briefcase"></i>
                                 <p>Manage Tour Operators</p>
                             </a>
@@ -239,7 +239,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/mailbox" class="nav-link  ">
+                            <a href="~/admin/home/mailbox" class="nav-link active ">
                                 <i class="nav-icon far fa-envelope"></i>
                                 <p>
                                     Mailbox
@@ -332,15 +332,15 @@
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-text text-center text-muted">Estimated budget</span>
-                                                <span class="info-box-number text-center text-muted mb-0">2300</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@Model.UnitPrice?.ToString("C")</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-4">
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
-                                                <span class="info-box-text text-center text-muted">Total amount spent</span>
-                                                <span class="info-box-number text-center text-muted mb-0">2000</span>
+                                                <span class="info-box-text text-center text-muted">total Spots</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@Model.TotalSpots</span>
                                             </div>
                                         </div>
                                     </div>
@@ -348,7 +348,7 @@
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-text text-center text-muted">Estimated project duration</span>
-                                                <span class="info-box-number text-center text-muted mb-0">20 hrs</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@Model.AverageDuration </span>
                                             </div>
                                         </div>
                                     </div>
@@ -359,8 +359,8 @@
                                         <div class="post">
                                             <div class="user-block">
                                                 <img class="img-circle img-bordered-sm" src="~/admin/dist/img/user1-128x128.jpg" alt="user image">
-                                                <span class="username">
-                                                    <a href="#">Jonathan Burke Jr.</a>
+                                                <span class="Client Name / Company">
+                                                    <a href="#">@Model.PackageName</a>
                                                 </span>
                                                 <span class="description">Shared publicly - 7:45 PM today</span>
                                             </div>
@@ -416,8 +416,8 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i> AdminLTE v3</h3>
-                                <p class="text-muted">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Package Details</h3>
+                                <p class="text-muted">@Model.Description</p>
                                 <br>
                                 <div class="text-muted">
                                     <p class="text-sm">
@@ -427,6 +427,11 @@
                                     <p class="text-sm">
                                         Tour Operator
                                         <b class="d-block">Tony Chicken</b>
+                                    </p>
+                                    <p class="text-muted">
+                                        Start Date: @Model.StartDate?.ToString("d")<br>
+                                        End Date: @Model.EndDate?.ToString("d")<br>
+                                        Average Duration: @Model.AverageDuration hours
                                     </p>
                                 </div>
 

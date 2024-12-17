@@ -41,21 +41,25 @@
             <!-- Total Spots -->
             <div class="mb-3">
                 <label asp-for="Package.TotalSpots" class="form-label">Total Spots</label>
-                <input asp-for="Package.TotalSpots" class="form-control" type="number" required />
+                <input type="number" asp-for="Package.TotalSpots" class="form-control" required />
+
                 <span asp-validation-for="Package.TotalSpots" class="text-danger"></span>
             </div>
+            <!-- Start Date -->
+<div class="form-group">
+    <label asp-for="Package.StartDate">Start Date</label>
+    <input asp-for="Package.StartDate" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+    <span asp-validation-for="Package.StartDate" class="text-danger"></span>
+</div>
 
-            <div class="form-group">
-                <label asp-for="Package.StartDate">Start Date</label>
-                <input asp-for="Package.StartDate" class="form-control" type="date" required />
-                <span asp-validation-for="Package.StartDate" class="text-danger"></span>
-            </div>
+<!-- End Date -->
+<div class="form-group">
+    <label asp-for="Package.EndDate">End Date</label>
+    <input asp-for="Package.EndDate" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+    <span asp-validation-for="Package.EndDate" class="text-danger"></span>
+</div>
 
-            <div class="form-group">
-                <label asp-for="Package.EndDate">End Date</label>
-                <input asp-for="Package.EndDate" class="form-control" type="date" required />
-                <span asp-validation-for="Package.EndDate" class="text-danger"></span>
-            </div>
+        
 
 
             <!-- Average Duration -->
@@ -137,8 +141,8 @@
             });
         });
          document.addEventListener("DOMContentLoaded", function () {
-        const startDateInput = document.querySelector("[name='Package.StartDate']");
-        const endDateInput = document.querySelector("[name='Package.EndDate']");
+            const startDateInput = document.querySelector("#Package_StartDate");
+            const endDateInput = document.querySelector("#Package_EndDate");
 
         startDateInput.addEventListener("change", function () {
             const selectedDate = this.value;

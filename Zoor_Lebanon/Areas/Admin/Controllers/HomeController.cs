@@ -20,10 +20,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult mailbox()
-        {
-            return View();
-        }
+      
         public IActionResult compose()
         {
             return View();
@@ -72,10 +69,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult operators()
-        {
-            return View();
-        }
+     
         public IActionResult flot()
         {
             return View();
@@ -109,11 +103,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult pdetails()
-        {
-            return View();
-        }
-
+      
 
     }
 }

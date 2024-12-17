@@ -1,0 +1,101 @@
+﻿@using Zoor_Lebanon.Models
+@model Zoor_Lebanon.Models.UserProfileViewModel.UserProfileViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center my-4">My Profile</h2>
+        <form method="post" asp-action="MyProfile">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            <div class="row mb-3">
+                <div class="col-sm-4"><strong>First Name:</strong></div>
+                <div class="col-sm-6">
+                    <input type="text" name="Firstname" value="@Model.Firstname" class="form-control" readonly />
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4"><strong>Last Name:</strong></div>
+                <div class="col-sm-6">
+                    <input type="text" name="Lastname" value="@Model.Lastname" class="form-control" readonly />
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4"><strong>Email:</strong></div>
+                <div class="col-sm-6">
+                    <input type="email" name="Email" value="@Model.Email" class="form-control" required />
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4"><strong>Date of Birth:</strong></div>
+                <div class="col-sm-6">
+                    <input type="date" name="Dob" value="@Model.Dob" class="form-control" required />
+                    <span class="text-danger" asp-validation-for="Dob"></span>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4"><strong>City:</strong></div>
+                <div class="col-sm-6">
+                    <select name="CityId" class="form-control" disabled>
+                        @foreach (var city in ViewBag.Cities as List<City>)
+                        {
+                            <option value="@city.CityId" @(city.CityId == Model.CityId ? "selected" : "")>
+                                @city.City1
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        function toggleEdit(button) {
+            const inputField = button.closest('.row').querySelector('input, select');
+            if (inputField) {
+                if (inputField.hasAttribute('readonly') || inputField.hasAttribute('disabled')) {
+                    inputField.removeAttribute('readonly');
+                    inputField.removeAttribute('disabled');
+                    inputField.focus();
+                } else {
+                    inputField.setAttribute('readonly', 'readonly');
+                    inputField.setAttribute('disabled', 'disabled');
+                }
+            }
+        }
+
+    </script>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -336,30 +336,24 @@
                                     <tbody>
                                         @foreach (var package in Model)
                                         {
-                                            <tr>
-                                                <td>@package.PackageName</td>
-                                                <td>@package.Description</td>
-                                                <td>@package.UnitPrice</td>
-                                                <td>@package.StartDate</td>
-                                                <td>@package.TotalSpots</td>
-                                                 <td>@package.Location.City</td>
-                                                <td>
-                                                    <a href="@Url.Action("EditPackage", new { id = package.PackageId })" class="btn btn-info btn-sm">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                    Edit
-                                                    </a>
-                                                <form asp-area="Admin" asp-controller="Package" asp-action="DeletePackage" method="post" style="display:inline">
+                                        <tr>
+                                            <td>@Html.ActionLink(package.PackageName, "pdetails", "Package", new { id = package.PackageId }, new { area = "admin" })</td>
+
+                                            <td>@package.Description</td>
+                                            <td>@package.UnitPrice</td>
+                                            <td>@(package.StartDate.HasValue ? package.StartDate.Value.ToString("dd/MM/yyyy") : String.Empty)</td>
+                                            <td>@package.TotalSpots</td>
+                                            <td>@package.Location.City</td>
+                                            <td>
+                                                <a href="@Url.Action("EditPackages", "Package", new { area = "admin", id = package.PackageId })" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-pencil-alt"></i> Edit
+                                                </a>
+                                                <form method="post" action="@Url.Action("DeletePackage", "Package", new { area = "admin" })" onsubmit="return confirm('Are you sure you want to delete this package?');">
                                                     <input type="hidden" name="id" value="@package.PackageId" />
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
-
-
-
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>

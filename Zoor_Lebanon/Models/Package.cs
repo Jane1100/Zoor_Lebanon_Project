@@ -29,5 +29,6 @@ namespace Zoor_Lebanon.Models
         public virtual ICollection<ActivitySchedule> ActivitySchedules { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+        public string Status { get; set; } = "Pending";
     }
 }
