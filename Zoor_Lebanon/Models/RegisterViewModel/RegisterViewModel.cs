@@ -1,8 +1,7 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
-using Zoor_Lebanon.Models;
 
-namespace Zoor_Lebanon.Models.ViewModels
+namespace Zoor_Lebanon.Models.RegisterViewModel
 {
     public class RegisterViewModel
     {
@@ -16,39 +15,24 @@ namespace Zoor_Lebanon.Models.ViewModels
         public int? CityId { get; set; }
         public int? StateId { get; set; }
         public int? CountryId { get; set; }
-
+        // public User? User { get; set; }
         // Preferences
-        public List<int>? SelectedPreferences { get; set; } // IDs of selected preferences
 
+        public List<Preference> Preferences { get; set; } = new List<Preference>();
+        public List<int> SelectedPreferences { get; set; } = new List<int>();
         // Dropdown Data
         public List<Country>? Countries { get; set; } // List of available countries
         public List<State>? States { get; set; } // List of states for selected country
         public List<City>? Cities { get; set; } // List of cities for selected state
-        public List<Preference>? Preferences { get; set; } // List of available preferences
+     
 
-    }
-}
-*/
+     /*       [Required]
+            public int? CityId { get; set; } // To capture the selected city ID.
 
-using System.ComponentModel.DataAnnotations;
-
-namespace Zoor_Lebanon.Models.RegisterViewModel
-{
-    public class RegisterViewModel
-    {
-        public User? User { get; set; } // For user details like name, email, password, etc.
-        public List<Preference>? Preferences { get; set; } // List of all available preferences.
-        public List<Country>? Countries { get; set; } // List of countries for the dropdown.
-        public List<State>? States { get; set; } // List of states for the dropdown.
-        public List<City>? Cities { get; set; } // List of cities for the dropdown.
-
-        [Required]
-        public int? CityId { get; set; } // To capture the selected city ID.
-
-        [Required]
-        public List<int>? SelectedPreferences { get; set; } // To capture selected preferences.
-
+            [Required]
+            public List<int>? SelectedPreferences { get; set; } // To capture selected preferences.*/
+    
         public string? CountryCode { get; set; } // To store the selected country code for phone numbers.
+        public User User { get;  set; }
     }
 }
-

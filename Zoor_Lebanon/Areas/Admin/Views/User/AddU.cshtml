@@ -1,5 +1,6 @@
-﻿@using Zoor_Lebanon.Models
-@model Zoor_Lebanon.Models.RegisterViewModel.RegisterViewModel
+﻿
+@using Zoor_Lebanon.Models.RegisterViewModel;
+@model RegisterViewModel
 
 
 
@@ -125,7 +126,8 @@
                             <select id="countryCode" name="CountryCode" class="form-select" style="max-width: 100px;">
                                 @foreach (var country in Model.Countries)
                                 {
-                                    <option value="@GetCountryCode(country.Country1)">@GetCountryCode(country.Country1)</option>
+                                    <option value="@country.CountryId">@country.Country1</option>
+                                  //  <option value="@GetCountryCode(country.Country1)">@GetCountryCode(country.Country1)</option>
                                 }
                             </select>
                             <input type="tel" id="phone" name="User.PhoneNumber" class="form-control" placeholder="Enter your phone number" required />
@@ -266,5 +268,36 @@
             return countryCodes.ContainsKey(countryName) ? countryCodes[countryName] : "";
         }
     }
+    <script>
+// Fetch states based on country ID
+document.getElementById("country").addEventListener("change", function() {
+    const countryId = this.value;
+    fetch(`/Admin/User/GetStates?countryId=${countryId}`)
+        .then(response => response.json())
+        .then(states => {
+            const stateDropdown = document.getElementById("state");
+            stateDropdown.innerHTML = '<option value="">Select a state</option>';
+            states.forEach(state => {
+                stateDropdown.innerHTML += `<option value="${state.stateId}">${state.state1}</option>`;
+            });
+        });
+});
+
+// Fetch cities based on state ID
+document.getElementById("state").addEventListener("change", function() {
+    const stateId = this.value;
+    fetch(`/Admin/User/GetCities?stateId=${stateId}`)
+        .then(response => response.json())
+        .then(cities => {
+            const cityDropdown = document.getElementById("city");
+            cityDropdown.innerHTML = '<option value="">Select a city</option>';
+            cities.forEach(city => {
+                cityDropdown.innerHTML += `<option value="${city.cityId}">${city.city1}</option>`;
+            });
+        });
+});
+</script>
+
+
 </body>
 </html>

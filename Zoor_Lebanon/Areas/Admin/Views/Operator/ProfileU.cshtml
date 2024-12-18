@@ -1,4 +1,128 @@
-﻿=
+﻿@model Zoor_Lebanon.Models.User
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6"><h1>Edit Profile</h1></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="container">
+                    <!-- Display TempData messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger text-center">@TempData["ErrorMessage"]</div>
+                    }
+                    @if (TempData["InfoMessage"] != null)
+                    {
+                        <div class="alert alert-info text-center">@TempData["InfoMessage"]</div>
+                    }
+
+                    <!-- Profile Form -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Profile Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="@Url.Action("UpdateProfile", "Operator", new { area = "Admin" })">
+                                <input type="hidden" name="UserId" value="@Model.UserId" />
+
+                                <!-- First Name -->
+                                <div class="form-group">
+                                    <label for="Firstname">First Name</label>
+                                    <input type="text" name="Firstname" class="form-control" value="@Model.Firstname" required />
+                                </div>
+
+                                <!-- Last Name -->
+                                <div class="form-group">
+                                    <label for="Lastname">Last Name</label>
+                                    <input type="text" name="Lastname" class="form-control" value="@Model.Lastname" required />
+                                </div>
+
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label for="Email">Email</label>
+                                    <input type="email" name="Email" class="form-control" value="@Model.Email" required />
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="form-group">
+                                    <label for="PhoneNumber">Phone Number</label>
+                                    <input type="text" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="form-group">
+                                    <label for="Dob">Date of Birth</label>
+                                    <input type="date" name="Dob" class="form-control" value="@Model.Dob?.ToString("yyyy-MM-dd")" />
+                                </div>
+
+                                <!-- Save Changes Button -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Save Changes Button -->
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                                    <!-- Back to                             Profiles Button -->
+                                    <a href="@Url.Action("tourists", "TourOperator", new { area = "TourOperator" })" class="btn btn-secondary">
+                                        Back to Profiles
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/dist/js/adminlte.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*=
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -681,3 +805,4 @@
     <script src="~/admin/dist/js/demo.js"></script>
 </body>
 </html>
+*@

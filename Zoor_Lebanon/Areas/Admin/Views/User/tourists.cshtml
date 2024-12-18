@@ -191,7 +191,7 @@
                                             <th>Status</th>                                         
                                             <th>Actions</th>
                                             <th>
-                                                <button class="btn btn-sm btn-primary float-right" onclick="redirectToAddTourist()">
+                                                <button class="btn btn-sm btn-primary float-right" onclick=" redirectToAddTourist()">
                                                     <i class="fas fa-user-plus"></i> Add Tourist
                                                 </button>
                                             </th>
@@ -217,7 +217,7 @@
                                                     </td>
                                                     <!-- Add Action Column -->
                                                     <td>
-                                                        <button class="btn btn-sm btn-warning" onclick="editUser(@user.UserId)">Edit</button>
+                                                        <a href="@Url.Action("MyProfile", "User", new { area = "Admin", userId = user.UserId })" class="btn btn-sm btn-warning">Edit</a>
                                                         <button class="btn btn-sm btn-danger" onclick="deleteUser(@user.UserId)">Delete</button>
                                                     </td>
                                                 </tr>
@@ -236,7 +236,7 @@
                         </div>
 
                         <div class="card-footer clearfix">
-                            <a href="#" class="btn btn-sm btn-info float-left">Create New User</a>
+                            <a href="@Url.Action("AddU", "User", new { area = "Admin"})" class="btn btn-sm btn-info float-left">Create New User</a>
                             <a href="#" class="btn btn-sm btn-secondary float-right">View All Users</a>
                         </div>
                     </div>
@@ -262,7 +262,7 @@
 
     <script>
         function redirectToAddTourist() {
-            window.location.href = '/admin/accountU/addU'; // Update this path if necessary
+            window.location.href = '/admin/User/addU'; // Update this path if necessary
         }
     </script>
 

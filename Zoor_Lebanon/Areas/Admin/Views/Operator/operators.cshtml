@@ -301,7 +301,7 @@
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Tour Operators</li>
                                 <li class="breadcrumb-item">
-                                    <a href="@Url.Action("Create", "Operator", new { area = "Admin" })" class="btn btn-success">Add Tour Operator</a>
+                                    <a href="@Url.Action("Addtr", "Operator", new { area = "Admin" })" class="btn btn-success">Add Tour Operator</a>
                                 </li>
                             </ol>
                         </div>
@@ -342,13 +342,13 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a href="@Url.Action("Edit", "Operator", new { area = "Admin", id = Touroperator.OperatorId })" class="btn btn-sm btn-primary">
+                                        <a href="@Url.Action("ProfileU", "Operator", new { area = "Admin", id = Touroperator.OperatorId })" class="btn btn-sm btn-primary">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
                                         <a href="@Url.Action("Delete", "Operator", new { area = "Admin", id = Touroperator.OperatorId })" class="btn btn-sm btn-danger">
                                             <i class="fas fa-trash"></i> Delete
                                         </a>
-                                        <a href="@Url.Action("Details", "Operator", new { area = "Admin", id = Touroperator.OperatorId })" class="btn btn-sm btn-primary">
+                                        <a href="@Url.Action("ProfileU", "Operator", new { area = "Admin", id = Touroperator.OperatorId })" class="btn btn-sm btn-primary">
                                             <i class="fas fa-user"></i> View Profile
                                         </a>
                                     </div>
