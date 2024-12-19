@@ -30,6 +30,35 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
              }
 
      */
+        [HttpPost("Admin/User/Delete/{userId}")]
+        public async Task<IActionResult> Delete(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("Tourists"); // Redirect to the tourists listing page or wherever appropriate
+            }
+
+            try
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "User deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your error handling policy
+                TempData["ErrorMessage"] = $"Error deleting user: {ex.Message}";
+            }
+
+            return RedirectToAction("Tourists"); // Redirect back to the tourists listing page
+        }
+
+
+
+
+
         [HttpGet]
         public IActionResult GetStates(int countryId)
         {
@@ -63,16 +92,15 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         public IActionResult MyProfile(int? userId)
         {
             userId = userId ?? HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
+            if (!userId.HasValue)
             {
                 TempData["Error"] = "User identification is required to access this page.";
                 return RedirectToAction("Tourists");
             }
 
             var user = _context.Users
-                        .Include(u => u.City)
-                        .FirstOrDefault(u => u.UserId == userId);
-
+                               .Include(u => u.City)
+                               .FirstOrDefault(u => u.UserId == userId.Value);
             if (user == null)
             {
                 TempData["Error"] = "User not found.";
@@ -81,12 +109,12 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
 
             var model = new UserProfileViewModel
             {
-                Firstname = user.Firstname ?? "",
-                Lastname = user.Lastname ?? "",
-                Email = user.Email ?? "",
+                UserId = user.UserId,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email,
                 Dob = user.Dob?.ToString("yyyy-MM-dd"),
-                CityName = user.City?.City1 ?? "",
-                CityId = user.CityId ?? 0
+                CityId = user.CityId
             };
 
             ViewBag.Cities = _context.Cities.ToList();
@@ -102,9 +130,14 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
                 return View(model);
             }
 
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            var user = _context.Users.Find(userId);
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                TempData["Error"] = "Session expired or invalid user.";
+                return RedirectToAction("Tourists");
+            }
 
+            var user = await _context.Users.FindAsync(userId.Value);
             if (user == null)
             {
                 TempData["Error"] = "User not found.";
@@ -114,22 +147,60 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
             user.Firstname = model.Firstname;
             user.Lastname = model.Lastname;
             user.Email = model.Email;
-            user.Dob = !string.IsNullOrEmpty(model.Dob) ? DateOnly.FromDateTime(DateTime.Parse(model.Dob)) : null;
+            user.PhoneNumber = model.PhoneNumber; // Concatenate country code and phone number
+            user.Dob = !string.IsNullOrEmpty(model.Dob) ? DateOnly.Parse(model.Dob) : user.Dob;
             user.CityId = model.CityId;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error updating profile: " + ex.Message;
+                return View(model); // Stay on the page to display error
+            }
 
-            TempData["SuccessMessage"] = "Profile updated successfully!";
-            return RedirectToAction("Tourists");
+            return RedirectToAction("Tourists"); // Redirect to prevent resubmission
         }
 
-        [HttpGet]
-      /*  public IActionResult AddU()
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(TourOperator model)
         {
-            var model = new RegisterViewModel();
-            ViewBag.Countries = _context.Countries.ToList();
-            return View(model);
-        }*/
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Validation Error.";
+                return View(model);
+            }
+
+            var existingOperator = await _context.TourOperators.FindAsync(model.OperatorId);
+            if (existingOperator == null)
+            {
+                TempData["ErrorMessage"] = "Tour Operator not found.";
+                return RedirectToAction("Operators");
+            }
+
+            existingOperator.CompanyName = model.CompanyName;
+            existingOperator.BusinessPhone = model.BusinessPhone;
+
+            try
+            {
+                _context.Update(existingOperator);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error updating profile: {ex.Message}";
+            }
+
+            return RedirectToAction("Operators");
+        }
+
+       
         [HttpGet]
         public IActionResult AddU()
         {
@@ -207,35 +278,10 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("tourists", "User");
         }
 
       
-        /*   [HttpPost]
-           public async Task<IActionResult> AddU(RegisterViewModel model)
-           {
-               if (!ModelState.IsValid)
-               {
-                   ViewBag.Countries = _context.Countries.ToList();
-                   return View(model);
-               }
-
-               var newUser = new User
-               {
-                   Firstname = model.Firstname,
-                   Lastname = model.Lastname,
-                   Email = model.Email,
-                   PasswordHash = model.Password,  // Remember to hash the password
-                   Dob = model.Dob?.ToString("yyyy-MM-dd"),
-                   PhoneNumber = model.PhoneNumber,
-                   // Assume other necessary properties are set here
-               };
-
-               _context.Users.Add(newUser);
-               await _context.SaveChangesAsync();
-
-               TempData["SuccessMessage"] = "New tourist added successfully!";
-               return RedirectToAction("Tourists");
-           }*/
+       
     }
 }

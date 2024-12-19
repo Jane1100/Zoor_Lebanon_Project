@@ -293,7 +293,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Package Edit</h1>
+                            <h1>view Package </h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -335,26 +335,24 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="State">State</label>
-                                <select id="State" name="State" class="form-control" required onchange="updateCities()">
+                                <label for="State" class="form-label">State</label>
+                                <select id="State" name="State" class="form-select" required>
                                     <option value="">Select State</option>
                                     @foreach (var state in Model.States)
                                     {
-                                        <option value="@state" @(state == Model.Package.Location.State ? "selected" : "")>@state</option>
+                                        <option value="@state">@state</option>
                                     }
                                 </select>
+                                <span asp-validation-for="State" class="text-danger"></span>
                             </div>
 
                             <!-- City Dropdown -->
                             <div class="form-group">
-                                <label for="City">City</label>
-                                <select id="City" name="City" class="form-control" required>
+                                <label for="City" class="form-label">City</label>
+                                <select id="City" name="City" class="form-select" required>
                                     <option value="">Select City</option>
-                                    @foreach (var city in Model.Cities)
-                                    {
-                                        <option value="@city" @(city == Model.Package.Location.City ? "selected" : "")>@city</option>
-                                    }
                                 </select>
+                                <span asp-validation-for="City" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -448,38 +446,65 @@
     <!-- /.control-sidebar -->
    
     <!-- ./wrapper -->
+
     <script>
         function approvePackage(packageId) {
-            $.ajax({
-                url: '/Admin/Mailbox/ApprovePackage', // Adjust if necessary to reflect actual routing
-                type: 'POST',
-                data: { id: packageId },
-                success: function (response) {
-                    alert('Package Approved Successfully!');
-                    // Optionally, redirect or update the UI here
-                },
-                error: function () {
-                    alert('Error approving package. Please try again.');
-                }
-            });
+            if (confirm("Are you sure you want to approve this package?")) {
+                $.ajax({
+                    url: '/Admin/Mailbox/ApprovePackage', // The URL for the controller action
+                    type: 'POST',
+                    data: { packageId: packageId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message); // Show success message
+                            location.reload(); // Reload the page to show the updated status
+                        } else {
+                            alert(response.message); // Show error message
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('An error occurred while approving the package.');
+                    }
+                });
+            }
         }
-
-      $(document).ready(function () {
-            // Populate cities when the state changes
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Populate City dropdown based on selected State
             $('#State').change(function () {
                 var state = $(this).val();
                 if (state) {
-                    $.getJSON('/Admin/Package/GetCitiesByState?state=' + encodeURIComponent(state), function (data) {
-                        var citySelect = $('#City');
-                        citySelect.empty();
-                        citySelect.append('<option value="">Select City</option>');
-                        $.each(data, function (index, city) {
-                            citySelect.append($('<option></option>').val(city).text(city));
+                    $.getJSON('/Admin/Package/GetCitiesByState?state=' + encodeURIComponent(state), function (cities) {
+                        var cityDropdown = $('#City');
+                        cityDropdown.empty();
+                        cityDropdown.append('<option value="">Select City</option>');
+                        $.each(cities, function (index, city) {
+                            cityDropdown.append('<option value="' + city + '">' + city + '</option>');
                         });
                     });
-                } else {
-                    $('#City').empty().append('<option value="">Select City</option>');
                 }
+            });
+
+            // Fetch LocationId based on selected State and City
+            $('#City').change(function () {
+                var city = $(this).val();
+                var state = $('#State').val();
+                if (city && state) {
+                    $.getJSON('/Admin/Package/GetLocationId?state=' + encodeURIComponent(state) + '&city=' + encodeURIComponent(city), function (locationId) {
+                        $('#LocationId').val(locationId);
+                    });
+                }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const startDateInput = document.querySelector("#Package_StartDate");
+            const endDateInput = document.querySelector("#Package_EndDate");
+
+            startDateInput.addEventListener("change", function () {
+                const selectedDate = this.value;
+                endDateInput.min = selectedDate; // Ensure end_date is not before start_date
             });
         });
     </script>

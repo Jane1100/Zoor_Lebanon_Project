@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;using Microsoft.EntityFrameworkCore;using Zoor_Lebanon.Models;using Zoor_Lebanon.Models.ViewModels;namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public class PackageController : Controller    {        private readonly zoor_lebanonContext _context;        public PackageController(zoor_lebanonContext context)        {            _context = context;        }
+﻿using Microsoft.AspNetCore.Mvc;using Microsoft.EntityFrameworkCore;using Zoor_Lebanon.Models;using Zoor_Lebanon.Models.ViewModels;namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public class PackageController : Controller    {        private readonly zoor_lebanonContext _context;        public PackageController(zoor_lebanonContext context)        {            _context = context;        }
       
 
         // GET: Add Package

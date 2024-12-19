@@ -181,9 +181,7 @@
                         </select>
                     </div>
                     <!-- Already Have an Account -->
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <a href="@Url.Action("Login", "Account", new { area = "Tourist"})" class="text-primary">Already have an account? Sign in</a>
-                    </div>
+                  
                     <!-- Submit Button -->
                     <div class="col-md-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary w-50 py-2 register-button">Register</button>
@@ -269,34 +267,35 @@
         }
     }
     <script>
-// Fetch states based on country ID
-document.getElementById("country").addEventListener("change", function() {
-    const countryId = this.value;
-    fetch(`/Admin/User/GetStates?countryId=${countryId}`)
-        .then(response => response.json())
-        .then(states => {
-            const stateDropdown = document.getElementById("state");
-            stateDropdown.innerHTML = '<option value="">Select a state</option>';
-            states.forEach(state => {
-                stateDropdown.innerHTML += `<option value="${state.stateId}">${state.state1}</option>`;
-            });
+        document.getElementById("country").addEventListener("change", function () {
+            const countryId = this.value;
+            fetch(`~/Admin/User/GetStates?countryId=${countryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const stateDropdown = document.getElementById("state");
+                    stateDropdown.innerHTML = '<option value="">Select a state</option>';
+                    data.forEach(state => {
+                        stateDropdown.innerHTML += `<option value="${state.stateId}">${state.state1}</option>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching states:', error));
         });
-});
 
-// Fetch cities based on state ID
-document.getElementById("state").addEventListener("change", function() {
-    const stateId = this.value;
-    fetch(`/Admin/User/GetCities?stateId=${stateId}`)
-        .then(response => response.json())
-        .then(cities => {
-            const cityDropdown = document.getElementById("city");
-            cityDropdown.innerHTML = '<option value="">Select a city</option>';
-            cities.forEach(city => {
-                cityDropdown.innerHTML += `<option value="${city.cityId}">${city.city1}</option>`;
-            });
+        document.getElementById("state").addEventListener("change", function () {
+            const stateId = this.value;
+            fetch(`~/Admin/User/GetCities?stateId=${stateId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const cityDropdown = document.getElementById("city");
+                    cityDropdown.innerHTML = '<option value="">Select a city</option>';
+                    data.forEach(city => {
+                        cityDropdown.innerHTML += `<option value="${city.cityId}">${city.city1}</option>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching cities:', error));
         });
-});
-</script>
+    </script>
+
 
 
 </body>

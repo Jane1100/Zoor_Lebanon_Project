@@ -1,5 +1,4 @@
-﻿@using Zoor_Lebanon.Models
-@model Zoor_Lebanon.Models.UserProfileViewModel.UserProfileViewModel
+﻿@model Zoor_Lebanon.Models.UserProfileViewModel.UserProfileViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,41 +11,37 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">@Model.Firstname @Model.Lastname's Profile</h1>
-        <form method="post" asp-action="MyProfile" class="mt-4">
+        <form method="post" asp-controller="User" asp-action="MyProfile">
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+
             <div class="mb-3">
                 <label for="Firstname" class="form-label">First Name</label>
-                <input type="text" id="Firstname" name="Firstname" value="@Model.Firstname" class="form-control" readonly />
+                <input type="text" id="Firstname" name="Firstname" value="@Model.Firstname" class="form-control" />
             </div>
 
             <div class="mb-3">
                 <label for="Lastname" class="form-label">Last Name</label>
-                <input type="text" id="Lastname" name="Lastname" value="@Model.Lastname" class="form-control" readonly />
+                <input type="text" id="Lastname" name="Lastname" value="@Model.Lastname" class="form-control" />
             </div>
 
             <div class="mb-3">
                 <label for="Email" class="form-label">Email</label>
                 <input type="email" id="Email" name="Email" value="@Model.Email" class="form-control" required />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-
+             
             <div class="mb-3">
                 <label for="Dob" class="form-label">Date of Birth</label>
                 <input type="date" id="Dob" name="Dob" value="@Model.Dob" class="form-control" required />
-                <span asp-validation-for="Dob" class="text-danger"></span>
             </div>
 
-         <div class="mb-3">
-    <label for="CityId" class="form-label">City</label>
-    <select id="CityId" name="CityId" class="form-select" required>
-        <option value="">Select City</option>
-        @foreach (var city in ViewBag.Cities as List<Zoor_Lebanon.Models.City>)
-        {
-            <option value="@city.CityId" @(city.CityId == Model.CityId ? "selected" : "")>@city.City1</option>
-        }
-    </select>
-    <span asp-validation-for="CityId" class="text-danger"></span>
-</div>
-
+                <!-- UserProfile.cshtml -->
+                <div class="mb-3">
+                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                    <div class="input-group">
+                     
+                        <input type="tel" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" class="form-control" placeholder="Enter phone number" required>
+                    </div>
+                </div>
 
             <button type="submit" class="btn btn-primary w-100">Update Profile</button>
         </form>
