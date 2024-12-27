@@ -15,29 +15,26 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
+    /*    [HttpGet]
         public IActionResult Index2()
         {
             return View();
-        }
+        }*/
       
         public IActionResult compose()
         {
             return View();
         }
-        public IActionResult readmail()
+       /* public IActionResult readmail()
         {
             return View();
-        }
+        }*/
      /*   public IActionResult Calendar()
         {
             return View();
         }*/
-        public IActionResult managelocation()
-        {
-            return View();
-        }
-        public IActionResult gallery()
+    
+   /*     public IActionResult gallery()
         {
             return View();
         }
@@ -57,7 +54,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         public IActionResult invoice()
         {
             return View();
-        }
+        }*/
     
    
      

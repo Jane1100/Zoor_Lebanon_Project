@@ -1,11 +1,15 @@
-﻿@*@model DashboardViewModel
+﻿@using Zoor_Lebanon.Models.IndexViewModel;
+@model IndexViewModel
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+@*  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 |  Tourism Reports</title>
+  <title>AdminLTE 3 |  Tourism Reports</title>*@
+    <meta charset="UTF-8">
+    <title>Dashboard - Tourism Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -213,7 +217,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/managelocation" class="nav-link">
+                            <a href="~/admin/location/managelocation" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker-alt"></i>
                                 <p>Manage Locations</p>
                             </a>
@@ -230,20 +234,15 @@
                                 <p>Generate Reports</p>
                             </a>
                         </li>
+                    
                         <li class="nav-item">
-                            <a href="~/admin/home/loyalty" class="nav-link">
-                                <i class="nav-icon fas fa-gift"></i>
-                                <p>Loyalty Points System</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="~/admin/home/operators" class="nav-link">
+                            <a href="~/admin/operator/operators" class="nav-link">
                                 <i class="nav-icon fas fa-briefcase"></i>
                                 <p>Manage Tour Operators</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/calendar" class="nav-link">
+                            <a href="~/admin/calendar/calendar" class="nav-link">
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 <p>
                                     Calendar
@@ -252,7 +251,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/mailbox" class="nav-link  ">
+                            <a href="~/admin/mailbox/mailbox" class="nav-link  ">
                                 <i class="nav-icon far fa-envelope"></i>
                                 <p>
                                     Mailbox
@@ -300,153 +299,119 @@
                 </nav>
             </div>
         </aside>
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Tourism Reports</h1>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Tourism Reports</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- Visitors Chart -->
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">ZoorLB Visitors</h3>
+                                <a href="#">View Report</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="d-flex flex-column">
+                                    <span class="text-bold text-lg">@Model.VisitorChartData.Count</span>
+                                    <span>Visitors Over Time</span>
+                                </p>
+                                <p class="ml-auto d-flex flex-column text-right">
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i> @Model.SalesGrowthRate %
+                                    </span>
+                                    <span class="text-muted">Since last week</span>
+                                </p>
+                            </div>
+                            <div class="position-relative mb-4">
+                                <canvas id="visitors-chart" height="200"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- Visitors Chart -->
-                            <div class="card">
-                                <div class="card-header border-0">
-                                    <div class="d-flex justify-content-between">
-                                        <h3 class="card-title">ZoorLB Visitors</h3>
-                                        <a href="#">View Report</a>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <p class="d-flex flex-column">
-                                            <span class="text-bold text-lg">@Model.VisitorCount</span>
-                                            <span>Visitors Over Time</span>
-                                        </p>
-                                        <p class="ml-auto d-flex flex-column text-right">
-                                            <span class="text-success">
-                                                <i class="fas fa-arrow-up"></i> @Model.VisitorGrowthRate % 
-                                            </span>
-                                            <span class="text-muted">Since last week</span>
-                                        </p>
-                                    </div>
-                                    <div class="position-relative mb-4">
-                                        <canvas id="visitors-chart" height="200"></canvas>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Tour Packages Table -->
-                            <div class="card">
-                                <div class="card-header border-0">
-                                    <h3 class="card-title">Tour Packages</h3>
-                                </div>
-                                <div class="card-body table-responsive p-0">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Package</th>
-                                                <th>Price</th>
-                                                <th>Bookings</th>
-                                                <th>More</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var package in Model.TopPackages)
-                                            {
-                                                <tr>
-                                                    <td>@package.PackageName</td>
-                                                    <td>$@package.UnitPrice</td>
-                                                    <td>@package.BookingsCount Sold</td>
-                                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <div class="col-lg-6">
+                    <!-- Sales Chart -->
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title">Sales</h3>
                         </div>
-
-                        <!-- Sales Chart -->
-                        <div class="col-lg-6">
-                            <div class="card">
-                                <div class="card-header border-0">
-                                    <h3 class="card-title">Sales</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <p class="d-flex flex-column">
-                                            <span class="text-bold text-lg">$@Model.TotalSales</span>
-                                            <span>Sales Over Time</span>
-                                        </p>
-                                        <p class="ml-auto d-flex flex-column text-right">
-                                            <span class="text-success">
-                                                <i class="fas fa-arrow-up"></i> @Model.SalesGrowthRate %
-                                            </span>
-                                            <span class="text-muted">Since last month</span>
-                                        </p>
-                                    </div>
-                                    <div class="position-relative mb-4">
-                                        <canvas id="sales-chart" height="200"></canvas>
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="d-flex flex-column">
+                                    <span class="text-bold text-lg">$@Model.SalesChartData.Sum(x => x.TotalSales)</span>
+                                    <span>Sales Over Time</span>
+                                </p>
+                                <p class="ml-auto d-flex flex-column text-right">
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i> @(Model.SalesChartData.Count > 1 ? (Model.SalesChartData.Last().TotalSales - Model.SalesChartData.First().TotalSales) / (double)Model.SalesChartData.First().TotalSales * 100 : 0) %
+                                    </span>
+                                    <span class="text-muted">Since last month</span>
+                                </p>
+                            </div>
+                            <div class="position-relative mb-4">
+                                <canvas id="sales-chart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-            All rights reserved.
-        </footer>
     </div>
+</div>
 
-    <!-- jQuery -->
-    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
-    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/admin/plugins/chart.js/Chart.min.js"></script>
-    <script>
-        // Initialize charts using data passed from the backend
-        var visitorsChart = document.getElementById('visitors-chart').getContext('2d');
-        var salesChart = document.getElementById('sales-chart').getContext('2d');
+<footer class="main-footer">
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+</footer>
 
-        new Chart(visitorsChart, {
-            type: 'line',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.VisitorChartData.Dates)),
-                datasets: [{
-                    label: "This Week",
-                    data: @Html.Raw(Json.Serialize(Model.VisitorChartData.Values)),
-                    borderColor: "#007bff",
-                    fill: false
-                }]
-            }
-        });
+<!-- jQuery -->
+<script src="~/admin/plugins/jquery/jquery.min.js"></script>
+<script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/admin/plugins/chart.js/Chart.min.js"></script>
+<script>
+    var visitorsChart = document.getElementById('visitors-chart').getContext('2d');
+    var salesChart = document.getElementById('sales-chart').getContext('2d');
 
-        new Chart(salesChart, {
-            type: 'bar',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.SalesChartData.Dates)),
-                datasets: [{
-                    label: "Sales",
-                    data: @Html.Raw(Json.Serialize(Model.SalesChartData.Values)),
-                    backgroundColor: "#007bff"
-                }]
-            }
-        });
-    </script>
+    new Chart(visitorsChart, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.VisitorChartData.Select(x => x.Date))),
+            datasets: [{
+                label: "This Week",
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.VisitorChartData.Select(x => x.Count))),
+                borderColor: "#007bff",
+                fill: false
+            }]
+        }
+    });
 
-        
-         
+    new Chart(salesChart, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesChartData.Select(x => x.Month))),
+            datasets: [{
+                label: "Sales",
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesChartData.Select(x => x.TotalSales))),
+                backgroundColor: "#007bff"
+            }]
+        }
+    });
+</script>
 
 
-</body>
+
+   </body>
 </html>
-*@

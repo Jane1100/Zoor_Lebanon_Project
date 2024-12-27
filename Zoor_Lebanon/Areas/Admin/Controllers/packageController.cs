@@ -55,20 +55,6 @@
 
             return View(packages); // Ensure the view file is named "Widgets.cshtml"
         }
-
-
-
-
-
-
-
-
-
-
-
-        // GET: Manage Packages
-        /* [HttpGet]        public async Task<IActionResult> ManagePackages()        {            var packages = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .OrderByDescending(p => p.PackageId)                .ToListAsync();            return View(packages);        }*/
-
         // GET: Search Package
         [HttpGet]        public async Task<IActionResult> SearchPackage(string packageName)        {            if (string.IsNullOrWhiteSpace(packageName))            {                TempData["ErrorMessage"] = "Please enter a valid package name.";                return RedirectToAction(nameof(Widgets));            }            var package = await _context.Packages                .Include(p => p.Location)                .Include(p => p.PackageType)                .FirstOrDefaultAsync(p => EF.Functions.Like(p.PackageName, $"{packageName}%"));            if (package == null)            {                TempData["ErrorMessage"] = $"No package found with the name '{packageName}'.";                return RedirectToAction(nameof(Widgets));            }            return View("PackageDetails", package); // Ensure you have a view named "PackageDetails.cshtml"
         }
@@ -92,13 +78,18 @@
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> editpackages(int id)
+        [HttpGet("~/Admin/Mailbox/EditPackages/{packageId}")]
+        public async Task<IActionResult> EditPackages(int? packageId)
         {
+            if (packageId == null)
+            {
+                return NotFound();
+            }
+
             var package = await _context.Packages
-                .Include(p => p.PackageType)
                 .Include(p => p.Location)
-                .FirstOrDefaultAsync(p => p.PackageId == id);
+                .Include(p => p.PackageType)
+                .FirstOrDefaultAsync(p => p.PackageId == packageId.Value);
 
             if (package == null)
             {
@@ -106,93 +97,107 @@
             }
 
             var states = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-            var cities = await _context.Locations.Where(l => l.State == package.Location.State).Select(l => l.City).Distinct().ToListAsync();
+            var cities = await _context.Locations
+                .Where(l => l.State == package.Location.State)
+                .Select(l => l.City)
+                .Distinct()
+                .ToListAsync();
 
             var viewModel = new PackageViewModel
             {
                 Package = package,
                 PackageTypes = await _context.PackageTypes.ToListAsync(),
                 States = states,
-                Cities = cities // Ensure cities are loaded based on the package's current state
+                Cities = cities
             };
 
             return View(viewModel);
         }
 
-
-
-        [HttpPost]
-        public async Task<IActionResult> DeletePackage(int id)
+        [HttpPost("~/Admin/Mailbox/EditPackages/{packageId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> editPackages(int packageId, PackageViewModel model, string state, string city)
         {
-            var package = await _context.Packages.FindAsync(id);
-            if (package != null)
+            if (packageId != model.Package.PackageId)
             {
-                _context.Packages.Remove(package);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Package deleted successfully.";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Package not found.";
+                return NotFound();
             }
 
-            return RedirectToAction(nameof(Widgets));
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Fetch the location based on the state and city selected
+                    var location = await _context.Locations
+                        .FirstOrDefaultAsync(l => l.State == state && l.City == city);
+
+                    if (location == null)
+                    {
+                        ModelState.AddModelError("", "Invalid Location selection.");
+                        model.PackageTypes = await _context.PackageTypes.ToListAsync();
+                        model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+                        model.Cities = await _context.Locations
+                            .Where(l => l.State == state)
+                            .Select(l => l.City)
+                            .Distinct()
+                            .ToListAsync();
+                        return View(model);
+                    }
+
+                    // Fetch the package from the database
+                    var packageToUpdate = await _context.Packages.FindAsync(packageId);
+
+                    if (packageToUpdate != null)
+                    {
+                        // Update package properties
+                        packageToUpdate.PackageName = model.Package.PackageName;
+                        packageToUpdate.Description = model.Package.Description;
+                        packageToUpdate.UnitPrice = model.Package.UnitPrice;
+                        packageToUpdate.StartDate = model.Package.StartDate;
+                        packageToUpdate.EndDate = model.Package.EndDate;
+                        packageToUpdate.TotalSpots = model.Package.TotalSpots;
+                        packageToUpdate.PackageTypeId = model.Package.PackageTypeId;
+                        packageToUpdate.LocationId = location.LocationId; // Update the location
+
+                        // Save changes
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PackageExists(packageId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction("Widgets", "Package", new { area = "admin" }); // Redirect to the widgets view
+            }
+
+            // Reload necessary data if model state is invalid
+            model.PackageTypes = await _context.PackageTypes.ToListAsync();
+            model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+            model.Cities = await _context.Locations
+                .Where(l => l.State == state)
+                .Select(l => l.City)
+                .Distinct()
+                .ToListAsync();
+
+            return View(model);
+        }
+
+        private bool PackageExists(int id)
+        {
+            return _context.Packages.Any(e => e.PackageId == id);
         }
 
 
 
 
-        [HttpPost]
-        public async Task<IActionResult> editpackages(int id, PackageViewModel model, string state, string city)
-        {
-            var package = await _context.Packages.FindAsync(id);
-            if (package == null)
-            {
-                TempData["ErrorMessage"] = "Package not found.";
-                return RedirectToAction(nameof(Widgets));
-            }
-
-            // Date validation
-            if (model.Package.StartDate.HasValue && model.Package.StartDate.Value < DateOnly.FromDateTime(DateTime.Today))
-            {
-                ModelState.AddModelError("Package.StartDate", "Start date cannot be in the past.");
-            }
-
-            if (model.Package.EndDate.HasValue && model.Package.EndDate.Value <= model.Package.StartDate.Value)
-            {
-                ModelState.AddModelError("Package.EndDate", "End date must be after the start date.");
-            }
-
-            // Fetch LocationId based on selected State and City
-            var location = await _context.Locations.FirstOrDefaultAsync(l => l.State == state && l.City == city);
-            if (location == null)
-            {
-                ModelState.AddModelError("", "Invalid Location selection.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                model.PackageTypes = await _context.PackageTypes.ToListAsync();
-                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                return View(model);
-            }
-
-            // Update the package details
-            package.PackageName = model.Package.PackageName;
-            package.Description = model.Package.Description;
-            package.UnitPrice = model.Package.UnitPrice;
-            package.TotalSpots = model.Package.TotalSpots;
-            package.StartDate = model.Package.StartDate;
-            package.EndDate = model.Package.EndDate;
-            package.LocationId = location.LocationId;
-            package.PackageTypeId = model.Package.PackageTypeId;
-
-
-            _context.Packages.Update(package);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("widgets", "package", new { area = "admin" });
-        }
 
 
         // GET: Package Details
@@ -217,4 +222,4 @@
 
 
         // POST: Delete Package
-      /*  [HttpPost]        [ValidateAntiForgeryToken]        public async Task<IActionResult> DeletePackage(int id)        {            var package = await _context.Packages.FindAsync(id);            if (package == null)            {                return NotFound();            }            _context.Packages.Remove(package);            await _context.SaveChangesAsync();            return RedirectToAction(nameof(Widgets));        }*/        private bool PackageExists(int id)        {            return _context.Packages.Any(e => e.PackageId == id);        }    }}
+      /*  [HttpPost]        [ValidateAntiForgeryToken]        public async Task<IActionResult> DeletePackage(int id)        {            var package = await _context.Packages.FindAsync(id);            if (package == null)            {                return NotFound();            }            _context.Packages.Remove(package);            await _context.SaveChangesAsync();            return RedirectToAction(nameof(Widgets));        }*/   /*     private bool PackageExists(int id)        {            return _context.Packages.Any(e => e.PackageId == id);        }*/    }}
