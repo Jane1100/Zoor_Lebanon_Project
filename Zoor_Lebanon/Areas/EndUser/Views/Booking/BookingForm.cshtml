@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Booking Form";
+    var package = ViewBag.Package;
+}
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            @ViewBag.Title</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Pages">Pages</a></li>
+                <li class="breadcrumb-item active text-white">@ViewBag.Title</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Booking Form for @ViewBag.Package.PackageName</h3>
+                    <div class="mb-3 text-center">
+                        <h5 class="text-success">Available Spots: @package.AvailableSpots</h5>
+                    </div>
+                    <form method="post" action="@Url.Action("SubmitBooking", "Booking", new { area = "EndUser" })">
+                        <input type="hidden" id="packageId" name="packageId" value="@ViewBag.Package.PackageId" />
+                        <input type="hidden" id="unitPrice" value="@ViewBag.Package.UnitPrice" />
+                        <input type="hidden" name="totalPrice" id="hiddenTotalPrice" value="0" />
+                        <input type="hidden" name="discountCode" id="hiddenDiscountCode" value="" />
+
+
+                        <div class="mb-3">
+                            <label for="travelDate" class="form-label">Select Date</label>
+                            <select id="travelDate" name="travelDate" class="form-select" required>
+                                @foreach (var date in ViewBag.AvailableDates)
+                                {
+                                    <option value="@date">@date</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Number of People</label>
+                            <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="participantDetails" class="form-label">Additional Participants</label>
+                            <textarea id="participantDetails" name="participantDetails" class="form-control" rows="4" placeholder="First name, Last name, Email for each person"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="discountCode" class="form-label">Discount Code (Optional)</label>
+                            <input type="text" id="discountCode" name="discountCode" class="form-control" />
+                        </div>
+                       
+                        <div class="mb-3">
+                            <button type="button" id="applyDiscountButton" class="btn btn-secondary">Apply Code</button>
+                        </div>
+                        <div class="mb-3">
+                            <label for="totalPrice" class="form-label">Total Price</label>
+                            <input type="text" id="totalPrice" name="totalPrice" class="form-control" value="0" readonly />
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary px-4">Confirm Booking</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const unitPrice = parseFloat(document.getElementById("unitPrice").value);
+        const quantityInput = document.getElementById("quantity");
+        const totalPriceInput = document.getElementById("totalPrice");
+        const discountCodeInput = document.getElementById("discountCode");
+        const applyDiscountButton = document.getElementById("applyDiscountButton");
+
+        const packageId = document.getElementById("packageId").value;
+
+        // Function to calculate and update the total price
+        const updateTotalPrice = () => {
+            const quantity = parseInt(quantityInput.value) || 1;
+            const totalPrice = quantity * unitPrice;
+            totalPriceInput.value = totalPrice.toFixed(2);
+        };
+
+        const applyDiscount = async () => {
+            const discountCode = discountCodeInput.value.trim();
+            const quantity = parseInt(quantityInput.value) || 1;
+
+            if (!discountCode) {
+                alert("Please enter a discount code.");
+                return;
+            }
+
+            try {
+                const response = await fetch('@Url.Action("ValidateDiscountCode", "Booking", new { area = "EndUser" })', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ discountCode, packageId, quantity }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const discountedPrice = data.totalPrice;
+                    totalPriceInput.value = discountedPrice.toFixed(2);
+                    document.getElementById("hiddenTotalPrice").value = discountedPrice.toFixed(2); // Update hidden total price
+                    document.getElementById("hiddenDiscountCode").value = discountCode; // Set the discount code
+                    alert("Discount applied successfully!");
+                } else {
+                    alert(data.message || "Invalid or expired discount code.");
+                }
+            } catch (error) {
+                console.error("Error applying discount:", error);
+                alert("An error occurred while applying the discount. Please try again.");
+            }
+        };
+
+        // Add event listeners
+        quantityInput.addEventListener("input", updateTotalPrice);
+        applyDiscountButton.addEventListener("click", applyDiscount);
+
+        // Initial calculation
+        updateTotalPrice();
+    });
+
+</script>

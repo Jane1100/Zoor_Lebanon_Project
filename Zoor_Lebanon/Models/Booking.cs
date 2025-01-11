@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Zoor_Lebanon.Models
+﻿namespace Zoor_Lebanon.Models
 {
     public partial class Booking
     {
@@ -15,9 +12,13 @@ namespace Zoor_Lebanon.Models
         public int? UserId { get; set; }
         public int? PackageId { get; set; }
         public DateOnly? TravelDate { get; set; }
+        public int Quantity { get; set; } // Number of participants
+        public string? ParticipantDetails { get; set; } // JSON or string for extra participant info
+
         public string? PaymentStatus { get; set; }
         public decimal? TotalPrice { get; set; }
-        public string? CancellationStatus { get; set; }
+        public bool? CancellationStatus { get; set; }
+        public string? DiscountCode { get; set; }  // Store the applied discount code
 
         public virtual Package? Package { get; set; }
         public virtual User? User { get; set; }
