@@ -34,7 +34,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\EndUser\Data\" />
-    <Folder Include="Areas\EndUser\Models\" />
     <Folder Include="Areas\TourOperator\Controllers\" />
     <Folder Include="Areas\TourOperator\Data\" />
     <Folder Include="Areas\TourOperator\Models\" />
