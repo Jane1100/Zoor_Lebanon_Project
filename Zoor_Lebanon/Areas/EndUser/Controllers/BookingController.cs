@@ -200,7 +200,7 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
             return View();
         }
 
-        private void SendConfirmationEmail(int userId, Booking booking)
+        /*private void SendConfirmationEmail(int userId, Booking booking)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null) return;
@@ -217,7 +217,7 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
                              "Thank you for booking with Zoor Lebanon.";
 
             EmailService.SendEmail(user.Email, subject, message);
-        }
+        }*/
 
 
         [HttpPost]
