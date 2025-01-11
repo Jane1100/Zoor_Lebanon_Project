@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Zoor_Lebanon.Models;
+using Zoor_Lebanon.Models.Helper;
+using Zoor_Lebanon.Models.ViewModels;
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
+namespace Zoor_Lebanon.Areas.EndUser.Controllers
 {
     [Area("EndUser")]
     public class AccountController : Controller
