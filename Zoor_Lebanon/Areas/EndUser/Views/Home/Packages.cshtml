@@ -1,0 +1,232 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewBag.Title = "Packages";
+}
+
+<html>
+
+
+
+    <body>
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb">
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="text-white display-3 mb-4">
+                    @ViewBag.Title</h1>
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Pages">Pages</a></li>
+                        <li class="breadcrumb-item active text-white">@ViewBag.Title</li>
+                    </ol>
+            </div>
+        </div>
+        <!-- Header End -->
+        <!--Filter Form Start -->
+        <div class="container py-3">
+            <form id="filterForm" class="row g-3" method="get" action="@Url.Action("Packages", "Home", new { area = "EndUser" })">
+                <!-- Price Range -->
+                <div class="col-md-3">
+                    <label for="minPrice" class="form-label">Min Price</label>
+                    <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="e.g., 50" value="@HttpContextAccessor.HttpContext.Request.Query["minPrice"]">
+                </div>
+                <div class="col-md-3">
+                    <label for="maxPrice" class="form-label">Max Price</label>
+                    <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="e.g., 300" value="@HttpContextAccessor.HttpContext.Request.Query["maxPrice"]">
+                </div>
+
+                <!-- Package Type -->
+                <div class="col-md-3">
+                    <label for="packageTypeId" class="form-label">Package Type</label>
+                    <select id="packageTypeId" name="packageTypeId" class="form-select">
+                        <option value="">All</option>
+                        @foreach (var type in ViewBag.PackageTypes)
+                        {
+                            <option value="@type.PackageTypeId" @(type.PackageTypeId == (HttpContextAccessor.HttpContext.Request.Query["packageTypeId"].ToString() == "" ? (int?)null : int.Parse(HttpContextAccessor.HttpContext.Request.Query["packageTypeId"])) ? "selected" : "")>@type.PackageType1</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-3">
+                    <label for="locationId" class="form-label">Location</label>
+                    <select id="locationId" name="locationId" class="form-select">
+                        <option value="">All</option>
+                        @foreach (var location in ViewBag.Locations)
+                        {
+                            <option value="@location.LocationId" @(location.LocationId == (HttpContextAccessor.HttpContext.Request.Query["locationId"].ToString() == "" ? (int?)null : int.Parse(HttpContextAccessor.HttpContext.Request.Query["locationId"])) ? "selected" : "")>@location.City, @location.State</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Date Range -->
+                <div class="col-md-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" value="@HttpContextAccessor.HttpContext.Request.Query["startDate"]">
+                </div>
+                <div class="col-md-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" value="@HttpContextAccessor.HttpContext.Request.Query["endDate"]">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-md-3 align-self-end">
+                    <button type="button" id="applyFilters" class="btn btn-primary w-100">Apply Filters</button>
+                </div>
+                <div class="col-md-3 align-self-end">
+                    <button type="reset" id="resetFilters" class="btn btn-secondary w-100">Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter Form End-->
+       
+        <!-- Packages Start -->
+        <div class="container-fluid packages py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Packages</h5>
+                    <h1 class="mb-0">Awesome Packages</h1>
+                </div>
+                
+                @if (ViewBag.Packages != null && ViewBag.Packages.Count > 0)
+                {
+                    <div class="packages-carousel owl-carousel">
+                        
+                        @foreach (var package in ViewBag.Packages)
+                        {
+                            var isPastDue = package.EndDate < DateOnly.FromDateTime(DateTime.Now);
+                            var isSoldOut = package.AvailableSpots == 0;
+                            
+                            <div class="packages-item">
+                                <div class="packages-img">
+                                    <img src="~/enduser/img/packages-4.jpg" class="img-fluid w-100 rounded-top" alt="Package Image">
+                                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                                        <small class="flex-fill text-center border-end py-2">
+                                            <i class="fa fa-map-marker-alt me-2"></i>@package.Location
+                                        </small>
+                                        <small class="flex-fill text-center border-end py-2">
+                                            <i class="fa fa-calendar-alt me-2"></i>@package.AverageDuration hours
+                                        </small>
+                                        <small class="flex-fill text-center py-2">
+                                            <i class="fa fa-user me-2"></i>@package.TotalSpots Spots
+                                        </small>
+                                        <small class="flex-fill text-center py-2">
+                                            <i class="fa fa-star me-2"></i>@package.Points Points
+                                        </small>
+                                    </div>
+                                    @if (isPastDue)
+                                    {
+                                        <div class="packages-label position-absolute top-0 start-0 bg-danger text-white px-3 py-1">
+                                            Past Due
+                                        </div>
+                                    }
+                                    <!-- Display 'Sold Out' Label on Top-Right -->
+                                    @if (isSoldOut)
+                                    {
+                                        <div class="packages-label position-absolute top-0 end-0 bg-secondary text-white px-3 py-1">
+                                            Sold Out
+                                        </div>
+                                    }
+                                    <div class="packages-price py-2 px-4">$@package.UnitPrice</div>
+                                </div>
+                                <div class="packages-content bg-light">
+                                    <div class="p-4 pb-0">
+                                        <h5 class="mb-0">@package.PackageName</h5>
+                                        <small class="text-uppercase">@package.PackageType</small>
+                                        <p class="mb-4">@package.Description</p>
+                                    </div>
+                                    <div class="row bg-primary rounded-bottom mx-0">
+                                        <div class="col-6 text-start px-0">
+                                            <a href="@Url.Action("PackageDetails", "Booking", new { area = "EndUser", packageId = package.PackageId })" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                                        </div>
+                                        <div class="col-6 text-end px-0">
+                                            @if (!isPastDue  && !isSoldOut && HttpContextAccessor.HttpContext.Session.GetInt32("UserId") != null)
+                                            {
+                                                <!-- User is logged in and package is not expired and not sold out-->
+                                                <a href="@Url.Action("BookingForm", "Booking", new { area = "EndUser", packageId = package.PackageId })"
+                                                   class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                                            }
+                                            else if (isPastDue || isSoldOut)
+                                            {
+                                                <!-- Package is past due or sold out -->
+                                                <a class="btn-hover btn text-white py-2 px-4 disabled" aria-disabled="true">Book Now</a>
+                                            }
+                                            else
+                                            {
+                                                <!-- User is not logged in -->
+                                                <a href="@Url.Action("Login", "Account", new { area = "EndUser" })"
+                                                   class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center text-danger">No packages found for the selected filters.</p>
+                }
+                
+            </div>
+        </div>
+        <!-- Packages End -->
+
+        <script>
+            document.getElementById('applyFilters').addEventListener('click', function () {
+                const form = document.getElementById('filterForm');
+                const formData = new FormData(form);
+                const queryString = new URLSearchParams(formData).toString();
+
+                console.log('Query String:', queryString);
+
+                fetch('/EndUser/Home/Packages' + '?' + queryString)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.text();
+                    })
+                    .then(html => {
+                        console.log('HTML fetched:', html); // Log the fetched HTML for debugging
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+
+                        // Locate the new content for the packages or "No Packages Found" message
+                        const newContent = doc.querySelector('.packages-carousel') || doc.querySelector('.text-center.text-danger');
+                        const container = document.querySelector('.packages-carousel') || document.querySelector('.packages');
+
+                        if (newContent && container) {
+                            container.innerHTML = newContent.outerHTML; // Replace existing content
+
+                            // If there are new packages, reinitialize the Owl Carousel
+                            if (newContent.classList.contains('packages-carousel')) {
+                                $('.packages-carousel').owlCarousel({
+                                    loop: true,
+                                    margin: 10,
+                                    nav: true,
+                                    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'], // Arrow icons
+                                    autoplay: true, // Enable autoplay
+                                    autoplayTimeout: 3000, // Time between slides (in milliseconds)
+                                    autoplayHoverPause: true, // Pause autoplay on hover
+                                    responsive: {
+                                        0: { items: 1 },
+                                        600: { items: 2 },
+                                        1000: { items: 3 }
+                                    }
+                                });
+                            }
+                        } else {
+                            console.error('No valid content found in the fetched HTML.');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching filtered packages:', error));
+            });
+
+
+
+        </script>
+    </body>
+
+</html>

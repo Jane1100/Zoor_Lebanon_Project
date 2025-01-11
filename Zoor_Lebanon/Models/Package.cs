@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Zoor_Lebanon.Models
+﻿namespace Zoor_Lebanon.Models
 {
     public partial class Package
     {
@@ -23,6 +20,7 @@ namespace Zoor_Lebanon.Models
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public decimal? AverageDuration { get; set; }
+        public int Points { get; set; }
 
         public virtual Location? Location { get; set; }
         public virtual PackageType? PackageType { get; set; }

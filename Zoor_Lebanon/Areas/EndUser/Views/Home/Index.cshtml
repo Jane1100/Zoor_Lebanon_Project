@@ -1,0 +1,806 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewBag.Title = "Home";
+}
+
+<html>
+   
+    <body>
+
+        <!-- About Start -->
+        <div class="container-fluid about py-5">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5">
+                        <div class="h-100" style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
+                            <img src="~/enduser/img/close-up-view-lebanon-national-flag-waving-wind-al-generated-image-lebanon-flag-waving-wind-3062.webp" class="img-fluid w-100 h-100" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-7" style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(img/about-img-1.png);">
+                        <h5 class="section-about-title pe-3">About Us</h5>
+                        <h1 class="mb-4">Welcome to <span class="text-primary">Zoor Lebanon</span></h1>
+                        <p class="mb-4">At Zoor Lebanon, we believe that every journey is an opportunity to explore, connect, and create memories that last a lifetime. Dedicated to showcasing the hidden gems and breathtaking landscapes of Lebanon, we offer curated tour packages that cater to adventurers, culture enthusiasts, and relaxation seekers alike.</p>
+                        <p class="mb-4">Whether you're looking to hike through majestic mountains, savor authentic Lebanese cuisine, or unwind by the serene seaside, Zoor Lebanon is your trusted companion. With a focus on quality, authenticity, and ease of planning, we aim to make your next adventure unforgettable.</p>
+                        <div class="row gy-2 gx-4 mb-4">
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Flexible Booking Options</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Guided Tours with Experts</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Authentic Culinary Experiences</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Historical & Cultural Landmarks</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Hidden Gems of Lebanon/p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Exciting Water Activities</p>
+                            </div>
+                        </div>
+                        <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- About End -->
+        <!-- Services Start -->
+        <div class="container-fluid bg-light service py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Services</h5>
+                    <h1 class="mb-0">Our Services</h1>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-globe fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Worldwide Tours</h5>
+                                <p class="mb-0">
+                                    Join us on extraordinary tours showcasing Lebanon's diverse beauty. From historical landmarks to natural wonders, discover the treasures that make every journey unforgettable.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-hotel fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Cultural Experiences</h5>
+                                <p class="mb-0">
+                                    Immerse yourself in Lebanon's rich heritage. From traditional crafts to local festivals, enjoy authentic cultural experiences that bring the country's history to life.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-user fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Travel Guides</h5>
+                                <p class="mb-0">
+                                    Explore like a local with our expert travel guides. Dive into Lebanon's culture, history, and hidden gems for a truly authentic experience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-utensils fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Food and Wine Tours</h5>
+                                <p class="mb-0">
+                                    Savor the authentic tastes of Lebanon with curated food and wine tours. Explore local markets, vineyards, and traditional cuisines that define our culinary heritage.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-tree fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Nature Escapes</h5>
+                                <p class="mb-0">
+                                    Escape to Lebanon's serene landscapes with our nature-focused tours. Discover breathtaking mountains, lush valleys, and tranquil coastal getaways.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-hiking fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Adventure Activities</h5>
+                                <p class="mb-0">
+                                    Get your adrenaline pumping with our adventure-packed activities. From hiking and rafting to off-road exploration, experience the thrill of Lebanon's outdoors.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="text-center">
+                            <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Service More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Services End -->
+        <!-- Destination Start -->
+        <div class="container-fluid destination py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Destination</h5>
+                    <h1 class="mb-0">Popular Destination</h1>
+                </div>
+                <div class="tab-class text-center">
+                    <ul class="nav nav-pills d-inline-flex justify-content-center mb-5">
+                        <li class="nav-item">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                                <span class="text-dark" style="width: 150px;">All</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                                <span class="text-dark" style="width: 150px;">Beirut</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
+                                <span class="text-dark" style="width: 150px;">Batroun</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
+                                <span class="text-dark" style="width: 150px;">Baalbek</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
+                                <span class="text-dark" style="width: 150px;">Sidon</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-6">
+                                <span class="text-dark" style="width: 150px;">Tyre</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane fade show p-0 active">
+                            <div class="row g-4">
+                                <div class="col-xl-8">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6">
+                                            <div class="destination-img">
+                                                <img class="img-fluid rounded w-100" src="~/enduser/img/istockphoto-635840494-612x612.jpg" alt="">
+                                                <div class="destination-overlay p-4">
+                                                    <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                                    <h4 class="text-white mb-2 mt-3">Beirut</h4>
+                                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                                </div>
+                                                <div class="search-icon">
+                                                    <a href="~/enduser/img/istockphoto-635840494-612x612.jpg" data-lightbox="destination-1"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="destination-img">
+                                                <img class="img-fluid rounded w-100" src="~/enduser/img/Batroun-Lebanon-.webp" alt="">
+                                                <div class="destination-overlay p-4">
+                                                    <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                                    <h4 class="text-white mb-2 mt-3">Batroun</h4>
+                                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                                </div>
+                                                <div class="search-icon">
+                                                    <a href="~/enduser/img/Batroun-Lebanon-.webp" data-lightbox="destination-2"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="destination-img">
+                                                <img class="img-fluid rounded w-100" src="~/enduser/img/tyre.jpg" alt="">
+                                                <div class="destination-overlay p-4">
+                                                    <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                                    <h4 class="text-white mb-2 mt-3">Tyre</h4>
+                                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                                </div>
+                                                <div class="search-icon">
+                                                    <a href="~/enduser/img/tyre.jpg" data-lightbox="destination-7"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="destination-img">
+                                                <img class="img-fluid rounded w-100" src="~/enduser/img/Explore-Byblos-Lebanon.jpg" alt="">
+                                                <div class="destination-overlay p-4">
+                                                    <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                                    <h4 class="text-white mb-2 mt-3">Byblos</h4>
+                                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                                </div>
+                                                <div class="search-icon">
+                                                    <a href="~/enduser/img/Explore-Byblos-Lebanon.jpg" data-lightbox="destination-8"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="destination-img h-100">
+                                        <img class="img-fluid rounded w-100 h-100" src="~/enduser/img/sidon.jpg" style="object-fit: cover; min-height: 300px;" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Sidon</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/sidon.jpg" data-lightbox="destination-4"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/beautiful-view-massive-columns-temple-600nw-2201388437.webp" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Baalbek</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/beautiful-view-massive-columns-temple-600nw-2201388437.webp" data-lightbox="destination-4"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/Tripoli.webp" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Tripoli</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/Tripoli.webp" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/villagejouniehliban.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Jounieh</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/villagejouniehliban.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/istockphoto-635840494-612x612.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Beirut</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/istockphoto-635840494-612x612.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/beirut-city-guide-20-contemporary-projects-to-explore-in-the-lebanese-capital_8.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Zaytouna Bay</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/beirut-city-guide-20-contemporary-projects-to-explore-in-the-lebanese-capital_8.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-3" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/Batroun-Lebanon-.webp" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Batroun</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/Batroun-Lebanon-.webp" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/batroun2.jpeg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Batroun</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/batroun2.jpeg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-4" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/baalbek.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Baalbek</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/baalbek.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/beautiful-view-massive-columns-temple-600nw-2201388437.webp" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Baalbek</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/beautiful-view-massive-columns-temple-600nw-2201388437.webp" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-5" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/sidon.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Sidon</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/sidon.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/Sidon-Sea-Castle-Lebanon.webp" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Sidon</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/Sidon-Sea-Castle-Lebanon.webp" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-6" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/tyre.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Tyre</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/tyre.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/enduser/img/f0404241-800px-wm.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Tyre</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/enduser/img/f0404241-800px-wm.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Destination End -->
+        @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserId") != null)
+        {
+            <!-- Recommended to You Start -->
+            <div class="container-fluid packages py-5">
+                <div class="container py-5">
+                    <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                        <h5 class="section-title px-3">Recommended to You</h5>
+                        <h1 class="mb-0">Packages You May Like</h1>
+                    </div>
+                    <div class="packages-carousel owl-carousel">
+                        @if (ViewBag.RecommendedPackages != null && ViewBag.RecommendedPackages.Count > 0)
+                        {
+                            <div class="packages-carousel owl-carousel">
+                                @foreach (var package in ViewBag.RecommendedPackages)
+                                {
+                                    <div class="packages-item">
+                                        <p>Debug: @package.PackageName</p> <!-- Debug -->
+                                        <div class="packages-img">
+                                            <img src="~/enduser/img/packages-4.jpg" class="img-fluid w-100 rounded-top" alt="Package Image">
+                                            <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                                                <small class="flex-fill text-center border-end py-2">
+                                                    <i class="fa fa-map-marker-alt me-2"></i>@package.Location
+                                                </small>
+                                                <small class="flex-fill text-center border-end py-2">
+                                                    <i class="fa fa-calendar-alt me-2"></i>@package.AverageDuration hours
+                                                </small>
+                                                <small class="flex-fill text-center py-2">
+                                                    <i class="fa fa-user me-2"></i>@package.TotalSpots Spots
+                                                </small>
+                                                <small class="flex-fill text-center py-2">
+                                                    <i class="fa fa-star me-2"></i>@package.Points Points
+                                                </small>
+                                            </div>
+                                            <div class="packages-price py-2 px-4">$@package.UnitPrice</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Debug: No recommended packages available.</p>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Recommended to You End -->
+        }
+
+        <!-- Packages Start -->
+        <div class="container-fluid packages py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Packages</h5>
+                    <h1 class="mb-0">Awesome Packages</h1>
+                </div>
+                <div class="packages-carousel owl-carousel">
+                    @if (ViewBag.Packages != null)
+                    {
+                        foreach (var package in ViewBag.Packages)
+                        {
+                            var isPastDue = package.EndDate < DateOnly.FromDateTime(DateTime.Now);
+                            var isSoldOut = package.AvailableSpots == 0;
+                            <div class="packages-item">
+                                <div class="packages-img">
+                                    <img src="~/enduser/img/packages-4.jpg" class="img-fluid w-100 rounded-top" alt="Package Image">
+                                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                                        <small class="flex-fill text-center border-end py-2">
+                                            <i class="fa fa-map-marker-alt me-2"></i>@package.Location
+                                        </small>
+                                        <small class="flex-fill text-center border-end py-2">
+                                            <i class="fa fa-calendar-alt me-2"></i>@package.AverageDuration hours
+                                        </small>
+                                        <small class="flex-fill text-center py-2">
+                                            <i class="fa fa-user me-2"></i>@package.TotalSpots Spots
+                                        </small>
+                                        <small class="flex-fill text-center py-2">
+                                            <i class="fa fa-star me-2"></i>@package.Points Points
+                                        </small>
+                                    </div>
+                                    @if (isPastDue)
+                                    {
+                                        <div class="packages-label position-absolute top-0 start-0 bg-danger text-white px-3 py-1">
+                                            Past Due
+                                        </div>
+                                    }
+                                    <!-- Display 'Sold Out' Label on Top-Right -->
+                                    @if (isSoldOut)
+                                    {
+                                        <div class="packages-label position-absolute top-0 end-0 bg-secondary text-white px-3 py-1">
+                                            Sold Out
+                                        </div>
+                                    }
+                                    <div class="packages-price py-2 px-4">$@package.UnitPrice</div>
+                                </div>
+                                <div class="packages-content bg-light">
+                                    <div class="p-4 pb-0">
+                                        <h5 class="mb-0">@package.PackageName</h5>
+                                        <small class="text-uppercase">@package.PackageType</small>
+                                        <p class="mb-4">@package.Description</p>
+                                    </div>
+                                    <div class="row bg-primary rounded-bottom mx-0">
+                                        <div class="col-6 text-start px-0">
+                                            <a href="@Url.Action("PackageDetails", "Booking", new { area = "EndUser", packageId = package.PackageId })" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                                        </div>
+                                        <div class="col-6 text-end px-0">
+                                            @if (!isPastDue && !isSoldOut && HttpContextAccessor.HttpContext.Session.GetInt32("UserId") != null)
+                                            {
+                                                <!-- User is logged in and package not expired-->
+                                                <a href="@Url.Action("BookingForm", "Booking", new { area = "EndUser", packageId = package.PackageId })"
+                                                   class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                                            }
+                                            else if (isPastDue || isSoldOut)
+                                            {
+                                                <!-- Package is past due -->
+                                                <a class="btn-hover btn text-white py-2 px-4 disabled" aria-disabled="true">Book Now</a>
+                                            }
+                                            else
+                                            {
+                                                <!-- User is not logged in -->
+                                                <a href="@Url.Action("Login", "Account", new { area = "EndUser" })"
+                                                   class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No packages available at the moment.</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Packages End -->
+        <!-- Travel Guide Start -->
+        <div class="container-fluid guide py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Travel Guide</h5>
+                    <h1 class="mb-0">Meet Our Guide</h1>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="guide-item">
+                            <div class="guide-img">
+                                <div class="guide-img-efects">
+                                    <img src="~/enduser/img/guide-1.jpg" class="img-fluid w-100 rounded-top" alt="Image">
+                                </div>
+                                <div class="guide-icon rounded-pill p-2">
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            <div class="guide-title text-center rounded-bottom p-4">
+                                <div class="guide-title-inner">
+                                    <h4 class="mt-3">Full Name</h4>
+                                    <p class="mb-0">Designation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="guide-item">
+                            <div class="guide-img">
+                                <div class="guide-img-efects">
+                                    <img src="~/enduser/img/guide-2.jpg" class="img-fluid w-100 rounded-top" alt="Image">
+                                </div>
+                                <div class="guide-icon rounded-pill p-2">
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            <div class="guide-title text-center rounded-bottom p-4">
+                                <div class="guide-title-inner">
+                                    <h4 class="mt-3">Full Name</h4>
+                                    <p class="mb-0">Designation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="guide-item">
+                            <div class="guide-img">
+                                <div class="guide-img-efects">
+                                    <img src="~/enduser/img/guide-3.jpg" class="img-fluid w-100 rounded-top" alt="Image">
+                                </div>
+                                <div class="guide-icon rounded-pill p-2">
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            <div class="guide-title text-center rounded-bottom p-4">
+                                <div class="guide-title-inner">
+                                    <h4 class="mt-3">Full Name</h4>
+                                    <p class="mb-0">Designation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="guide-item">
+                            <div class="guide-img">
+                                <div class="guide-img-efects">
+                                    <img src="~/enduser/img/guide-4.jpg" class="img-fluid w-100 rounded-top" alt="Image">
+                                </div>
+                                <div class="guide-icon rounded-pill p-2">
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                    <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            <div class="guide-title text-center rounded-bottom p-4">
+                                <div class="guide-title-inner">
+                                    <h4 class="mt-3">Full Name</h4>
+                                    <p class="mb-0">Designation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Travel Guide End -->
+        <!-- Testimonial Start -->
+        <div class="container-fluid testimonial py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Testimonial</h5>
+                    <h1 class="mb-0">Our Clients Say!!!</h1>
+                </div>
+                <div class="testimonial-carousel owl-carousel">
+                    <div class="testimonial-item text-center rounded pb-4">
+                        <div class="testimonial-comment bg-light rounded p-4">
+                            <p class="text-center mb-5">
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis nostrum cupiditate, eligendi repellendus saepe illum earum architecto dicta quisquam quasi porro officiis. Vero reiciendis,
+                            </p>
+                        </div>
+                        <div class="testimonial-img p-1">
+                            <img src="~/enduser/img/testimonial-1.jpg" class="img-fluid rounded-circle" alt="Image">
+                        </div>
+                        <div style="margin-top: -35px;">
+                            <h5 class="mb-0">John Abraham</h5>
+                            <p class="mb-0">New York, USA</p>
+                            <div class="d-flex justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item text-center rounded pb-4">
+                        <div class="testimonial-comment bg-light rounded p-4">
+                            <p class="text-center mb-5">
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis nostrum cupiditate, eligendi repellendus saepe illum earum architecto dicta quisquam quasi porro officiis. Vero reiciendis,
+                            </p>
+                        </div>
+                        <div class="testimonial-img p-1">
+                            <img src="~/enduser/img/testimonial-2.jpg" class="img-fluid rounded-circle" alt="Image">
+                        </div>
+                        <div style="margin-top: -35px;">
+                            <h5 class="mb-0">John Abraham</h5>
+                            <p class="mb-0">New York, USA</p>
+                            <div class="d-flex justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item text-center rounded pb-4">
+                        <div class="testimonial-comment bg-light rounded p-4">
+                            <p class="text-center mb-5">
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis nostrum cupiditate, eligendi repellendus saepe illum earum architecto dicta quisquam quasi porro officiis. Vero reiciendis,
+                            </p>
+                        </div>
+                        <div class="testimonial-img p-1">
+                            <img src="~/enduser/img/testimonial-3.jpg" class="img-fluid rounded-circle" alt="Image">
+                        </div>
+                        <div style="margin-top: -35px;">
+                            <h5 class="mb-0">John Abraham</h5>
+                            <p class="mb-0">New York, USA</p>
+                            <div class="d-flex justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item text-center rounded pb-4">
+                        <div class="testimonial-comment bg-light rounded p-4">
+                            <p class="text-center mb-5">
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis nostrum cupiditate, eligendi repellendus saepe illum earum architecto dicta quisquam quasi porro officiis. Vero reiciendis,
+                            </p>
+                        </div>
+                        <div class="testimonial-img p-1">
+                            <img src="~/enduser/img/testimonial-4.jpg" class="img-fluid rounded-circle" alt="Image">
+                        </div>
+                        <div style="margin-top: -35px;">
+                            <h5 class="mb-0">John Abraham</h5>
+                            <p class="mb-0">New York, USA</p>
+                            <div class="d-flex justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial End -->
+        <script>
+            $(document).ready(function () {
+                $('.packages-carousel').owlCarousel({
+                    loop: true,
+                    margin: 10,
+                    nav: true,
+                    autoplay: true,
+                    autoplayTimeout: 3000,
+                    responsive: {
+                        0: { items: 1 },
+                        600: { items: 2 },
+                        1000: { items: 3 }
+                    }
+                });
+            });
+
+        </script>
+
+    </body>
+</html>
+
+
+        
