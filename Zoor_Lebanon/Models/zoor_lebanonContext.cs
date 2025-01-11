@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Zoor_Lebanon.Models
 {
@@ -21,7 +18,6 @@ namespace Zoor_Lebanon.Models
         public virtual DbSet<City> Cities { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
-        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<PackageType> PackageTypes { get; set; } = null!;
@@ -41,7 +37,7 @@ namespace Zoor_Lebanon.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", Microsoft.EntityFrameworkCore.ServerVersion.Parse("9.0.0-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.0.0-mysql"));
             }
         }
 
@@ -97,8 +93,8 @@ namespace Zoor_Lebanon.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.CancellationStatus)
-                    .HasColumnType("enum('within_24hrs','outside_24hrs')")
-                    .HasColumnName("cancellation_status");
+                      .HasConversion<bool>() // Converts TINYINT to bool
+                      .HasColumnName("cancellation_status");
 
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
@@ -179,18 +175,6 @@ namespace Zoor_Lebanon.Models
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
 
                 entity.Property(e => e.PointsCost).HasColumnName("points_cost");
-            });
-
-            modelBuilder.Entity<Efmigrationshistory>(entity =>
-            {
-                entity.HasKey(e => e.MigrationId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("__efmigrationshistory");
-
-                entity.Property(e => e.MigrationId).HasMaxLength(150);
-
-                entity.Property(e => e.ProductVersion).HasMaxLength(32);
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -540,6 +524,14 @@ namespace Zoor_Lebanon.Models
                     .WithMany(p => p.UserPreferences)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("user_preference_ibfk_1");
+            });
+
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                // Other mappings...
+
+                // Explicitly map CancellationStatus as a boolean
+
             });
 
             OnModelCreatingPartial(modelBuilder);
