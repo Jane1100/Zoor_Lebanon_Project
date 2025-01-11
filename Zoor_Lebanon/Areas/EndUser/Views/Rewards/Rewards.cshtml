@@ -1,0 +1,72 @@
+﻿<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            @ViewBag.Title</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Pages">Pages</a></li>
+                <li class="breadcrumb-item active text-white">@ViewBag.Title</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Rewards</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="row">
+        @foreach (var reward in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@reward.Description</h5>
+                        <p>Discount: @reward.DiscountValue%</p>
+                        <p>Points Required: @reward.PointsCost</p>
+                        <p>Discount Code: @reward.CouponCode</p> <!-- Displaying coupon code -->
+                        <form class="redeem-form" method="post" data-coupon-id="@reward.CouponId">
+                            <input type="hidden" name="couponId" value="@reward.CouponId" />
+                            <button type="button" class="btn btn-primary redeem-btn">Redeem</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.redeem-btn').click(function () {
+            var form = $(this).closest('form');
+            var couponId = form.find('input[name="couponId"]').val();
+
+            $.ajax({
+                url: '@Url.Action("Redeem", "Rewards")',  // Change to your redeem URL
+                type: 'POST',
+                data: { couponId: couponId },
+                success: function (response) {
+                    if (response.success) {
+                        // Show success message
+                        alert(response.message);
+                    } else {
+                        // Show error message
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Something went wrong, please try again later.');
+                }
+            });
+        });
+    });
+</script>
