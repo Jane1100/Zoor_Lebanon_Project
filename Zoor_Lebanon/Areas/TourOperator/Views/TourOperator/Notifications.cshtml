@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var notifications = ViewBag.Notifications as IEnumerable<dynamic>;
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Notifications</h2>
+
+    <!-- Button to clear all notifications -->
+    <div class="text-right mb-3">
+        <button class="btn btn-danger" id="clearAllNotifications">Clear All Notifications</button>
+    </div>
+
+    <ul class="list-group" id="notificationsList">
+        @if (notifications != null && notifications.Any())
+        {
+            foreach (var notification in notifications)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center notification-item">
+                    <div>
+                        <span>@notification.Message</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary mark-as-read">Mark as Read</button>
+                    </div>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">No notifications available.</li>
+        }
+    </ul>
+</div>
+
+<script>
+    // Mark as read functionality
+    document.querySelectorAll('.mark-as-read').forEach(button => {
+        button.addEventListener('click', function () {
+            const notificationItem = this.closest('.notification-item');
+            notificationItem.classList.add('read-notification');
+            this.disabled = true;
+            this.innerText = 'Read';
+        });
+    });
+
+    // Clear all notifications functionality
+    document.getElementById('clearAllNotifications').addEventListener('click', function () {
+        const notificationsList = document.getElementById('notificationsList');
+        notificationsList.innerHTML = '<li class="list-group-item">No notifications available.</li>';
+        // Add server-side logic to clear notifications here
+    });
+</script>
+
+<style>
+    .read-notification {
+        background-color: #f8f9fa; /* Lighter color for read notifications */
+    }
+</style>

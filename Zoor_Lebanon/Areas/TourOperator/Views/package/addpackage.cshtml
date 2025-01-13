@@ -1,0 +1,553 @@
+﻿@*@model Zoor_Lebanon.Models.ViewModels.PackageViewModel
+
+
+@{
+    ViewData["Title"] = "Add New Package - Tour Operator";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Zoor Lebanon - @ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Add New Package</h1>
+        <form method="post" asp-action="addpackageWithLocation" asp-area="TourOperator" enctype="multipart/form-data" class="mt-4">
+            <!-- Package Details -->
+            <div class="mb-3">
+                <label for="PackageName" class="form-label">Package Name</label>
+                <input type="text" id="PackageName" name="Package.PackageName" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea id="Description" name="Package.Description" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="UnitPrice" class="form-label">Unit Price ($)</label>
+                <input type="number" id="UnitPrice" name="Package.UnitPrice" class="form-control" step="0.01" required />
+            </div>
+            <div class="mb-3">
+                <label for="TotalSpots" class="form-label">Total Spots</label>
+                <input type="number" id="TotalSpots" name="Package.TotalSpots" class="form-control" required />
+            </div>
+            <div class="form-group mb-3">
+                <label for="StartDate" class="form-label">Start Date</label>
+                <input type="date" id="StartDate" name="Package.StartDate" class="form-control" required />
+            </div>
+            <div class="form-group mb-3">
+                <label for="EndDate" class="form-label">End Date</label>
+                <input type="date" id="EndDate" name="Package.EndDate" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="AverageDuration" class="form-label">Average Duration (hours)</label>
+                <input type="number" id="AverageDuration" name="Package.AverageDuration" class="form-control" step="0.01" required />
+            </div>
+            <div class="mb-3">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+                
+            </div>
+            <div class="mb-3">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="City" class="form-label">City</label>
+                <select id="City" name="City" class="form-select" required>
+                    <option value="">Select City</option>
+                </select>
+            </div>
+
+
+            <!-- Activity Schedule Section -->
+            <div class="mb-4">
+                <h4>Activity Schedule</h4>
+                <div id="activity-schedule-container">
+                    <!-- Initial Activity Input Fields -->
+                    <div class="activity-schedule">
+                        <div class="mb-3">
+                            <label>Activity Description</label>
+                            <input type="text" name="ActivitySchedules[0].Description" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>From Time</label>
+                            <input type="time" name="ActivitySchedules[0].FromTime" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>To Time</label>
+                            <input type="time" name="ActivitySchedules[0].ToTime" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="add-activity-schedule" class="btn btn-secondary">Add Another Activity</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit for Review</button>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let activityCount = 1;
+
+            // Populate City dropdown based on selected State
+            $('#State').change(function () {
+                const state = $(this).val();
+                if (state) {
+                    $.getJSON('/TourOperator/Package/GetCitiesByState?state=' + encodeURIComponent(state), function (cities) {
+                        const cityDropdown = $('#City');
+                        cityDropdown.empty();
+                        cityDropdown.append('<option value="">Select City</option>');
+                        $.each(cities, function (index, city) {
+                            cityDropdown.append('<option value="' + city + '">' + city + '</option>');
+                        });
+                    });
+                }
+            });
+
+            // Add activity schedule
+            $('#add-activity-schedule').click(function () {
+                const container = $('#activity-schedule-container');
+                const newActivity = `
+                            <div class="activity-schedule">
+                                <div class="mb-3">
+                                    <label>Activity Description</label>
+                                    <input type="text" name="ActivitySchedules[${activityCount}].Description" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label>From Time</label>
+                                    <input type="time" name="ActivitySchedules[${activityCount}].FromTime" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label>To Time</label>
+                                    <input type="time" name="ActivitySchedules[${activityCount}].ToTime" class="form-control" required />
+                                </div>
+                                <button type="button" class="btn btn-danger remove-activity-schedule">Remove</button>
+                            </div>`;
+                container.append(newActivity);
+                activityCount++;
+            });
+
+            // Remove activity schedule
+            $(document).on('click', '.remove-activity-schedule', function () {
+                $(this).closest('.activity-schedule').remove();
+            });
+        });
+    </script>
+</body>
+</html>
+*@
+
+
+@*@using Zoor_Lebanon.Models.ViewModels
+@model PackageViewModel
+
+@{
+    ViewData["Title"] = "Add New Package - Tour Operator";
+
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <form method="post" asp-action="addpackageWithLocation" asp-controller="Package" asp-area="TourOperator">
+    <title>Zoor Lebanon - @ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Add New Package</h1>
+        <form method="post" asp-action="addpackageWithLocation" asp-area="TourOperator" class="mt-4">
+            <!-- Package Name -->
+            <div class="mb-3">
+                <label for="PackageName" class="form-label">Package Name</label>
+                <input type="text" id="PackageName" name="Package.PackageName" class="form-control" required />
+                <span asp-validation-for="Package.PackageName" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea id="Description" name="Package.Description" class="form-control" required></textarea>
+                <span asp-validation-for="Package.Description" class="text-danger"></span>
+            </div>
+
+            <!-- Unit Price -->
+            <div class="mb-3">
+                <label for="UnitPrice" class="form-label">Unit Price ($)</label>
+                <input type="number" id="UnitPrice" name="Package.UnitPrice" class="form-control" step="0.01" required />
+                <span asp-validation-for="Package.UnitPrice" class="text-danger"></span>
+            </div>
+
+            <!-- Total Spots -->
+            <div class="mb-3">
+                <label for="TotalSpots" class="form-label">Total Spots</label>
+                <input type="number" id="TotalSpots" name="Package.TotalSpots" class="form-control" required />
+                <span asp-validation-for="Package.TotalSpots" class="text-danger"></span>
+            </div>
+
+            <!-- Start Date -->
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <!-- Average Duration -->
+            <div class="mb-3">
+                <label for="AverageDuration" class="form-label">Average Duration (hours)</label>
+                <input type="number" id="AverageDuration" name="Package.AverageDuration" class="form-control" step="0.01" required />
+                <span asp-validation-for="Package.AverageDuration" class="text-danger"></span>
+            </div>
+
+            <!-- State Dropdown -->
+            <div class="mb-3">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <!-- Package Type Dropdown -->
+            <div class="mb-3">
+                <label for="PackageType" class="form-label">Package Type</label>
+                <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
+                    <option value="">Select Package Type</option>
+                    @foreach (var type in Model.PackageTypes)
+                    {
+                        <option value="@type.PackageTypeId">@type.PackageType1</option>
+                    }
+                </select>
+                <span asp-validation-for="Package.PackageTypeId" class="text-danger"></span>
+            </div>
+
+            <!-- Hidden LocationId -->
+            <input type="hidden" id="LocationId" name="Package.LocationId" />
+
+            <!-- Drag and Drop Image Upload -->
+            <div class="mb-3">
+                <label for="Images" class="form-label">Upload Images</label>
+                <div id="drop-area" class="border border-secondary p-5 text-center">
+                    <p>Drag and drop your images here or click to select files</p>
+                    <input type="file" id="fileElem" name="PackageImages" accept="image/*" class="d-none" multiple />
+                    <button type="button" class="btn btn-outline-primary" id="fileSelect">Select Files</button>
+                </div>
+                <div id="gallery" class="mt-3"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Submit for Review</button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Populate City dropdown based on selected State
+            $('#State').change(function () {
+                var state = $(this).val();
+                if (state) {
+                    $.getJSON('/TourOperator/Package/GetCitiesByState?state=' + encodeURIComponent(state), function (cities) {
+                        var cityDropdown = $('#City');
+                        cityDropdown.empty();
+                        cityDropdown.append('<option value="">Select City</option>');
+                        $.each(cities, function (index, city) {
+                            cityDropdown.append('<option value="' + city + '">' + city + '</option>');
+                        });
+                    });
+                }
+            });
+
+            // Drag and Drop image functionality
+            let dropArea = document.getElementById("drop-area");
+            let fileElem = document.getElementById("fileElem");
+            let fileSelect = document.getElementById("fileSelect");
+
+            fileSelect.addEventListener("click", () => fileElem.click());
+
+            dropArea.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropArea.classList.add("border-primary");
+            });
+
+            dropArea.addEventListener("dragleave", () => {
+                dropArea.classList.remove("border-primary");
+            });
+
+            dropArea.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropArea.classList.remove("border-primary");
+                let files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            fileElem.addEventListener("change", (e) => {
+                let files = e.target.files;
+                handleFiles(files);
+            });
+
+            function handleFiles(files) {
+                const gallery = document.getElementById("gallery");
+                gallery.innerHTML = "";
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const img = document.createElement("img");
+                    img.classList.add("img-thumbnail", "m-2");
+                    img.width = 100;
+                    img.src = URL.createObjectURL(file);
+                    gallery.appendChild(img);
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+*@
+
+
+
+@using Zoor_Lebanon.Models.ViewModels
+@model PackageViewModel
+
+@{
+    ViewData["Title"] = "Add New Package - Tour Operator";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Zoor Lebanon - @ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Add New Package</h1>
+        <form method="post" asp-action="addpackageWithLocation" asp-area="TourOperator" enctype="multipart/form-data" class="mt-4">
+            <!-- Package Name -->
+            <div class="mb-3">
+                <label for="PackageName" class="form-label">Package Name</label>
+                <input type="text" id="PackageName" name="Package.PackageName" class="form-control" required />
+                <span asp-validation-for="Package.PackageName" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea id="Description" name="Package.Description" class="form-control" required></textarea>
+                <span asp-validation-for="Package.Description" class="text-danger"></span>
+            </div>
+
+            <!-- Unit Price -->
+            <div class="mb-3">
+                <label for="UnitPrice" class="form-label">Unit Price ($)</label>
+                <input type="number" id="UnitPrice" name="Package.UnitPrice" class="form-control" step="0.01" required />
+                <span asp-validation-for="Package.UnitPrice" class="text-danger"></span>
+            </div>
+
+            <!-- Total Spots -->
+            <div class="mb-3">
+                <label for="TotalSpots" class="form-label">Total Spots</label>
+                <input type="number" id="TotalSpots" name="Package.TotalSpots" class="form-control" required />
+                <span asp-validation-for="Package.TotalSpots" class="text-danger"></span>
+            </div>
+
+            <!-- Start Date -->
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+
+
+
+
+            <!-- Average Duration -->
+            <div class="mb-3">
+                <label for="AverageDuration" class="form-label">Average Duration (hours)</label>
+                <input type="number" id="AverageDuration" name="Package.AverageDuration" class="form-control" step="0.01" required />
+                <span asp-validation-for="Package.AverageDuration" class="text-danger"></span>
+            </div>
+
+            <!-- State Dropdown -->
+            <div class="mb-3">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+            </div>
+
+            <!-- City Dropdown -->
+            <div class="mb-3">
+                <label for="City" class="form-label">City</label>
+                <select id="City" name="City" class="form-select" required>
+                    <option value="">Select City</option>
+                </select>
+            </div>
+
+            <!-- Hidden LocationId Field -->
+            <input type="hidden" id="LocationId" name="Package.LocationId" />
+
+
+
+            @*<div class="mb-3">
+            <label for="City" class="form-label">City</label>
+            <select id="City" name="City" class="form-select" required>
+            <option value="">Select City</option>
+            </select>
+            <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            *@
+            <!-- Package Type Dropdown -->
+            <div class="mb-3">
+                <label for="PackageType" class="form-label">Package Type</label>
+                <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
+                    <option value="">Select Package Type</option>
+                    @foreach (var type in Model.PackageTypes)
+                    {
+                        <option value="@type.PackageTypeId">@type.PackageType1</option>
+                    }
+                </select>
+                <span asp-validation-for="Package.PackageTypeId" class="text-danger"></span>
+            </div>
+
+            <!-- Hidden LocationId -->
+            <input type="hidden" id="LocationId" name="Package.LocationId" />
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Submit for Review</button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Populate City dropdown based on selected State
+            $('#State').change(function () {
+                var state = $(this).val(); // Get the selected state value
+
+                if (state) {
+                    $.ajax({
+                        url: '/TourOperator/Package/GetCitiesByState', // Endpoint for fetching cities
+                        data: { state: state },
+                        success: function (cities) {
+                            var cityDropdown = $('#City');
+                            cityDropdown.empty(); // Clear previous options
+                            cityDropdown.append('<option value="">Select City</option>'); // Default option
+
+                            // Populate new cities
+                            $.each(cities, function (index, city) {
+                                cityDropdown.append('<option value="' + city + '">' + city + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert('Failed to fetch cities for the selected state.');
+                        }
+                    });
+                } else {
+                    $('#City').empty().append('<option value="">Select City</option>'); // Reset cities if no state is selected
+                }
+            });
+
+            // Populate hidden LocationId based on selected State and City
+            $('#City').change(function () {
+                var state = $('#State').val();
+                var city = $(this).val();
+
+                if (state && city) {
+                    $.ajax({
+                        url: '/TourOperator/Package/GetLocationId', // Endpoint for fetching LocationId
+                        data: { state: state, city: city },
+                        success: function (locationId) {
+                            if (locationId) {
+                                $('#LocationId').val(locationId); // Set the hidden LocationId field
+                            } else {
+                                $('#LocationId').val('');
+                                alert('Location ID could not be fetched for the selected City and State.');
+                            }
+                        },
+                        error: function () {
+                            alert('Failed to fetch Location ID.');
+                        }
+                    });
+                } else {
+                    $('#LocationId').val(''); // Clear hidden field if state or city is not selected
+                }
+            });
+
+          
+        });
+
+    </script>
+</body>
+</html>
