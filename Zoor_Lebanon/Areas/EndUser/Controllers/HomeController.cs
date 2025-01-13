@@ -72,13 +72,13 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
                 packages = packages.Where(p => p.LocationId == locationId.Value);
             if (startDate.HasValue)
             {
-                var start = DateOnly.FromDateTime(startDate.Value);
+                var start = startDate.Value;
                 packages = packages.Where(p => p.StartDate.HasValue && p.StartDate.Value >= start);
             }
 
             if (endDate.HasValue)
             {
-                var end = DateOnly.FromDateTime(endDate.Value);
+                var end = endDate.Value;
                 packages = packages.Where(p => p.EndDate.HasValue && p.EndDate.Value <= end);
             }
 

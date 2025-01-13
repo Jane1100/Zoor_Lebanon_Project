@@ -92,7 +92,7 @@
                         
                         @foreach (var package in ViewBag.Packages)
                         {
-                            var isPastDue = package.EndDate < DateOnly.FromDateTime(DateTime.Now);
+                            var isPastDue = package.EndDate < DateTime.Now;
                             var isSoldOut = package.AvailableSpots == 0;
                             
                             <div class="packages-item">

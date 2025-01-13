@@ -18,6 +18,7 @@ namespace Zoor_Lebanon.Models
         public virtual DbSet<City> Cities { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
+        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<PackageType> PackageTypes { get; set; } = null!;
@@ -177,6 +178,18 @@ namespace Zoor_Lebanon.Models
                 entity.Property(e => e.PointsCost).HasColumnName("points_cost");
             });
 
+            modelBuilder.Entity<Efmigrationshistory>(entity =>
+            {
+                entity.HasKey(e => e.MigrationId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("__efmigrationshistory");
+
+                entity.Property(e => e.MigrationId).HasMaxLength(150);
+
+                entity.Property(e => e.ProductVersion).HasMaxLength(32);
+            });
+
             modelBuilder.Entity<Location>(entity =>
             {
                 entity.ToTable("location");
@@ -196,10 +209,24 @@ namespace Zoor_Lebanon.Models
             {
                 entity.ToTable("package");
 
+                // Index for LocationId
                 entity.HasIndex(e => e.LocationId, "location_id");
 
+                // Define columns
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("end_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                // Index for PackageTypeId
                 entity.HasIndex(e => e.PackageTypeId, "package_type_id");
 
+                // Other columns
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
                 entity.Property(e => e.AvailableSpots).HasColumnName("available_spots");
@@ -212,24 +239,24 @@ namespace Zoor_Lebanon.Models
                     .HasMaxLength(255)
                     .HasColumnName("description");
 
-                entity.Property(e => e.EndDate).HasColumnName("end_date");
-
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
-
                 entity.Property(e => e.PackageName)
                     .HasMaxLength(255)
                     .HasColumnName("package_name");
 
                 entity.Property(e => e.PackageTypeId).HasColumnName("package_type_id");
 
-                entity.Property(e => e.StartDate).HasColumnName("start_date");
-
                 entity.Property(e => e.TotalSpots).HasColumnName("total_spots");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("status")
+                    .HasMaxLength(50)
+                    .HasDefaultValue("Pending"); // Set default value for status
 
                 entity.Property(e => e.UnitPrice)
                     .HasPrecision(10, 2)
                     .HasColumnName("unit_price");
 
+                // Relationships
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.LocationId)

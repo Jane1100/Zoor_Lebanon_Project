@@ -27,8 +27,8 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
             }
 
             // Convert DateOnly to DateTime for range calculation
-            var startDate = package.StartDate.Value.ToDateTime(new TimeOnly(0, 0));
-            var endDate = package.EndDate.Value.ToDateTime(new TimeOnly(0, 0));
+            var startDate = package.StartDate.Value;
+            var endDate = package.EndDate.Value;
 
             // Generate available dates
             var availableDates = Enumerable.Range(0, (endDate - startDate).Days + 1)
@@ -125,7 +125,7 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
 
             await _context.SaveChangesAsync();
 
-            AddPoints(userId.Value, package.Points);
+            AddPoints(userId.Value, package.Points.GetValueOrDefault(0));
 
             TempData["SuccessMessage"] = "Your booking was successful! You have a 24h margin for cancellation.";
             return RedirectToAction("BookingForm", new { packageId });
