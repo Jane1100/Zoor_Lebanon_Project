@@ -1,72 +1,127 @@
-﻿<!-- Header Start -->
-<div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-5" style="max-width: 900px;">
-        <h3 class="text-white display-3 mb-4">
-            @ViewBag.Title</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Pages">Pages</a></li>
-                <li class="breadcrumb-item active text-white">@ViewBag.Title</li>
-            </ol>
-    </div>
-</div>
-<!-- Header End -->
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Rewards</h2>
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-    }
+﻿@{
+    ViewBag.Title = "Rewards";
+}
+<html>
+    <head>
+        <title>Zoor Lebanon - @ViewBag.Title</title>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
-    <div class="row">
-        @foreach (var reward in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@reward.Description</h5>
-                        <p>Discount: @reward.DiscountValue%</p>
-                        <p>Points Required: @reward.PointsCost</p>
-                        <p>Discount Code: @reward.CouponCode</p> <!-- Displaying coupon code -->
-                        <form class="redeem-form" method="post" data-coupon-id="@reward.CouponId">
-                            <input type="hidden" name="couponId" value="@reward.CouponId" />
-                            <button type="button" class="btn btn-primary redeem-btn">Redeem</button>
-                        </form>
-                    </div>
-                </div>
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="~/enduser/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <link href="~/enduser/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="~/enduser/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="~/enduser/css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid bg-breadcrumb">
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="text-white display-3 mb-4">
+                    @ViewBag.Title</h1>
+                   
             </div>
-        }
-    </div>
-</div>
+        </div>
+        <!-- Header End -->
+        <div class="container mt-5">
+            <h2 class="text-center mb-4">Rewards</h2>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.redeem-btn').click(function () {
-            var form = $(this).closest('form');
-            var couponId = form.find('input[name="couponId"]').val();
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
 
-            $.ajax({
-                url: '@Url.Action("Redeem", "Rewards")',  // Change to your redeem URL
-                type: 'POST',
-                data: { couponId: couponId },
-                success: function (response) {
-                    if (response.success) {
-                        // Show success message
-                        alert(response.message);
-                    } else {
-                        // Show error message
-                        alert(response.message);
-                    }
-                },
-                error: function () {
-                    alert('Something went wrong, please try again later.');
+
+            <div class="row">
+                @foreach (var reward in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@reward.Description</h5>
+                                <p>Discount: @reward.DiscountValue%</p>
+                                <p>Points Required: @reward.PointsCost</p>
+                                <p>Discount Code: @reward.CouponCode</p>
+                            <form method="post" action="@Url.Action("Redeem", "Rewards", new { area = "EndUser" })">
+                                    <input type="hidden" name="couponId" value="@reward.CouponId" />
+                                    <button type="submit" class="btn btn-primary">Redeem</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 }
-            });
-        });
-    });
-</script>
+            </div>
+        </div>
+
+
+        @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+        @* <script>  *@
+        @*      $(document).ready(function () {  *@
+        @*         $('.redeem-btn').click(function () {  *@
+        @*             var form = $(this).closest('form');  *@
+        @*              var couponId = form.find('input[name="couponId"]').val();  *@
+
+        @*              $.ajax({ *@
+        @*             url: '@Url.Action("Redeem", "Rewards", new { area = "EndUser" })',  // Change to your redeem URL *@
+        @*             type: 'POST',  *@
+        @*                  data: { couponId: couponId },  *@
+        @*                  success: function (response) {  *@
+        @*                      if (response.success) {  *@
+        @*                          // Show success message  *@
+        @*                          alert(response.message);  *@
+        @*                      } else {  *@
+        @*                          // Show error message  *@
+        @*                          alert(response.message);  *@
+        @*                      }  *@
+        @*                  },  *@
+        @*                  error: function () {  *@
+        @*                      alert('Something went wrong, please try again later.');  *@
+        @*                  }  *@
+        @*              });  *@
+        @*         });  *@
+        @*      });  *@
+        @*  </script> *@
+        @* <script> *@
+        @*     $.ajax({ *@
+        @*         url: '@Url.Action("Redeem", "Rewards")', *@
+        @*         type: 'POST', *@
+        @*         data: { couponId: couponId }, *@
+        @*         success: function (response) { *@
+        @*         // Reload the page to show the TempData message *@
+        @*         location.reload(); *@
+        @*         }, *@
+        @*         error: function () { *@
+        @*         alert('Something went wrong, please try again later.'); *@
+        @*         } *@
+        @*     }); *@
+        @* </script> *@
+    
+
+    </body>
+</html>
+

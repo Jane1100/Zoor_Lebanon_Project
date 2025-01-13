@@ -15,6 +15,7 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
 
         public IActionResult Rewards()
         {
+
             ViewData["ShowCarousel"] = false;
             var rewards = _context.Coupons.Where(c => c.IsActive == true).ToList();
             return View(rewards);
@@ -27,45 +28,46 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
 
             if (userId == null)
             {
-                return Json(new { success = false, message = "Please log in to redeem coupons." });
+                TempData["ErrorMessage"] = "Please log in to redeem coupons.";
+                return RedirectToAction("Rewards");
             }
 
-            // Get the most recent reward record for the user
             var latestReward = _context.Rewards
                 .Where(r => r.UserId == userId)
-                .OrderByDescending(r => r.RewardsId)  // Getting the latest reward based on RewardsId
+                .OrderByDescending(r => r.RewardsId)
                 .FirstOrDefault();
 
             if (latestReward == null)
             {
-                return Json(new { success = false, message = "No rewards found for your account." });
+                TempData["ErrorMessage"] = "No rewards found for your account.";
+                return RedirectToAction("Rewards");
             }
 
             var coupon = await _context.Coupons.FindAsync(couponId);
-
             if (coupon == null)
             {
-                return Json(new { success = false, message = "Invalid coupon." });
+                TempData["ErrorMessage"] = "Invalid coupon.";
+                return RedirectToAction("Rewards");
             }
 
-            // Check if the user has already redeemed this coupon
             var alreadyRedeemed = _context.UserCoupons
                 .Any(uc => uc.UserId == userId && uc.CouponId == couponId && uc.IsRedeemed == true);
 
             if (alreadyRedeemed)
             {
-                return Json(new { success = false, message = "You have already redeemed this reward." });
+                TempData["ErrorMessage"] = "You have already redeemed this reward.";
+                return RedirectToAction("Rewards");
             }
 
             if (latestReward.CurrentBalance < coupon.PointsCost)
             {
-                return Json(new { success = false, message = "Insufficient points to redeem this coupon." });
+                TempData["ErrorMessage"] = "Insufficient points to redeem this coupon.";
+                return RedirectToAction("Rewards");
             }
 
-            // Deduct points from the user's current balance in the Reward table
+            // Deduct points and redeem
             latestReward.CurrentBalance -= coupon.PointsCost;
 
-            // Mark the coupon as redeemed
             _context.UserCoupons.Add(new UserCoupon
             {
                 UserId = userId.Value,
@@ -76,12 +78,9 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, message = "Coupon redeemed successfully!" });
+            TempData["SuccessMessage"] = "Coupon redeemed successfully!";
+            return RedirectToAction("Rewards");
         }
-
-
-
-
 
 
     }

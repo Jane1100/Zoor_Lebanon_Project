@@ -41,6 +41,19 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
             ViewBag.AvailableDates = availableDates;
             return View();
         }
+        [HttpPost]
+        public IActionResult CheckLoginAndRedirect(int packageId)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Please log in before booking this package.";
+                return RedirectToAction("PackageDetails", new { packageId });
+            }
+
+            // If user is logged in, redirect to the booking form
+            return RedirectToAction("BookingForm", new { packageId });
+        }
 
         [HttpPost]
         public async Task<IActionResult> SubmitBooking(int packageId, DateTime travelDate, int quantity, string participantDetails, string? discountCode, decimal totalPrice)
@@ -223,16 +236,8 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
         [HttpPost]
         public IActionResult CancelBooking(int bookingId, string reason)
         {
-            var booking = _context.Bookings
-                .Where(b => b.BookingId == bookingId)
-                .Select(b => new
-                {
-                    b.BookingId,
-                    b.CancellationStatus,
-                    b.PackageId,
-                    b.Quantity
-                })
-                .FirstOrDefault();
+            // Retrieve the booking by ID
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
 
             if (booking == null)
             {
@@ -241,23 +246,28 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
             }
 
             // Update CancellationStatus
-            _context.Bookings.First(b => b.BookingId == booking.BookingId).CancellationStatus = true;
+            booking.CancellationStatus = true;
 
-            // Refund the spots
+            // Set PaymentStatus to "refunded"
+            booking.PaymentStatus = "refunded";
+
+            // Refund the spots in the package
             var package = _context.Packages.FirstOrDefault(p => p.PackageId == booking.PackageId);
             if (package != null)
             {
                 package.AvailableSpots += booking.Quantity;
             }
 
+            // Save changes to the database
             _context.SaveChanges();
 
             // Set success message
-            TempData["SuccessMessage"] = "Your booking has been successfully canceled.";
+            TempData["SuccessMessage"] = "Your booking has been successfully canceled and refunded.";
 
             // Redirect back to MyBookings
             return RedirectToAction("MyBookings");
         }
+
 
 
         public IActionResult MyBookings()
@@ -273,13 +283,14 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
                 .Select(b => new
                 {
                     BookingId = b.BookingId,
+                    BookingDate = b.BookingDate,
                     TravelDate = b.TravelDate,
                     Quantity = b.Quantity,
                     TotalPrice = b.TotalPrice ?? 0,
                     PaymentStatus = b.PaymentStatus,
                     CancellationStatus = b.CancellationStatus ?? false, // Default to false if null
                     PackageName = b.Package.PackageName,
-                    BookingDate = b.BookingDate
+
                 })
                 .ToList();
 
@@ -287,6 +298,7 @@ namespace Zoor_Lebanon_Booking_Platform.Areas.EndUser.Controllers
             var bookingViewModel = bookings.Select(b => new
             {
                 b.BookingId,
+                b.BookingDate,
                 b.TravelDate,
                 b.Quantity,
                 b.TotalPrice,

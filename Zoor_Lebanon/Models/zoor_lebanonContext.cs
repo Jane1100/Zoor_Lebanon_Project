@@ -526,13 +526,7 @@ namespace Zoor_Lebanon.Models
                     .HasConstraintName("user_preference_ibfk_1");
             });
 
-            modelBuilder.Entity<Booking>(entity =>
-            {
-                // Other mappings...
 
-                // Explicitly map CancellationStatus as a boolean
-
-            });
 
             OnModelCreatingPartial(modelBuilder);
         }

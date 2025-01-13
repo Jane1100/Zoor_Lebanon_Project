@@ -1,13 +1,16 @@
 ﻿@using Zoor_Lebanon.Models
 @model Zoor_Lebanon.Models.ViewModels.UserProfileViewModel
 
+@{
+    ViewBag.Title = "My Profile";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
-    
+
 </head>
 <body>
     <!-- Header Start -->
@@ -15,11 +18,7 @@
         <div class="container text-center py-5" style="max-width: 900px;">
             <h3 class="text-white display-3 mb-4">
                 @ViewBag.Title</h1>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-area="EndUser" asp-controller="Home" asp-action="Pages">Pages</a></li>
-                    <li class="breadcrumb-item active text-white">@ViewBag.Title</li>
-                </ol>
+               
         </div>
     </div>
     <!-- Header End -->
@@ -30,10 +29,16 @@
             {
                 <div class="alert alert-success">@TempData["SuccessMessage"]</div>
             }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+
             <div class="row mb-3">
                 <div class="col-sm-4"><strong>First Name:</strong></div>
                 <div class="col-sm-6">
                     <input type="text" name="Firstname" value="@Model.Firstname" class="form-control" readonly />
+
                 </div>
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
@@ -43,6 +48,7 @@
                 <div class="col-sm-4"><strong>Last Name:</strong></div>
                 <div class="col-sm-6">
                     <input type="text" name="Lastname" value="@Model.Lastname" class="form-control" readonly />
+
                 </div>
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-outline-primary edit-btn" onclick="toggleEdit(this)">Edit</button>

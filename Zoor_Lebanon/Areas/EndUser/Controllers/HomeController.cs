@@ -99,6 +99,7 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
                     Location = p.Location != null ? p.Location.State + " - " + p.Location.City : "",
                     PackageType = p.PackageType != null ? p.PackageType.PackageType1 : ""
                 })
+                .Distinct()
                 .ToList();
 
             // Debugging logs

@@ -246,6 +246,11 @@ namespace Zoor_Lebanon.Areas.EndUser.Controllers
         [HttpPost]
         public async Task<IActionResult> MyProfile(UserProfileViewModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Firstname) || string.IsNullOrWhiteSpace(model.Lastname))
+            {
+                TempData["ErrorMessage"] = "Firstname and Lastname are required fields.";
+                return RedirectToAction("MyProfile"); // Redirect back to the profile page
+            }
             if (!ModelState.IsValid)
             {
                 // Reload city dropdown or any other data if required
