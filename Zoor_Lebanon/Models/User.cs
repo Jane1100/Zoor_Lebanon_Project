@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Zoor_Lebanon.Models
+﻿namespace Zoor_Lebanon.Models
 {
     public partial class User
     {
@@ -29,10 +26,11 @@ namespace Zoor_Lebanon.Models
         /// </summary>
         public string? PhoneNumber { get; set; }
         public string? PasswordHash { get; set; }
+
+        public string? Salt { get; set; }
         public int? RoleId { get; set; }
         public bool? Active { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public string? Salt { get; set; }
 
         public virtual City? City { get; set; }
         public virtual Role? Role { get; set; }
