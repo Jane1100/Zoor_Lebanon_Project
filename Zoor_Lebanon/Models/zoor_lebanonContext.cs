@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Zoor_Lebanon.Models
 {
     public partial class zoor_lebanonContext : DbContext
     {
-
-
         public zoor_lebanonContext()
         {
         }
@@ -38,14 +33,12 @@ namespace Zoor_Lebanon.Models
         public virtual DbSet<UserCoupon> UserCoupons { get; set; } = null!;
         public virtual DbSet<UserPreference> UserPreferences { get; set; } = null!;
 
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.1.0-mysql"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.0.0-mysql"));
             }
         }
 
@@ -53,9 +46,6 @@ namespace Zoor_Lebanon.Models
         {
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
-
-            // Define Sales table
-
 
             modelBuilder.Entity<ActivitySchedule>(entity =>
             {
@@ -104,10 +94,8 @@ namespace Zoor_Lebanon.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.CancellationStatus)
-                  .HasConversion<bool>() // Converts TINYINT to bool
-                  .HasColumnName("cancellation_status");
-
-
+                      .HasConversion<bool>() // Converts TINYINT to bool
+                      .HasColumnName("cancellation_status");
 
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
@@ -280,7 +268,6 @@ namespace Zoor_Lebanon.Models
                     .HasConstraintName("package_ibfk_2");
             });
 
-
             modelBuilder.Entity<PackageType>(entity =>
             {
                 entity.ToTable("package_type");
@@ -291,7 +278,6 @@ namespace Zoor_Lebanon.Models
                     .HasMaxLength(255)
                     .HasColumnName("package_type");
             });
-
 
             modelBuilder.Entity<Payment>(entity =>
             {
@@ -567,15 +553,11 @@ namespace Zoor_Lebanon.Models
                     .HasConstraintName("user_preference_ibfk_1");
             });
 
+
+
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-
-
-
-
-
-

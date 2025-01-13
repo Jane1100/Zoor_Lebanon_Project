@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
 using Zoor_Lebanon.Models;
-using Zoor_Lebanon.Models.Helper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Load configuration files (appsettings.json and environment-specific files)
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -14,11 +13,9 @@ builder.Configuration
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
-// Configure DbContext with the connection string
 builder.Services.AddDbContext<zoor_lebanonContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
-       new MySqlServerVersion(new Version(8, 0, 26))));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    new MySqlServerVersion(new Version(8, 0, 26))));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -28,6 +25,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,15 +35,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSession();
-
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-app.UseAuthorization();
-
-
 
 app.MapControllerRoute(
     name: "areas",
