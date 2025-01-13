@@ -63,30 +63,30 @@ namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public 
             return RedirectToAction("Index2", "Home", new { area = "admin" });        }*/
 
 
-        [HttpGet]
-        public async Task<IActionResult> AddPackage()
-        {
-            List<string> states = new List<string>();
-            try
-            {
-                states = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                _logger.LogInformation("States fetched: " + states.Count);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error fetching states: " + ex.Message);
-                // Optionally, handle the error gracefully, e.g., by returning a specific error view
-            }
+      [HttpGet]
+public async Task<IActionResult> AddPackage()
+{
+    List<string> states = new List<string>();
+    try
+    {
+        states = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+        _logger.LogInformation("States fetched: " + states.Count);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError("Error fetching states: " + ex.Message);
+        // Optionally, handle the error gracefully, e.g., by returning a specific error view
+    }
 
-            var viewModel = new PackageViewModelAdmin
-            {
-                Package = new Package(),
-                PackageTypes = await _context.PackageTypes.ToListAsync(),
-                States = states
-            };
+    var viewModel = new PackageViewModelAdmin
+    {
+        Package = new Package(),
+        PackageTypes = await _context.PackageTypes.ToListAsync(),
+        States = states
+    };
 
-            return View(viewModel);
-        }
+    return View(viewModel);
+}
 
 
 
@@ -115,19 +115,11 @@ namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public 
             }
 
             model.Package.LocationId = location.LocationId;  // Ensure the location ID is set
-            try
-            {
-                _context.Packages.Add(model.Package);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index2", "Home", new { area = "admin" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error saving package: " + ex.Message);
-                ModelState.AddModelError("", "Failed to save package. Please try again.");
-                return View(model);
-            }
 
+            _context.Packages.Add(model.Package);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index2", "Home", new { area = "admin" });
         }
 
         // GET: Fetch Cities by State (Ajax)
