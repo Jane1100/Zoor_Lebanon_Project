@@ -1,0 +1,119 @@
+﻿/* Chatbot Button */
+/* Chatbot Icon Button */
+#chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 5%; /* Adjusted to push it away from the right margin */
+    background-color: #32d296; /* Vibrant color to catch attention */
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other elements */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    /* Hover Effect for Chatbot Button */
+    #chatbot-button:hover {
+        background-color: #28a584; /* Slightly darker shade on hover */
+    }
+
+    /* Font Awesome Icon Styling */
+    #chatbot-button i {
+        margin: 0;
+        font-size: 20px; /* Adjust size of the icon */
+        line-height: 1;
+    }
+
+/* Ensure the chatbot modal structure */
+#chatbot-modal {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 40px;
+    width: 350px;
+    height: 500px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column; /* Children stack vertically */
+    overflow: hidden;
+}
+
+/* Chatbot messages section - scrollable */
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto; /* Scrollable messages */
+    background: #f9f9f9;
+    font-size: 14px;
+    line-height: 1.6;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Predefined questions section - fixed */
+#predefined-questions {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+/* Buttons for predefined questions */
+#predefined-questions button {
+    background-color: #32d296; /* Mint green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#predefined-questions button:hover {
+    background-color: #28a584; /* Darker mint green on hover */
+}
+
+.close-chatbot {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Move to the right */
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+    .close-chatbot:hover {
+        color: #ff0000; /* Optional: Add hover effect */
+    }
+
+
+@media (max-width: 768px) {
+    #chatbot-button {
+        width: 50px;
+        height: 50px;
+    }
+
+    #chatbot-modal {
+        width: 90%;
+        right: 5%;
+        bottom: 70px;
+    }
+}
