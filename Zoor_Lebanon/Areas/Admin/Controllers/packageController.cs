@@ -63,31 +63,15 @@ namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public 
             return RedirectToAction("Index2", "Home", new { area = "admin" });        }*/
 
 
-      [HttpGet]
-public async Task<IActionResult> AddPackage()
-{
-    List<string> states = new List<string>();
-    try
-    {
-        states = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-        _logger.LogInformation("States fetched: " + states.Count);
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError("Error fetching states: " + ex.Message);
-        // Optionally, handle the error gracefully, e.g., by returning a specific error view
-    }
-
-    var viewModel = new PackageViewModelAdmin
-    {
-        Package = new Package(),
-        PackageTypes = await _context.PackageTypes.ToListAsync(),
-        States = states
-    };
-
-    return View(viewModel);
-}
-
+        [HttpGet]        public async Task<IActionResult> AddPackage()        {
+            var states = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
+            _logger.LogInformation("States fetched: " + (states.Count.ToString()));
+            var viewModel = new PackageViewModelAdmin
+            {
+                Package = new Package(),
+                PackageTypes = await _context.PackageTypes.ToListAsync(),
+                States = states
+            };            return View(viewModel);        }
 
 
         [HttpPost]
