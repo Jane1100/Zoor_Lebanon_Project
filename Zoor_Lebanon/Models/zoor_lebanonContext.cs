@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Zoor_Lebanon.Models
 {
@@ -41,7 +38,7 @@ namespace Zoor_Lebanon.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", Microsoft.EntityFrameworkCore.ServerVersion.Parse("9.0.0-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.0.0-mysql"));
             }
         }
 
@@ -97,8 +94,8 @@ namespace Zoor_Lebanon.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.CancellationStatus)
-                    .HasColumnType("enum('within_24hrs','outside_24hrs')")
-                    .HasColumnName("cancellation_status");
+                      .HasConversion<bool>() // Converts TINYINT to bool
+                      .HasColumnName("cancellation_status");
 
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
@@ -212,10 +209,24 @@ namespace Zoor_Lebanon.Models
             {
                 entity.ToTable("package");
 
+                // Index for LocationId
                 entity.HasIndex(e => e.LocationId, "location_id");
 
+                // Define columns
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("end_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                // Index for PackageTypeId
                 entity.HasIndex(e => e.PackageTypeId, "package_type_id");
 
+                // Other columns
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
                 entity.Property(e => e.AvailableSpots).HasColumnName("available_spots");
@@ -228,24 +239,24 @@ namespace Zoor_Lebanon.Models
                     .HasMaxLength(255)
                     .HasColumnName("description");
 
-                entity.Property(e => e.EndDate).HasColumnName("end_date");
-
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
-
                 entity.Property(e => e.PackageName)
                     .HasMaxLength(255)
                     .HasColumnName("package_name");
 
                 entity.Property(e => e.PackageTypeId).HasColumnName("package_type_id");
 
-                entity.Property(e => e.StartDate).HasColumnName("start_date");
-
                 entity.Property(e => e.TotalSpots).HasColumnName("total_spots");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("status")
+                    .HasMaxLength(50)
+                    .HasDefaultValue("Pending"); // Set default value for status
 
                 entity.Property(e => e.UnitPrice)
                     .HasPrecision(10, 2)
                     .HasColumnName("unit_price");
 
+                // Relationships
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.LocationId)
@@ -541,6 +552,8 @@ namespace Zoor_Lebanon.Models
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("user_preference_ibfk_1");
             });
+
+
 
             OnModelCreatingPartial(modelBuilder);
         }
