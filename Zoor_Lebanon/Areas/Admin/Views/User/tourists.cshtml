@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE | Manage Tourists</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="~/admin/home/index2" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="~/admin/home/index3" class="brand-link">
+                <img src="~/admin/dist/img/AdminLTELogo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Admin Dashboard</span>
+            </a>
+
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/admin/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Admin User</a>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link ">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+
+                                <li class="nav-item">
+                                    <a href="~/admin/home/index2" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Admin Dashboard</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/package/widgets" class="nav-link">
+                                <i class="nav-icon fas fa-box"></i>
+                                <p>
+                                    Manage Packages
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/location/managelocation" class="nav-link">
+                                <i class="nav-icon fas fa-map-marker-alt"></i>
+                                <p>Manage Locations</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/user/tourists" class="nav-link active ">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Manage Tourists</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/index/index3" class="nav-link">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>Generate Reports</p>
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item">
+                            <a href="~/admin/operator/operators" class="nav-link">
+                                <i class="nav-icon fas fa-briefcase"></i>
+                                <p>Manage Tour Operators</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/calendar/calendar" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Calendar
+                                    <span class="badge badge-info right">2</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/admin/mailbox/mailbox" class="nav-link  ">
+                                <i class="nav-icon far fa-envelope"></i>
+                                <p>
+                                    Mailbox
+
+                                </p>
+                            </a>
+                        </li>
+                     
+                        
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- /.sidebar -->
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="container-fluid">
+
+                    <!-- Latest Bookings Section -->
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">Latest Bookings</h3>
+                           
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>User ID</th>
+                                            <th>Users</th>
+                                            <th>Email</th>
+                                            <th>Status</th>                                         
+                                            <th>Actions</th>
+                                           
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.Users != null)
+                                        {
+                                            foreach (var user in ViewBag.Users)
+                                            {
+                                                <tr>
+                                                    <td>@user.UserId</td>
+                                                    <td>
+                                                        <a href="~/admin/user/profileu?userId=@user.UserId" class="text-primary">
+                                                            @user.FullName
+                                                        </a>
+                                                    </td>
+                                                    <td>@user.Email</td>
+                                                    <td>
+                                                        <span class="badge @(user.Status == "Active" ? "badge-success" : "badge-danger")">
+                                                            @user.Status
+                                                        </span>
+                                                    </td>
+                                                    <!-- Add Action Column -->
+                                                    <td>
+                                                      
+                                                        <form action="@Url.Action("Delete", "User", new { area = "Admin", userId = user.UserId })" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;">
+                                                            <button type="submit" class="btn btn-sm btn-danger">De-activate</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="5" class="text-center">No users available.</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer clearfix">
+                          
+                            <a href="#" class="btn btn-sm btn-secondary float-right">View All Users</a>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2024 <a href="#">Your Company</a>.</strong>
+            All rights reserved.
+        </footer>
+    
+
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/admin/dist/js/adminlte.js"></script>
+
+    <script>
+        function redirectToAddTourist() {
+            window.location.href = '~/admin/newu/Register'; // Update this path if necessary
+        }
+    </script>
+
+</body>
+</html>
