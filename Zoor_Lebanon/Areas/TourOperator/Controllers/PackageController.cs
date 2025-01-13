@@ -377,19 +377,14 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
             };
             return View(viewModel); // Pass the correct view model
         }
+
         [HttpPost]
         public async Task<IActionResult> addpackageWithLocation(PackageViewModel model, string State, string City)
         {
-            // Validate the model state
-            if (!ModelState.IsValid)
-            {
-                model.PackageTypes = await _context.PackageTypes.ToListAsync();
-                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                return View(model);
-            }
+            // Fetch LocationId based on selected State and City
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(l => l.State == State && l.City == City);
 
-            // Fetch LocationId
-            var location = await _context.Locations.FirstOrDefaultAsync(l => l.State == State && l.City == City);
             if (location == null)
             {
                 ModelState.AddModelError("", "Invalid Location selection.");
@@ -398,19 +393,31 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
                 return View(model);
             }
 
-            // Validate Start and End Dates
+            // Validate Start Date and End Date
             if (model.Package.StartDate < DateTime.Now)
             {
                 ModelState.AddModelError("Package.StartDate", "Start date cannot be in the past.");
-                return View(model);
             }
-            if (model.Package.EndDate <= model.Package.StartDate)
+
+            if (model.Package.EndDate > DateTime.Now.AddYears(1))
             {
-                ModelState.AddModelError("Package.EndDate", "End date must be after the start date.");
+                ModelState.AddModelError("Package.EndDate", "End date cannot exceed one year from today.");
+            }
+
+            if (model.Package.EndDate < model.Package.StartDate)
+            {
+                ModelState.AddModelError("Package.EndDate", "End date cannot be before the start date.");
+            }
+
+            // Return the view if there are validation errors
+            if (!ModelState.IsValid)
+            {
+                model.PackageTypes = await _context.PackageTypes.ToListAsync();
+                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
                 return View(model);
             }
 
-            // Create and save the package
+            // Create and save the package if validation succeeds
             var package = new Package
             {
                 PackageName = model.Package.PackageName,
@@ -420,47 +427,30 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
                 AverageDuration = model.Package.AverageDuration,
                 StartDate = model.Package.StartDate,
                 EndDate = model.Package.EndDate,
-                LocationId = location.LocationId,
-                PackageTypeId = model.Package.PackageTypeId,
-                Status = "Pending"
+                LocationId = location.LocationId, // Assign the fetched LocationId
+                PackageTypeId = model.Package.PackageTypeId, // Assign Package Type
+                Status = "Pending" // Set status to Pending for admin review
             };
+
+            _context.Packages.Add(package); // Save the package in the database
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Your package has been created successfully.";
+            return RedirectToAction("ManagePackages");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> addpackage(Package package)
+        {
+            
+
 
             _context.Packages.Add(package);
             await _context.SaveChangesAsync();
 
-            // Save ActivitySchedules if provided
-            if (model.ActivitySchedules != null)
-            {
-                foreach (var activity in model.ActivitySchedules)
-                {
-                    var activitySchedule = new ActivitySchedule
-                    {
-                        Description = activity.Description,
-                        FromTime = activity.FromTime,
-                        ToTime = activity.ToTime,
-                        PackageId = package.PackageId // Link the activity to the package
-                    };
-
-                    _context.ActivitySchedules.Add(activitySchedule);
-                }
-                await _context.SaveChangesAsync();
-            }
-
-            TempData["SuccessMessage"] = "Package successfully added!";
-            return RedirectToAction(nameof(ManagePackages));
+            return RedirectToAction("ManagePackages");
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> ManagePackages()
-        //{
-        //    var packages = await _context.Packages
-        //        .Include(p => p.Location)
-        //        .Include(p => p.PackageType)
-        //        .OrderByDescending(p => p.PackageId)
-        //        .ToListAsync();
-
-        //    return View(packages);
-        //}
 
         [HttpGet]
         public async Task<IActionResult> GetCitiesByState(string state)
