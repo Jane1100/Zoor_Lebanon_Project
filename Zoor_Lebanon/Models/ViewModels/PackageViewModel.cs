@@ -13,6 +13,6 @@ namespace Zoor_Lebanon.Models.ViewModels
         public List<string> States { get; set; } // Dropdown for States
         public List<string> Cities { get; set; } // Dropdown for Cities
 
-
+        
     }
 }

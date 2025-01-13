@@ -10,7 +10,6 @@ namespace Zoor_Lebanon.Models
         }
 
         public int PackageTypeId { get; set; }
-
         [Column("package_type")]
         public string? PackageType1 { get; set; }
 

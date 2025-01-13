@@ -28,22 +28,21 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
         }
 
 
-
-
-
         [HttpPost]
         public async Task<IActionResult> addpackageWithLocation(PackageViewModel model, string State, string City)
         {
+
             // Fetch LocationId
             var location = await _context.Locations
-                .FirstOrDefaultAsync(l => l.State == State && l.City == City);
+             .FirstOrDefaultAsync(l => l.State == State && l.City == City);
             if (location == null)
             {
                 ModelState.AddModelError("", "Invalid Location selection.");
                 model.PackageTypes = await _context.PackageTypes.ToListAsync();
                 model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                return View( model); // Return the view with the same model
+                return View(model);
             }
+
 
             // Validate Start Date and End Date
             if (model.Package.StartDate < DateTime.Now)
@@ -68,16 +67,11 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
                 ModelState.AddModelError("Package.EndDate", "End date must be after start date.");
                 model.PackageTypes = await _context.PackageTypes.ToListAsync();
                 model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                return View( model); // Return the view with the same model
+                return View(model); // Return the view with the same model
             }
 
-            // Ensure errors return the same model type
-            if (!ModelState.IsValid || string.IsNullOrEmpty(State) || string.IsNullOrEmpty(City))
-            {
-                model.PackageTypes = await _context.PackageTypes.ToListAsync();
-                model.States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync();
-                return View(model); // Always return the same view with the PackageViewModel
-            }
+            
+
 
             // Save the package
             var package = new Package
@@ -95,7 +89,9 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
             };
 
 
-            // Save ActivitySchedules
+            _context.Packages.Add(package);
+            await _context.SaveChangesAsync(); // Generates the PackageId
+
             if (model.ActivitySchedules != null)
             {
                 foreach (var activity in model.ActivitySchedules)
@@ -105,15 +101,12 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
                         Description = activity.Description,
                         FromTime = activity.FromTime,
                         ToTime = activity.ToTime,
-                        PackageId = package.PackageId // Link activity to the package
+                        PackageId = package.PackageId // Now PackageId exists
                     };
-
                     _context.ActivitySchedules.Add(activitySchedule);
                 }
+                await _context.SaveChangesAsync(); // Save activities
             }
-
-            _context.Packages.Add(package); // Save the package in the database
-            await _context.SaveChangesAsync();
 
 
 
@@ -123,42 +116,24 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
 
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> addpackage(Package package)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(package); // Return with validation errors
-        //    }
-
-        //    // Save the package to the database
-        //    _context.Packages.Add(package);
-        //    await _context.SaveChangesAsync();
-        //    //return RedirectToAction("AddActivitySchedule", new { packageId = package.PackageId });
-
-        //    // Redirect to the Widgets page or a relevant page after successful creation
-        //    return RedirectToAction("ManagePackages");
-        //}
 
         [HttpPost]
         public async Task<IActionResult> addpackage(Package package)
         {
             if (!ModelState.IsValid)
             {
-                // Convert Package to PackageViewModel
-                var viewModel = new PackageViewModel
-                {
-                    Package = package,
-                    PackageTypes = await _context.PackageTypes.ToListAsync(),
-                    States = await _context.Locations.Select(l => l.State).Distinct().ToListAsync()
-                };
-                return View( viewModel); // Pass the correct model type
+                return View(package); // Return with validation errors
             }
 
+            // Save the package to the database
             _context.Packages.Add(package);
             await _context.SaveChangesAsync();
+            //return RedirectToAction("AddActivitySchedule", new { packageId = package.PackageId });
+
+            // Redirect to the Widgets page or a relevant page after successful creation
             return RedirectToAction("ManagePackages");
         }
+
 
 
 

@@ -18,7 +18,6 @@ namespace Zoor_Lebanon.Models
         public virtual DbSet<City> Cities { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
-
         public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
@@ -39,7 +38,7 @@ namespace Zoor_Lebanon.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=Marie.kh1", ServerVersion.Parse("9.1.0-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.0.0-mysql"));
             }
         }
 
@@ -196,8 +195,14 @@ namespace Zoor_Lebanon.Models
                 entity.ToTable("location");
 
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
-                entity.Property(e => e.City).HasColumnName("city");
-                entity.Property(e => e.State).HasColumnName("state");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(255)
+                    .HasColumnName("city");
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(255)
+                    .HasColumnName("state");
             });
 
             modelBuilder.Entity<Package>(entity =>
@@ -547,6 +552,8 @@ namespace Zoor_Lebanon.Models
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("user_preference_ibfk_1");
             });
+
+
 
             OnModelCreatingPartial(modelBuilder);
         }

@@ -62,6 +62,17 @@
                         <option value="@state">@state</option>
                     }
                 </select>
+                
+            </div>
+            <div class="mb-3">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
             </div>
             <div class="mb-3">
                 <label for="City" class="form-label">City</label>
@@ -69,16 +80,7 @@
                     <option value="">Select City</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="PackageType" class="form-label">Package Type</label>
-                <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
-                    <option value="">Select Package Type</option>
-                    @foreach (var type in Model.PackageTypes)
-                    {
-                        <option value="@type.PackageTypeId">@type.PackageType1</option>
-                    }
-                </select>
-            </div>
+
 
             <!-- Activity Schedule Section -->
             <div class="mb-4">
