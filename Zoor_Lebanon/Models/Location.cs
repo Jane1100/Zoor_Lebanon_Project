@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Zoor_Lebanon.Models
+﻿namespace Zoor_Lebanon.Models
 {
     public partial class Location
     {

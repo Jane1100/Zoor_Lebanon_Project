@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Zoor_Lebanon.Models.ViewModels;
 
-namespace Zoor_Lebanon_Booking_Platform.Areas.TourOperator.Controllers
+
+namespace Zoor_Lebanon.Areas.TourOperator.Controllers
 {
     [Area("TourOperator")]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            return View(); // This returns the Index.cshtml in the TourOperator area
+            Console.WriteLine("HomeController > Index route accessed");
+            return View();
         }
+
     }
 }

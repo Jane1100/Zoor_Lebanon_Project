@@ -1,8 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Layout = null; // Use null if you want a clean, standalone page without the default layout
+﻿@{
+    Layout = null; // Use null for a clean, standalone page without default layout
 }
 
 <!DOCTYPE html>
@@ -15,12 +12,24 @@
 </head>
 <body>
     <div class="container text-center mt-5">
-        <h1>Welcome!</h1>
-        <p>Please select your role:</p>
+        <h1>Welcome to Zoor Lebanon!</h1>
+        <p>Please select your role to proceed:</p>
         <div class="d-flex justify-content-center mt-4">
-            <button class="btn btn-primary mx-2" onclick="location.href='@Url.Action("Dashboard", "Home", new { area = "EndUser" })'">End User</button>
-            <button class="btn btn-secondary mx-2" onclick="location.href='@Url.Action("Dashboard", "Home", new { area = "Admin" })'">Admin</button>
-            <button class="btn btn-success mx-2" onclick="location.href='@Url.Action("Login", "Account", new { area = "TourOperator" })'">Tour Operator</button>
+            <!-- End User -->
+            <button class="btn btn-primary mx-2"
+                    onclick="location.href='@Url.Action("Dashboard", "Home", new { area = "EndUser" })'">
+                End User
+            </button>
+            <!-- Admin -->
+            <button class="btn btn-secondary mx-2"
+                    onclick="location.href='@Url.Action("Dashboard", "Home", new { area = "Admin" })'">
+                Admin
+            </button>
+            <!-- Tour Operator -->
+            <button class="btn btn-success mx-2"
+                    onclick="location.href='@Url.Action("Login", "Account", new { area = "TourOperator" })'">
+                Tour Operator
+            </button>
         </div>
     </div>
 </body>

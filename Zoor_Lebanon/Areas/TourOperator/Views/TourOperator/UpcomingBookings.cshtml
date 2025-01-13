@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<dynamic>
+
 @{
+    ViewData["Title"] = "Upcoming Bookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="container mt-5">
+    <h2 class="text-center">All Bookings</h2>
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Package Name</th>
+                <th>Number of Bookings</th>
+                <th>Upcoming Travel Date</th>
+                <th>Previous Travel Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int counter = 1;
+                foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td>@booking.PackageName</td>
+                        <td>@booking.BookingCount</td>
+                        <td>@(booking.EarliestTravelDate?.ToShortDateString() ?? "N/A")</td>
+                        <td>@(booking.LatestTravelDate?.ToShortDateString() ?? "N/A")</td>
+                    </tr>
+                    counter++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-muted">No bookings available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
