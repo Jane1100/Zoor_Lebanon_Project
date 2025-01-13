@@ -1,38 +1,107 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Zoor_Lebanon.Models.Helper;
+using Zoor_Lebanon.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Zoor_Lebanon.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AccountController : Controller
     {
-        // Hardcoded admin credentials
-        private readonly string adminFirstName = "Mariejose";
-        private readonly string adminLastName = "Khalil";
-        private readonly string adminEmail = "mariejosekhalil29@gmail.com";
-        private readonly string adminPassword = "Mariejose.kh4";
 
-        [HttpGet]
-        public IActionResult Login()
+        
+        private readonly zoor_lebanonContext _context;
+
+        public AccountController(zoor_lebanonContext context)
         {
-            // Ensure the error message is cleared on the initial load
-            ViewBag.Error = null;
-            return View();
+            _context = context;
         }
+
+
+        // Hardcoded admin credentials
+          private readonly string adminFirstName = "Mariejose";
+          private readonly string adminLastName = "Khalil";
+          private readonly string adminEmail = "mariejosekhalil29@gmail.com";
+          private readonly string adminPassword = "Mariejose.kh4";
+
+          [HttpGet]
+          public IActionResult Login()
+          {
+              // Ensure the error message is cleared on the initial load
+              ViewBag.Error = null;
+              return View();
+          }
+
+          [HttpPost]
+          public IActionResult Login(string email, string password)
+          {
+              // Validate email and password against hardcoded values
+              if (email == adminEmail && password == adminPassword)
+              {
+                  // Redirect to the Admin Home page upon successful login
+                  return Redirect("~/admin/package/index2");
+              }
+
+              // If invalid, return an error message and reload the login page
+              ViewBag.Error = "Invalid email or password.";
+              return View();
+          }
+
+
+       /* [HttpGet]
+        public IActionResult Login() => View();
+
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public ActionResult Login(string email, string password)
         {
-            // Validate email and password against hardcoded values
-            if (email == adminEmail && password == adminPassword)
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                // Redirect to the Admin Home page upon successful login
-                return Redirect("~/admin/home/index2");
+                ViewBag.Error = "Email and password are required.";
+                return View();
             }
 
-            // If invalid, return an error message and reload the login page
-            ViewBag.Error = "Invalid email or password.";
+            var user = _context.Users.SingleOrDefault(u => u.Email == email);
+
+            if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.Salt))
+            {
+                ViewBag.Error = "Invalid login attempt.";
+                return View();
+            }
+
+            if (user.RoleId.HasValue && user.Role != null && user.Role.RoleName == "admin" && user.Active == true)
+            {
+                // Set up your session or authentication mechanism here
+                // For example, HttpContext.Session.SetString("User", user.UserId.ToString());
+                return RedirectToAction("Index", "Home"); // Redirect to the admin home page or dashboard
+            }
+
+            ViewBag.Error = "You are not authorized to access this section.";
             return View();
+        }*/
+
+        private bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
+        {
+            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(storedSalt)))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return storedHash == Convert.ToBase64String(computedHash);
+            }
         }
+
+        // This action gets triggered when the user confirms logout
+        public IActionResult Logout()
+        {
+            // Sign out the user (clear the authentication session)
+            HttpContext.SignOutAsync(); // Assumes cookie authentication is being used
+
+            // Redirect to the login page
+            return RedirectToAction("Login", "Account");
+        }
+
 
         [HttpGet]
         public IActionResult Registration()
@@ -195,3 +264,18 @@ public IActionResult ForgotPassword()
 }
 }
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

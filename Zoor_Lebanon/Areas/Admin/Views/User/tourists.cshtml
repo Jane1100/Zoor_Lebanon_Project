@@ -88,7 +88,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/index3" class="nav-link">
+                            <a href="~/admin/index/index3" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>Generate Reports</p>
                             </a>
@@ -118,42 +118,8 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link ">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Charts
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/admin/home/chartjs" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/flot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/inline" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/uplot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        </li>
+                     
+                        
                     </ul>
                 </nav>
             </div>
@@ -185,11 +151,8 @@
                                             <th>Email</th>
                                             <th>Status</th>                                         
                                             <th>Actions</th>
-                                            <th>
-                                                <button class="btn btn-sm btn-primary float-right" onclick=" redirectToAddTourist()">
-                                                    <i class="fas fa-user-plus"></i> Add Tourist
-                                                </button>
-                                            </th>
+                                           
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,9 +175,9 @@
                                                     </td>
                                                     <!-- Add Action Column -->
                                                     <td>
-                                                        <a href="@Url.Action("MyProfile", "User", new { area = "Admin", userId = user.UserId })" class="btn btn-sm btn-warning">Edit</a>
+                                                      
                                                         <form action="@Url.Action("Delete", "User", new { area = "Admin", userId = user.UserId })" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;">
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            <button type="submit" class="btn btn-sm btn-danger">De-activate</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -233,7 +196,7 @@
                         </div>
 
                         <div class="card-footer clearfix">
-                            <a href="@Url.Action("AddU", "User", new { area = "Admin"})" class="btn btn-sm btn-info float-left">Create New User</a>
+                          
                             <a href="#" class="btn btn-sm btn-secondary float-right">View All Users</a>
                         </div>
                     </div>
@@ -259,7 +222,7 @@
 
     <script>
         function redirectToAddTourist() {
-            window.location.href = '/admin/User/addU'; // Update this path if necessary
+            window.location.href = '~/admin/newu/Register'; // Update this path if necessary
         }
     </script>
 

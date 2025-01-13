@@ -3,62 +3,104 @@ using Zoor_Lebanon.Models.IndexViewModel;
 using Zoor_Lebanon.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Zoor_Lebanon.Models.TourismReportViewModel;
+using ChartData = Zoor_Lebanon.Models.IndexViewModel.ChartData; // Alias for ChartData
+using Zoor_Lebanon.Models.Helper;
 
-public class DashboardController : Controller
+[Area("Admin")]
+public class IndexController : Controller
 {
     private readonly zoor_lebanonContext _context;
 
-    public DashboardController(zoor_lebanonContext context)
+    public IndexController(zoor_lebanonContext context)
     {
         _context = context;
     }
 
-    public IActionResult Index()
+ 
+    public IActionResult Index3()
     {
-        var visitorChartData = _context.Visitors
-            .GroupBy(v => v.VisitDate.Date)
-            .Select(group => new
-            {
-                Date = group.Key.ToString("MM/dd/yyyy"),
-                Count = group.Count()
-            })
-            .OrderBy(x => x.Date)
-            .ToList();
-
-        var salesChartData = _context.Sales
-            .GroupBy(s => s.SaleDate.Month)
-            .Select(group => new
-            {
-                Month = group.Key,
-                TotalSales = group.Sum(s => s.Amount)
-            })
-            .OrderBy(x => x.Month)
-            .ToList();
-
         var model = new IndexViewModel
         {
-            VisitorChartData = visitorChartData,
-            SalesChartData = salesChartData,
-            TouristByCityCount = _context.Users
-                .Where(u => u.CityId.HasValue)
-                .GroupBy(u => u.City.City1)
-                .ToDictionary(g => g.Key, g => g.Count()),
-            SalesGrowthRate = CalculateGrowthRate(salesChartData)  // Calculate and assign SalesGrowthRate
-        };
+            BookingPackageData = _context.Bookings
+                .Join(_context.Packages,
+                      booking => booking.PackageId,
+                      package => package.PackageId,
+                      (booking, package) => new { booking, package })
+                .GroupBy(x => x.package.PackageName)
+                .Select(g => new ChartData
+                {
+                    Label = g.Key,
+                    Value = g.Count()
+                })
+                .ToList(),
+
+            TopPackages = _context.Packages
+                .OrderByDescending(p => p.Bookings.Count)
+                .Take(5)
+                .Select(p => new ChartData
+                {
+                    Label = p.PackageName,
+                    Value = p.Bookings.Count
+                })
+                .ToList(),
+
+        
+
+            ActiveLocations = _context.Locations
+                .OrderByDescending(l => l.Packages.Sum(p => p.Bookings.Count))
+                .Take(5)
+                .Select(l => new ChartData
+                {
+                    Label = l.City,
+                    Value = l.Packages.Sum(p => p.Bookings.Count)
+                })
+                .ToList(),
+
+            UserDemographics = _context.Users
+    .Include(u => u.City) // Include the City navigation property
+    .ThenInclude(c => c.State) // Then include the State navigation property from City
+    .Where(u => u.City != null && u.City.State != null && u.City.State.Country != null) // Make sure all navigation properties are not null
+    .GroupBy(u => u.City.State.Country.Country1) // Assuming Country1 is the country name in the Country entity
+    .Select(g => new ChartData
+    {
+        Label = g.Key,
+        Value = g.Count()
+    })
+    .ToList(),
+
+
+            AverageBookingValues = _context.Bookings
+                .GroupBy(b => 1)
+                .Select(g => new ChartData
+                {
+                    Label = "Average Booking Value",
+                    Value = (int)g.Average(b => b.TotalPrice)
+                })
+                .ToList(),
+            TopTourOperators = _context.TourOperators
+    .Where(t => t.User != null) // Ensure that TourOperator has an associated User
+    .Select(t => new
+    {
+        TourOperator = t,
+        BookingCount = _context.Bookings.Count(b => b.UserId == t.UserId) // Assuming Bookings are linked to User
+    })
+    .OrderByDescending(t => t.BookingCount)
+    .Take(5)
+    .Select(t => new ChartData
+    {
+        Label = t.TourOperator.CompanyName,
+        Value = t.BookingCount
+    })
+    .ToList()
+
+    };
 
         return View(model);
     }
 
-    private double CalculateGrowthRate(List<dynamic> data)
-    {
-        // Adjust this calculation based on your specific needs
-        if (data.Count >= 2)
-        {
-            var last = data.Last().TotalSales;
-            var first = data.First().TotalSales;
-            if (first != 0)
-                return ((double)last - first) / first * 100;  // Return percentage growth
-        }
-        return 0;
-    }
+
+
+
 }

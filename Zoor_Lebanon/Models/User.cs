@@ -18,7 +18,7 @@ namespace Zoor_Lebanon.Models
         public int UserId { get; set; }
         public string? Firstname { get; set; }
         public string? Lastname { get; set; }
-        public DateOnly? Dob { get; set; }
+        public DateTime? Dob { get; set; }
         public int? CityId { get; set; }
         /// <summary>
         /// User email with global validation

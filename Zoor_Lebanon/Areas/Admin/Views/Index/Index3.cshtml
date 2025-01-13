@@ -1,5 +1,6 @@
 ﻿@using Zoor_Lebanon.Models.IndexViewModel;
 @model IndexViewModel
+@using System.Linq;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +40,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="~/admin/home/index3" class="nav-link">Home</a>
+        <a href="~/admin/index/index3" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -172,7 +173,7 @@
   <!-- Main Sidebar Container -->
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="~/admin/home/index3" class="brand-link">
+            <a href="~/admin/index/index3" class="brand-link">
                 <img src="~/admin/dist/img/AdminLTELogo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Admin Dashboard</span>
             </a>
@@ -229,7 +230,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/index3" class="nav-link active">
+                            <a href="~/admin/index/index3" class="nav-link active">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>Generate Reports</p>
                             </a>
@@ -259,159 +260,153 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link ">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Charts
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/admin/home/chartjs" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/flot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/inline" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/uplot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        </li>
+                      
+                       
                     </ul>
                 </nav>
             </div>
         </aside>
+ <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <h1 class="m-0">Tourism Reports</h1>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Booking and Packages Comparison Chart -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Bookings and Packages</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="booking-packages-chart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="content-wrapper">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Tourism Reports</h1>
+                    <!-- Top Packages Chart -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Top Packages</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="top-packages-chart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Most Active Locations Chart -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 the card-title">Most Active Locations</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="active-locations-chart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                     
+
+                       
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6">
-                    <!-- Visitors Chart -->
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">ZoorLB Visitors</h3>
-                                <a href="#">View Report</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">@Model.VisitorChartData.Count</span>
-                                    <span>Visitors Over Time</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> @Model.SalesGrowthRate %
-                                    </span>
-                                    <span class="text-muted">Since last week</span>
-                                </p>
-                            </div>
-                            <div class="position-relative mb-4">
-                                <canvas id="visitors-chart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-lg-6">
-                    <!-- Sales Chart -->
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">Sales</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">$@Model.SalesChartData.Sum(x => x.TotalSales)</span>
-                                    <span>Sales Over Time</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> @(Model.SalesChartData.Count > 1 ? (Model.SalesChartData.Last().TotalSales - Model.SalesChartData.First().TotalSales) / (double)Model.SalesChartData.First().TotalSales * 100 : 0) %
-                                    </span>
-                                    <span class="text-muted">Since last month</span>
-                                </p>
-                            </div>
-                            <div class="position-relative mb-4">
-                                <canvas id="sales-chart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    +
+    <!-- Footer -->
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2024 Zoor Lebanon.</strong>
+        All rights reserved.
+    </footer>
 </div>
 
-<footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-</footer>
-
-<!-- jQuery -->
+<!-- Chart Scripts -->
 <script src="~/admin/plugins/jquery/jquery.min.js"></script>
 <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="~/admin/plugins/chart.js/Chart.min.js"></script>
-<script>
-    var visitorsChart = document.getElementById('visitors-chart').getContext('2d');
-    var salesChart = document.getElementById('sales-chart').getContext('2d');
 
-    new Chart(visitorsChart, {
-        type: 'line',
+
+
+
+
+<script>
+    // Define the data for the Booking and Packages Chart
+    var ctx1 = document.getElementById('booking-packages-chart').getContext('2d');
+    var bookingPackagesChart = new Chart(ctx1, {
+        type: 'bar', // Choose the chart type, e.g., 'bar' or 'line'
         data: {
-            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.VisitorChartData.Select(x => x.Date))),
+            labels: @Html.Raw(Json.Serialize(Model.BookingPackageData.Select(x => x.Label))),
             datasets: [{
-                label: "This Week",
-                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.VisitorChartData.Select(x => x.Count))),
-                borderColor: "#007bff",
-                fill: false
+                label: 'Booking',
+                data: @Html.Raw(Json.Serialize(Model.BookingPackageData.Select(x => x.Value))),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+      
+
+
+    
+
+
+    // Define the data for the Top Packages Chart
+    var ctx2 = document.getElementById('top-packages-chart').getContext('2d');
+    var topPackagesChart = new Chart(ctx2, {
+        type: 'line', // Choose the chart type, e.g., 'bar' or 'line'
+        data: {
+            labels: @Html.Raw(Json.Serialize(Model.TopPackages.Select(x => x.Label))),
+            datasets: [{
+                label: 'Popularity',
+                data: @Html.Raw(Json.Serialize(Model.TopPackages.Select(x => x.Value))),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
             }]
         }
     });
 
-    new Chart(salesChart, {
-        type: 'bar',
+    // Define the data for the Most Active Locations Chart
+    var ctx3 = document.getElementById('active-locations-chart').getContext('2d');
+    var activeLocationsChart = new Chart(ctx3, {
+        type: 'pie', // Choose the chart type, e.g., 'pie' or 'doughnut'
         data: {
-            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesChartData.Select(x => x.Month))),
+            labels: @Html.Raw(Json.Serialize(Model.ActiveLocations.Select(x => x.Label))),
             datasets: [{
-                label: "Sales",
-                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesChartData.Select(x => x.TotalSales))),
-                backgroundColor: "#007bff"
+                label: 'Activity',
+                data: @Html.Raw(Json.Serialize(Model.ActiveLocations.Select(x => x.Value))),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
             }]
         }
     });
 </script>
-
-
-
-   </body>
+</body>
 </html>

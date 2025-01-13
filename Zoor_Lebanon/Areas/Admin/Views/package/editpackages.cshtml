@@ -1,4 +1,4 @@
-﻿@model Zoor_Lebanon.Models.ViewModels.PackageViewModel
+﻿@model Zoor_Lebanon.Models.ViewModels.PackageViewModelAdmin
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -306,128 +306,103 @@
             </section>
 
             <!-- Main content -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             <section class="content">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">General</h3>
+                    <div class="col-md-12">
+                        <!-- Form to edit the package -->
+                        <form method="post" action="@Url.Action("EditPackages", "Package", new { area = "Admin" })">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">General</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="PackageName">Package Name</label>
+                                        <input type="text" class="form-control" id="PackageName" name="Package.PackageName" value="@Model.Package.PackageName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Description">Description</label>
+                                        <textarea class="form-control" id="Description" name="Package.Description" required>@Model.Package.Description</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UnitPrice">Unit Price ($)</label>
+                                        <input type="number" class="form-control" id="UnitPrice" name="Package.UnitPrice" value="@Model.Package.UnitPrice" step="0.01" required>
+                                    </div>
+                                      <div class="mb-3">
+                <label asp-for="Package.TotalSpots" class="form-label">Total Spots</label>
+                <input type="number" asp-for="Package.TotalSpots" name="Package.TotalSpots" class="form-control" required />
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
+                <span asp-validation-for="Package.TotalSpots" class="text-danger"></span>
+            </div>
+                                    <div class="form-group">
+                                        <label for="State" class="form-label">State</label>
+                                        <select id="State" name="State" class="form-select" required>
+                                            <option value="">Select State</option>
+                                            @foreach (var state in Model.States)
+                                            {
+                                                <option value="@state">@state</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="State" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="City" class="form-label">City</label>
+                                        <select id="City" name="City" class="form-select" required>
+                                            <option value="">Select City</option>
+                                        </select>
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="StartDate">Start Date</label>
+                                        <input type="date" class="form-control" id="StartDate" name="Package.StartDate" value="@Model.Package.StartDate?.ToString("yyyy-MM-dd")" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="EndDate">End Date</label>
+                                        <input type="date" class="form-control" id="EndDate" name="Package.EndDate" value="@Model.Package.EndDate?.ToString("yyyy-MM-dd")" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="PackageType" class="form-label">Package Type</label>
+                                        <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
+                                            <option value="">Select Package Type</option>
+                                            @foreach (var type in Model.PackageTypes)
+                                            {
+                                                <option value="@type.PackageTypeId">@type.PackageType1</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Package.PackageTypeId" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <a href="@Url.Action("widgets", "package", new { area = "Admin" })" class="btn btn-secondary">
+                                        Back to Packages
+                                    </a>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="PackageName">Package Name</label>
-                                    <input type="text" class="form-control" id="PackageName" name="Package.PackageName" value="@Model.Package.PackageName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="Description">Description</label>
-                                    <textarea class="form-control" id="Description" name="Package.Description" required>@Model.Package.Description</textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="UnitPrice">Unit Price ($)</label>
-                                    <input type="number" class="form-control" id="UnitPrice" name="Package.UnitPrice" value="@Model.Package.UnitPrice" step="0.01" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="State" class="form-label">State</label>
-                                <select id="State" name="State" class="form-select" required>
-                                    <option value="">Select State</option>
-                                    @foreach (var state in Model.States)
-                                    {
-                                        <option value="@state">@state</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="State" class="text-danger"></span>
-                            </div>
-
-                            <!-- City Dropdown -->
-                            <div class="form-group">
-                                <label for="City" class="form-label">City</label>
-                                <select id="City" name="City" class="form-select" required>
-                                    <option value="">Select City</option>
-                                </select>
-                                <span asp-validation-for="City" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="StartDate">Start Date</label>
-                            <input type="date" class="form-control" id="StartDate" name="Package.StartDate" value="@Model.Package.StartDate?.ToString("yyyy-MM-dd")" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="EndDate">End Date</label>
-                            <input type="date" class="form-control" id="EndDate" name="Package.EndDate" value="@Model.Package.EndDate?.ToString("yyyy-MM-dd")" required>
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card card-secondary">
-                            <div class="card-header">
-                                <h3 class="card-title">Budget</h3>
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="inputEstimatedBudget"> budget</label>
-                                    <input type="number" id="inputEstimatedBudget" class="form-control" value="package.UnitPrice" step="1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="TotalSpots">Total Spots</label>
-                                    <input type="number" class="form-control" id="TotalSpots" name="Package.TotalSpots" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputEstimatedDuration">Estimated Package duration</label>
-                                    <input type="number" id="inputEstimatedDuration" class="form-control" value="20" step="0.1">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="PackageType" class="form-label">Package Type</label>
-                                    <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
-                                        <option value="">Select Package Type</option>
-                                        @foreach (var type in Model.PackageTypes)
-                                        {
-                                            <option value="@type.PackageTypeId">@type.PackageType1</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="Package.PackageTypeId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                        </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-
-
-                <div class="row">
-                    <div class="col-12">
-                        <a href="#" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-
+                        </form>
                     </div>
                 </div>
-
-                <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-
-    </section>
+            </section>
     <!-- /.content -->
     <!-- /.content-wrapper -->
 

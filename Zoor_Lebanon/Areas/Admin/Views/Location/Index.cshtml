@@ -27,7 +27,7 @@
                 <td>@item.City</td>
                 <td>@item.State</td>
                 <td>
-                    @foreach (var package in item.Packages.Where(p => p.EndDate >= DateOnly.FromDateTime(DateTime.Now)))
+                    @foreach (var package in item.Packages.Where(p => p.EndDate >= (DateTime.Now)))
                     {
                         <p>@package.PackageName</p>
                     }

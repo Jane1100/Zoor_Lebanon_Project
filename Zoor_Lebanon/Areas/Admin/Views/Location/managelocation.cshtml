@@ -26,7 +26,7 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="~/admin/home/index3" class="brand-link">
+            <a href="~/admin/index/index3" class="brand-link">
                 <img src="~/admin/dist/img/AdminLTELogo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Admin Dashboard</span>
             </a>
@@ -83,7 +83,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/admin/home/index3" class="nav-link">
+                            <a href="~/admin/index/index3" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>Generate Reports</p>
                             </a>
@@ -113,42 +113,9 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link ">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Charts
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/admin/home/chartjs" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/flot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/inline" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/admin/home/uplot" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        </li>
+                       
+
+                      
                     </ul>
                 </nav>
             </div>
@@ -163,7 +130,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="~/admin/home/index3">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/admin/index/index3">Home</a></li>
                                 <li class="breadcrumb-item active">Manage Locations</li>
                             </ol>
                         </div>
@@ -209,8 +176,8 @@
                                         <thead class="thead-dark text-center">
                                             <tr>
                                                 <th>City</th>
-                                                <th>State</th>
-                                                <th>Actions</th>
+                                                <th>Region</th>
+                                              
                                                 <th>Status</th>
                                                 <th>Packages</th>
                                             </tr>
@@ -231,14 +198,7 @@
                                                             <span id="state-display-@location.LocationId">@location.State</span>
                                                             <input type="text" id="state-edit-@location.LocationId" class="form-control d-none" value="@location.State" />
                                                         </td>
-                                                        <td class="text-center">
-                                                            <button class="btn btn-sm btn-warning mx-1" onclick="enableEdit(@location.LocationId)">
-                                                                <i class="fas fa-edit"></i> Edit
-                                                            </button>
-                                                            <button class="btn btn-sm btn-success mx-1 d-none" id="save-btn-@location.LocationId" onclick="saveEdit(@location.LocationId)">
-                                                                <i class="fas fa-save"></i> Save
-                                                            </button>
-                                                        </td>
+                                                       
                                                         <td class="align-middle text-center">
                                                             <span class="badge @((status == "Active") ? "badge-success" : "badge-danger")">@status</span>
                                                         </td>

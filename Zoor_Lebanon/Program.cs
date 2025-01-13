@@ -5,11 +5,12 @@ using Zoor_Lebanon.Models.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
-/*builder.Configuration
+// Load configuration files (appsettings.json and environment-specific files)
+builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariables();*/
+    .AddEnvironmentVariables();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

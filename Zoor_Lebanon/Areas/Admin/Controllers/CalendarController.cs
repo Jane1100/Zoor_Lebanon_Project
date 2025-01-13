@@ -23,8 +23,8 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
                 .Where(p => p.StartDate.HasValue && p.EndDate.HasValue) // Ensure dates are not null
                 .Select(p => new {
                     title = p.PackageName, // 'title' should be lowercase as JavaScript is case-sensitive
-                    start = p.StartDate.Value.ToDateTime(TimeOnly.MinValue), // Convert DateOnly to DateTime
-                    end = p.EndDate.Value.ToDateTime(TimeOnly.MinValue), // Convert DateOnly to DateTime
+                    start = p.StartDate, // Convert DateOnly to DateTime
+                    end = p.EndDate, // Convert DateOnly to DateTime
                     backgroundColor = "#00a65a", // Example: green for all
                     borderColor = "#00a65a"
                 })
@@ -43,7 +43,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
                 .Select(p => new
                 {
                     p.PackageName,
-                    StartDate = p.StartDate.HasValue ? p.StartDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null
+                    StartDate = p.StartDate.HasValue ? p.StartDate : (DateTime?)null
                 })
                 .ToListAsync();
 

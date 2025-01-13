@@ -845,102 +845,40 @@
                 <!--/.card -->
               </div>
               <!-- /.col -->
-            </div>
+           @* </div>*@
             <!-- /.row -->
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Package ID</th>
+                                            <th>Packages</th>
+                                            <th>Status</th>
+                                            <th>Popularity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var package in Model.Packages)
+                                        {
+                                            <tr>
+                                                <td><a href="pages/examples/invoice.html">@package.PackageId</a></td>
+                                                <td>@package.PackageName</td>
+                                                <td><span class="badge badge-success">@package.Status</span></td>
+                                                <td>
+                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">@package.Popularity,80,90,-70,61,-83,63</div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
 
             <!-- TABLE: LATEST ORDERS -->
-            <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">Latest Bookings</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table m-0">
-                    <thead>
-                    <tr>
-                      <th>Package ID</th>
-                      <th>Packages</th>
-                      <th>Status</th>
-                      <th>Popularity</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                    <td>Jeita Grotto Tour</td>
-                                                    <td><span class="badge badge-success">Success</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                                    <td>Baalbek & Bekaa Valley</td>
-                                                    <td><span class="badge badge-warning">on hold</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                      <td>Byblos Coastal Adventure.</td>
-                                                    <td><span class="badge badge-danger">Cancelled</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                                    <td>Beirut Historical Tour</td>
-                                                    <td><span class="badge badge-info">In Progress</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                                    <td>Sidon & Tyre Day Trip</td>
-                                                    <td><span class="badge badge-warning">on hold</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                      <td>Cedars & Qadisha Hiking</td>
-                      <td><span class="badge badge-danger">Cancelled</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                      <td>Baalbek Cultural Day Tour</td>
-                      <td><span class="badge badge-success">Success</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
+          
                 <!-- /.table-responsive -->
               </div>
               <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                                    <a href="~/admin/home/addpackage" class="btn btn-sm btn-info float-left">Create New Booking</a>
-                <a href="~/admin/home/widgets" class="btn btn-sm btn-secondary float-right">View All Bookings</a>
-              </div>
+        
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->

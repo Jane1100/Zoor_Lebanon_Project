@@ -79,7 +79,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var viewModel = new PackageViewModel
+            var viewModel = new PackageViewModelAdmin
             {
                 Package = package,
                 PackageTypes = await _context.PackageTypes.ToListAsync(),
@@ -93,7 +93,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         // POST: Submit the edited package
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OptRequest(int packageId, PackageViewModel model, string state, string city)
+        public async Task<IActionResult> OptRequest(int packageId, PackageViewModelAdmin model, string state, string city)
         {
             if (packageId != model.Package.PackageId)
             {

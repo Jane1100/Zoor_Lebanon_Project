@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -38,12 +38,14 @@ namespace Zoor_Lebanon.Models
         public virtual DbSet<UserCoupon> UserCoupons { get; set; } = null!;
         public virtual DbSet<UserPreference> UserPreferences { get; set; } = null!;
 
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=Marie.kh1", ServerVersion.Parse("9.1.0-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=zoor_lebanon;user=root;password=password", ServerVersion.Parse("9.1.0-mysql"));
             }
         }
 
@@ -51,6 +53,9 @@ namespace Zoor_Lebanon.Models
         {
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
+
+            // Define Sales table
+
 
             modelBuilder.Entity<ActivitySchedule>(entity =>
             {
@@ -99,8 +104,10 @@ namespace Zoor_Lebanon.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.CancellationStatus)
-                    .HasColumnType("enum('within_24hrs','outside_24hrs')")
-                    .HasColumnName("cancellation_status");
+                  .HasConversion<bool>() // Converts TINYINT to bool
+                  .HasColumnName("cancellation_status");
+
+
 
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
@@ -214,10 +221,24 @@ namespace Zoor_Lebanon.Models
             {
                 entity.ToTable("package");
 
+                // Index for LocationId
                 entity.HasIndex(e => e.LocationId, "location_id");
 
+                // Define columns
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("end_date")
+                    .HasColumnType("datetime"); // Ensure compatibility with the database
+
+                // Index for PackageTypeId
                 entity.HasIndex(e => e.PackageTypeId, "package_type_id");
 
+                // Other columns
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
 
                 entity.Property(e => e.AvailableSpots).HasColumnName("available_spots");
@@ -229,21 +250,6 @@ namespace Zoor_Lebanon.Models
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
                     .HasColumnName("description");
-                entity.Property(e => e.StartDate)
-      .HasColumnName("start_date")
-      .HasConversion(
-          v => v.HasValue ? v.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null, // Convert DateOnly to DateTime when saving to the database
-          v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null           // Convert DateTime to DateOnly when reading from the database
-      );
-
-
-                entity.Property(e => e.EndDate)
-         .HasColumnName("end_date")
-         .HasConversion(
-             v => v.HasValue ? v.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null, // Convert DateOnly to DateTime when saving to the database
-             v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null           // Convert DateTime to DateOnly when reading from the database
-         );
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
 
                 entity.Property(e => e.PackageName)
                     .HasMaxLength(255)
@@ -251,20 +257,18 @@ namespace Zoor_Lebanon.Models
 
                 entity.Property(e => e.PackageTypeId).HasColumnName("package_type_id");
 
-             
-
                 entity.Property(e => e.TotalSpots).HasColumnName("total_spots");
 
-                entity.Property(e => e.Status) // Map the new Status column
-        .HasColumnName("status")
-        .HasMaxLength(50)
-        .HasDefaultValue("Pending"); // Set a default value if desired
-
+                entity.Property(e => e.Status)
+                    .HasColumnName("status")
+                    .HasMaxLength(50)
+                    .HasDefaultValue("Pending"); // Set default value for status
 
                 entity.Property(e => e.UnitPrice)
                     .HasPrecision(10, 2)
                     .HasColumnName("unit_price");
 
+                // Relationships
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.LocationId)
@@ -276,6 +280,7 @@ namespace Zoor_Lebanon.Models
                     .HasConstraintName("package_ibfk_2");
             });
 
+
             modelBuilder.Entity<PackageType>(entity =>
             {
                 entity.ToTable("package_type");
@@ -286,6 +291,7 @@ namespace Zoor_Lebanon.Models
                     .HasMaxLength(255)
                     .HasColumnName("package_type");
             });
+
 
             modelBuilder.Entity<Payment>(entity =>
             {
@@ -573,4 +579,3 @@ namespace Zoor_Lebanon.Models
 
 
 
-*/

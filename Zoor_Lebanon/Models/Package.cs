@@ -20,10 +20,11 @@ namespace Zoor_Lebanon.Models
         public int? AvailableSpots { get; set; }
         public int? TotalSpots { get; set; }
         public int? PackageTypeId { get; set; }
-        public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+       
         public decimal? AverageDuration { get; set; }
-
+        public int? Points { get; set; }
         public virtual Location? Location { get; set; }
         public virtual PackageType? PackageType { get; set; }
         public virtual ICollection<ActivitySchedule> ActivitySchedules { get; set; }

@@ -1,5 +1,5 @@
 ﻿@using Zoor_Lebanon.Models.ViewModels
-@model PackageViewModel
+@model PackageViewModelAdmin
 
 @{
     ViewData["Title"] = "Create Package";
@@ -12,6 +12,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    @*<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
 </head>
 <body>
     <div class="container mt-5">
@@ -41,27 +42,26 @@
             <!-- Total Spots -->
             <div class="mb-3">
                 <label asp-for="Package.TotalSpots" class="form-label">Total Spots</label>
-                <input type="number" asp-for="Package.TotalSpots" class="form-control" required />
+                <input type="number" asp-for="Package.TotalSpots" name="Package.TotalSpots" class="form-control" required />
 
                 <span asp-validation-for="Package.TotalSpots" class="text-danger"></span>
             </div>
-            <!-- Start Date -->
-<div class="form-group">
-    <label asp-for="Package.StartDate">Start Date</label>
-    <input asp-for="Package.StartDate" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
-    <span asp-validation-for="Package.StartDate" class="text-danger"></span>
-</div>
+           <!-- Start Date -->
+            <div class="mb-3">
+                <label for="StartDate" class="form-label">Start Date</label>
+                <input type="date" id="StartDate" name="Package.StartDate" class="form-control" required>
+                @*<input type="text" id="StartDate" name="Package.StartDate" class="form-control" required />*@
+            </div>
 
-<!-- End Date -->
-<div class="form-group">
-    <label asp-for="Package.EndDate">End Date</label>
-    <input asp-for="Package.EndDate" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
-    <span asp-validation-for="Package.EndDate" class="text-danger"></span>
-</div>
+            <!-- End Date -->
+            <div class="mb-3">
+                <label for="EndDate" class="form-label">End Date</label>
+                <input type="date" id="EndDate" name="Package.EndDate" class="form-control" required>
+                @*<input type="text" id="EndDate" name="Package.EndDate" class="form-control" required />*@
+
+            </div>
 
         
-
-
             <!-- Average Duration -->
             <div class="mb-3">
                 <label for="AverageDuration" class="form-label">Average Duration (hours)</label>
@@ -74,9 +74,16 @@
                 <label for="State" class="form-label">State</label>
                 <select id="State" name="State" class="form-select" required>
                     <option value="">Select State</option>
-                    @foreach (var state in Model.States)
+                    @if (Model.States != null && Model.States.Any())
                     {
-                        <option value="@state">@state</option>
+                        @foreach (var state in Model.States)
+                        {
+                            <option value="@state">@state</option>
+                        }
+                    }
+                    else
+                    {
+                        <option value="">No states available</option>
                     }
                 </select>
                 <span asp-validation-for="State" class="text-danger"></span>
@@ -96,10 +103,18 @@
                 <label for="PackageType" class="form-label">Package Type</label>
                 <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
                     <option value="">Select Package Type</option>
-                    @foreach (var type in Model.PackageTypes)
+                    @if (Model.PackageTypes != null && Model.PackageTypes.Any())
                     {
+                         @foreach (var type in Model.PackageTypes)
+                        {
                         <option value="@type.PackageTypeId">@type.PackageType1</option>
+                        }
                     }
+                    else
+                    {
+                        <option value="">No types available</option>
+                    }
+
                 </select>
                 <span asp-validation-for="Package.PackageTypeId" class="text-danger"></span>
             </div>
@@ -140,15 +155,25 @@
                 }
             });
         });
-         document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             const startDateInput = document.querySelector("#Package_StartDate");
             const endDateInput = document.querySelector("#Package_EndDate");
+        });
 
         startDateInput.addEventListener("change", function () {
             const selectedDate = this.value;
             endDateInput.min = selectedDate; // Ensure end_date is not before start_date
-        });
-    });
+        });*/
+    
     </script>
+   @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#StartDate, #EndDate").datepicker({
+                dateFormat: "mm/dd/yy"
+            });
+        });
+    </script>*@
 </body>
 </html>

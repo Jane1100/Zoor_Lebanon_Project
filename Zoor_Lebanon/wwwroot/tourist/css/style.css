@@ -431,6 +431,9 @@
 
 /*** Services Start ***/
 .service .service-content-inner {
+    display: flex;
+    align-items: stretch; /* Ensures the content stretches equally */
+    height: 100%; /* Fills the container */
     transition: 0.5s;
 }
 .service .service-content-inner:hover {
@@ -449,6 +452,36 @@
 .service .service-content-inner:hover .service-icon i {
     color: var(--bs-white) !important;
 }
+
+.service .row.g-4 {
+    display: flex; /* Enable flex for equal heights */
+    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    gap: 1rem; /* Space between boxes */
+}
+
+.service .col-lg-6, .col-md-6, .col-sm-12 {
+    display: flex;
+    height: 100%; /* Ensure equal height */
+}
+
+.service .service-content-inner {
+    display: flex;
+    align-items: stretch; /* Ensure content stretches */
+    justify-content: space-between;
+    flex-grow: 1;
+    height: 100%; /* Match parent height */
+    transition: 0.5s;
+}
+
+.service .service-content {
+    flex-grow: 1; /* Allow content to grow and fill space */
+}
+
+.service .service-content-inner:hover {
+    background: var(--bs-primary);
+    color: white;
+}
+
 /*** Service End ***/
 
 
@@ -572,7 +605,6 @@
 .packages .packages-item .packages-img:hover small,
 .packages .packages-item .packages-img:hover small i {
     color: var(--bs-white) !important;
-
 }
 
 .packages .packages-item .packages-img img {
@@ -585,15 +617,15 @@
 
 .packages .packages-item .packages-img .packages-price {
     position: absolute;
-    width: 100px; 
-    top: 0; 
-    left: 50%; 
+    width: 100px;
+    top: 0;
+    left: 50%;
     transform: translateX(-50%);
     display: inline-block;
     background: var(--bs-primary);
     color: var(--bs-white);
     border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
     z-index: 5;
 }
 
@@ -638,7 +670,6 @@
     color: var(--bs-white);
 }
 /*** Packages End ***/
-
 
 /*** Explore Tour Start ***/
 .ExploreTour .tab-class .nav-item {
@@ -1245,3 +1276,33 @@
     background: var(--bs-dark) !important;
 }
 /*** copyright end ***/
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.card {
+    border-radius: 10px;
+    border: 1px solid #e5e5e5;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-primary:hover {
+    background-color: #004494;
+    border-color: #004494;
+}

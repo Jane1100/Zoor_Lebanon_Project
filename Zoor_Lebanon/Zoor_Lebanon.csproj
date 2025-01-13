@@ -25,9 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Index\" />
-    <Folder Include="Areas\Tourist\Data\" />
-    <Folder Include="Areas\Tourist\Models\" />
     <Folder Include="Areas\TourOperator\Controllers\" />
     <Folder Include="Areas\TourOperator\Data\" />
     <Folder Include="Areas\TourOperator\Models\" />

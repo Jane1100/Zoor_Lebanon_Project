@@ -10,11 +10,11 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Index3()
+/*        public IActionResult Index2()
         {
             return View();
         }
-
+*/
     /*    [HttpGet]
         public IActionResult Index2()
         {
@@ -62,10 +62,7 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }*/
-        public IActionResult chartjs()
-        {
-            return View();
-        }
+     
      
         public IActionResult flot()
         {
@@ -84,18 +81,18 @@ namespace Zoor_Lebanon.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Registration()
+    /*    public IActionResult Registration()
         {
             return View();
-        }
-        public IActionResult addpackage()
+        }*/
+     /*   public IActionResult addpackage()
         {
             return View();
-        }
-        public IActionResult editpackages()
+        }*/
+     /*   public IActionResult editpackages()
         {
             return View();
-        }
+        }*/
         public IActionResult lockscreen()
         {
             return View();
