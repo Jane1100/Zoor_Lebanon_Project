@@ -1,0 +1,193 @@
+﻿@using Zoor_Lebanon.Models.ViewModels
+@model PackageViewModel
+
+@{
+    ViewData["Title"] = "Edit Package";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Package</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="~/TourOperator/package/ManagePackages"><i class="fas fa-arrow-left"></i> Back to Packages</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="~/TourOperator/TourOperator/Dashboard" class="brand-link">
+                <span class="brand-text font-weight-light">TourOperator Dashboard</span>
+            </a>
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+                        <li class="nav-item">
+                            <a href="~/TourOperator/package/ManagePackages" class="nav-link active">
+                                <i class="nav-icon fas fa-box"></i>
+                                <p>Manage Packages</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Edit Package</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Package Details</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- Display Validation Errors -->
+                                @if (!ViewData.ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger">
+                                        Please correct the errors in the form.
+                                    </div>
+                                }
+
+                                <!-- Edit Package Form -->
+                                <form method="post" asp-action="editpackages" asp-route-id="@Model.Package.PackageId">
+                                    <input type="hidden" name="Package.PackageId" value="@Model.Package.PackageId" />
+
+                                    <!-- Package Name -->
+                                    <div class="mb-3">
+                                        <label for="PackageName">Package Name</label>
+                                        <input type="text" id="PackageName" name="Package.PackageName" value="@Model.Package.PackageName" class="form-control" required />
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="mb-3">
+                                        <label for="Description">Description</label>
+                                        <textarea id="Description" name="Package.Description" class="form-control" required>@Model.Package.Description</textarea>
+                                    </div>
+
+                                    <!-- Unit Price -->
+                                    <div class="mb-3">
+                                        <label for="UnitPrice">Unit Price</label>
+                                        <input type="number" id="UnitPrice" name="Package.UnitPrice" value="@Model.Package.UnitPrice" class="form-control" required />
+                                    </div>
+
+                                    <!-- Total Spots -->
+                                    <div class="mb-3">
+                                        <label for="TotalSpots">Total Spots</label>
+                                        <input type="number" id="TotalSpots" name="Package.TotalSpots" value="@Model.Package.TotalSpots" class="form-control" required />
+                                    </div>
+
+                                    <!-- Start Date -->
+                                    <div class="mb-3">
+                                        <label for="StartDate">Start Date</label>
+                                        <input type="date" id="StartDate" name="Package.StartDate" value="@Model.Package.StartDate?.ToString("yyyy-MM-dd")" class="form-control" required />
+                                    </div>
+
+                                    <!-- End Date -->
+                                    <div class="mb-3">
+                                        <label for="EndDate">End Date</label>
+                                        <input type="date" id="EndDate" name="Package.EndDate" value="@Model.Package.EndDate?.ToString("yyyy-MM-dd")" class="form-control" required />
+                                    </div>
+
+                                    <!-- State Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="State">State</label>
+                                        <select id="State" name="State" class="form-select" required>
+                                            <option value="">Select State</option>
+                                            @foreach (var state in Model.States)
+                                            {
+                                                <option value="@state" @(state == Model.Package.Location?.State ? "selected" : "")>@state</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <!-- City Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="City">City</label>
+                                        <select id="City" name="City" class="form-select" required>
+                                            <option value="">Select City</option>
+                                            @if (!string.IsNullOrEmpty(Model.Package.Location?.State))
+                                            {
+                                                var cities = ViewBag.Cities as IEnumerable<string>;
+                                                if (cities != null)
+                                                {
+                                                    foreach (var city in cities)
+                                                    {
+                                                        <option value="@city" @(city == Model.Package.Location?.City ? "selected" : "")>@city</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <!-- Package Type Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="PackageTypeId">Package Type</label>
+                                        <select id="PackageTypeId" name="Package.PackageTypeId" class="form-select" required>
+                                            <option value="">Select Package Type</option>
+                                            @foreach (var type in Model.PackageTypes)
+                                            {
+                                                <option value="@type.PackageTypeId" @(type.PackageTypeId == Model.Package.PackageTypeId ? "selected" : "")>@type.PackageType1</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <button type="submit" class="btn btn-success w-100">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/dist/js/adminlte.min.js"></script>
+    <script>
+        document.getElementById('State').addEventListener('change', function () {
+            const state = this.value;
+
+            fetch(`/TourOperator/Package/GetCitiesByState?state=${state}`)
+                .then(response => response.json())
+                .then(data => {
+                    const cityDropdown = document.getElementById('City');
+                    cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+                    data.forEach(city => {
+                        cityDropdown.innerHTML += `<option value="${city}">${city}</option>`;
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

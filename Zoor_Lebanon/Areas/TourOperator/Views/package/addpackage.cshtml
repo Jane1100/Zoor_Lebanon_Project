@@ -1,0 +1,209 @@
+﻿@using Zoor_Lebanon.Models.ViewModels
+@model PackageViewModel
+
+@{
+    ViewData["Title"] = "Add New Package - Tour Operator";
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Tour Operator</title>
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+</head>
+
+
+<body class="hold-transition sidebar-mini">
+
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Add New Package</h1>
+    <form method="post" asp-action="addpackageWithLocation" asp-area="TourOperator" class="needs-validation" novalidate>
+        <!-- Package Name -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="PackageName" class="form-label">Package Name</label>
+                <input type="text" id="PackageName" name="Package.PackageName" class="form-control" required />
+                <div class="invalid-feedback">Please enter a package name.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="UnitPrice" class="form-label">Unit Price ($)</label>
+                <input type="number" id="UnitPrice" name="Package.UnitPrice" class="form-control" step="0.01" required />
+                <div class="invalid-feedback">Please enter a valid unit price.</div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <textarea id="Description" name="Package.Description" class="form-control" rows="3" required></textarea>
+            <div class="invalid-feedback">Please enter a description.</div>
+        </div>
+
+        <!-- Total Spots -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="TotalSpots" class="form-label">Total Spots</label>
+                <input type="number" id="TotalSpots" name="Package.TotalSpots" class="form-control" required />
+                <div class="invalid-feedback">Please enter the total number of spots.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="AverageDuration" class="form-label">Average Duration (hours)</label>
+                <input type="number" id="AverageDuration" name="Package.AverageDuration" class="form-control" step="0.01" required />
+                <div class="invalid-feedback">Please enter the average duration in hours.</div>
+            </div>
+        </div>
+
+        <!-- Date Fields -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="StartDate" class="form-label">Start Date</label>
+                <input type="date" id="StartDate" name="Package.StartDate" class="form-control" required />
+                <div class="invalid-feedback">Please select a valid start date.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="EndDate" class="form-label">End Date</label>
+                <input type="date" id="EndDate" name="Package.EndDate" class="form-control" required />
+                <div class="invalid-feedback">Please select a valid end date.</div>
+            </div>
+        </div>
+
+        <!-- Location Dropdowns -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="State" class="form-label">State</label>
+                <select id="State" name="State" class="form-select" required>
+                    <option value="">Select State</option>
+                    @foreach (var state in Model.States)
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+                <div class="invalid-feedback">Please select a state.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="City" class="form-label">City</label>
+                <select id="City" name="City" class="form-select" required>
+                    <option value="">Select City</option>
+                </select>
+                <div class="invalid-feedback">Please select a city.</div>
+            </div>
+        </div>
+
+        <!-- Package Type Dropdown -->
+        <div class="mb-3">
+            <label for="PackageType" class="form-label">Package Type</label>
+            <select id="PackageType" name="Package.PackageTypeId" class="form-select" required>
+                <option value="">Select Package Type</option>
+                @foreach (var type in Model.PackageTypes)
+                {
+                    <option value="@type.PackageTypeId">@type.PackageType1</option>
+                }
+            </select>
+            <div class="invalid-feedback">Please select a package type.</div>
+        </div>
+
+        <!-- Activity Schedule Section -->
+        <div class="mb-4">
+            <h4>Activity Schedule</h4>
+            <div id="activity-schedule-container">
+                <div class="activity-schedule">
+                    <div class="mb-3">
+                        <label for="ActivityDescription" class="form-label">Activity Description</label>
+                        <input type="text" name="ActivitySchedules[0].Description" class="form-control" required />
+                        <div class="invalid-feedback">Please enter an activity description.</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="FromTime" class="form-label">From Time</label>
+                            <input type="time" name="ActivitySchedules[0].FromTime" class="form-control" required />
+                            <div class="invalid-feedback">Please enter a valid start time.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ToTime" class="form-label">To Time</label>
+                            <input type="time" name="ActivitySchedules[0].ToTime" class="form-control" required />
+                            <div class="invalid-feedback">Please enter a valid end time.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="add-activity-schedule" class="btn btn-secondary mt-2">Add Another Activity</button>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Submit for Review</button>
+    </form>
+</div>
+
+<!-- JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let activityCount = 1;
+
+        // Populate City dropdown based on selected State
+        $('#State').change(function () {
+            const state = $(this).val();
+            if (state) {
+                $.getJSON('/TourOperator/Package/GetCitiesByState', { state: state }, function (cities) {
+                    const cityDropdown = $('#City');
+                    cityDropdown.empty();
+                    cityDropdown.append('<option value="">Select City</option>');
+                    $.each(cities, function (index, city) {
+                        cityDropdown.append('<option value="' + city + '">' + city + '</option>');
+                    });
+                });
+            } else {
+                $('#City').empty().append('<option value="">Select City</option>');
+            }
+        });
+
+        // Add activity schedule dynamically
+        $('#add-activity-schedule').click(function () {
+            const container = $('#activity-schedule-container');
+            const newActivity = `
+                <div class="activity-schedule mt-3 border rounded p-3">
+                    <div class="mb-3">
+                        <label>Activity Description</label>
+                        <input type="text" name="ActivitySchedules[${activityCount}].Description" class="form-control" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>From Time</label>
+                            <input type="time" name="ActivitySchedules[${activityCount}].FromTime" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label>To Time</label>
+                            <input type="time" name="ActivitySchedules[${activityCount}].ToTime" class="form-control" required />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm mt-2 remove-activity-schedule">Remove</button>
+                </div>`;
+            container.append(newActivity);
+            activityCount++;
+        });
+
+        // Remove activity schedule
+        $(document).on('click', '.remove-activity-schedule', function () {
+            $(this).closest('.activity-schedule').remove();
+        });
+
+        // Bootstrap validation
+        $('form.needs-validation').on('submit', function (event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            this.classList.add('was-validated');
+        });
+        });
+        
+        </script>
+</body>
+</html>

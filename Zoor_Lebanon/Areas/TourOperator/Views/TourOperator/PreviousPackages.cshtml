@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Packages Overview";
+    var previousPackages = ViewBag.PreviousPackages as List<dynamic>;
+    var upcomingPackages = ViewBag.UpcomingPackages as List<dynamic>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Packages Overview</h2>
+
+    <!-- Upcoming Packages -->
+    <h3 class="mt-4">Upcoming Packages</h3>
+    <table class="table table-bordered table-hover">
+        <thead class="table-success">
+            <tr>
+                <th>#</th>
+                <th>Package Name</th>
+                <th>Number of Bookings</th>
+                <th>Next Travel Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (upcomingPackages != null && upcomingPackages.Any())
+            {
+                int index = 1;
+                foreach (var package in upcomingPackages)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@package.PackageName</td>
+                        <td>@package.BookingCount</td>
+                        <td>@package.NextTravelDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No upcoming packages available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Previous Packages -->
+    <h3 class="mt-4">Previous Packages</h3>
+    <table class="table table-bordered table-hover">
+        <thead class="table-secondary">
+            <tr>
+                <th>#</th>
+                <th>Package Name</th>
+                <th>Number of Bookings</th>
+                <th>Last Travel Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (previousPackages != null && previousPackages.Any())
+            {
+                int index = 1;
+                foreach (var package in previousPackages)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@package.PackageName</td>
+                        <td>@package.BookingCount</td>
+                        <td>@package.LastTravelDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No previous packages available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

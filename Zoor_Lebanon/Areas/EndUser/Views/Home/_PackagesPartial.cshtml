@@ -1,0 +1,41 @@
+﻿<div class="packages-carousel owl-carousel">
+    @foreach (var package in Model)
+    {
+        <div class="packages-item">
+            <div class="packages-img">
+                <img src="~/enduser/img/packages-4.jpg" class="img-fluid w-100 rounded-top" alt="Package Image">
+                <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                    <small class="flex-fill text-center border-end py-2">
+                        <i class="fa fa-map-marker-alt me-2"></i>@package.Location
+                    </small>
+                    <small class="flex-fill text-center border-end py-2">
+                        <i class="fa fa-calendar-alt me-2"></i>@package.AverageDuration hours
+                    </small>
+                    <small class="flex-fill text-center py-2">
+                        <i class="fa fa-user me-2"></i>@package.TotalSpots Spots
+                    </small>
+                    <small class="flex-fill text-center py-2">
+                        <i class="fa fa-star me-2"></i>@package.Points Points
+                    </small>
+                </div>
+                <div class="packages-price py-2 px-4">$@package.UnitPrice</div>
+            </div>
+            <div class="packages-content bg-light">
+                <div class="p-4 pb-0">
+                    <h5 class="mb-0">@package.PackageName</h5>
+                    <small class="text-uppercase">@package.PackageType</small>
+                    <p class="mb-4">@package.Description</p>
+                </div>
+                <div class="row bg-primary rounded-bottom mx-0">
+                    <div class="col-6 text-start px-0">
+                        <a href="@Url.Action("PackageDetails", "Booking", new { area = "EndUser", packageId = package.PackageId })" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                    </div>
+                    <div class="col-6 text-end px-0">
+                        <a href="@Url.Action("BookingForm", "Booking", new { area = "EndUser", packageId = package.PackageId })" class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

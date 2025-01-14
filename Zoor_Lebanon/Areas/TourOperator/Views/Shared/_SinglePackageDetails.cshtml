@@ -1,0 +1,22 @@
+﻿@model Zoor_Lebanon.Models.Package
+
+<div class="card shadow-sm">
+    <div class="card-header bg-success text-white">
+        <h5 class="card-title">Package Details</h5>
+    </div>
+    <form method="get" asp-action="SearchPackage" asp-controller="Package" asp-area="TourOperator">
+        <div class="input-group">
+            <input type="text" name="packageName" class="form-control" placeholder="Enter package name" required />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <div class="card-body">
+        <p><strong>Package Name:</strong> @Model.PackageName</p>
+        <p><strong>Description:</strong> @Model.Description</p>
+        <p><strong>Unit Price:</strong> $@Model.UnitPrice</p>
+        <p><strong>Total Spots:</strong> @Model.TotalSpots</p>
+        <p><strong>Start Date:</strong> @Model.StartDate?.ToShortDateString() ?? "-"</p>
+        <p><strong>End Date:</strong> @Model.EndDate?.ToShortDateString() ?? "-"</p>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+﻿@model Zoor_Lebanon.Models.Package
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewBag.Title = $"{Model.PackageName} Details";
+}
+
+
+
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            @ViewBag.Title</h1>
+           
+    </div>
+</div>
+<!-- Header End -->
+<div class="alert-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@Model.PackageName</h2>
+    <p>@Model.Description</p>
+
+    <!-- Activity Schedule Section -->
+    <h3>Activity Schedule</h3>
+    <div class="timeline">
+        @foreach (var activity in Model.ActivitySchedules.OrderBy(a => a.FromTime))
+        {
+            <div class="timeline-item">
+                <h4>@activity.Description</h4>
+                <p>
+                    From: @activity.FromTime?.ToString("hh:mm tt") <br />
+                    To: @activity.ToTime?.ToString("hh:mm tt")
+                </p>
+            </div>
+        }
+    </div>
+    @* <form method="post" action="@Url.Action("CheckLoginAndRedirect", "Booking", new { area = "EndUser", packageId = Model.PackageId })"> *@
+    @*     <button type="submit" class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5"> *@
+    @*         Book Now *@
+    @*     </button> *@
+    @* </form> *@
+
+
+    <!-- Reviews Section -->
+    <h3>Reviews (@Model.Reviews.Count(r => r.PublishedStatus == "published"))</h3>
+    <div class="scrollable-reviews">
+        @if (Model.Reviews.Any(r => r.PublishedStatus == "published"))
+        {
+            @foreach (var review in Model.Reviews.Where(r => r.PublishedStatus == "published"))
+            {
+                <div class="review">
+                    <p><strong>@review.User?.Firstname:</strong> @review.ReviewDescription</p>
+                    <p>Rating: @review.Rating/5</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No reviews yet. Be the first to leave a review!</p>
+        }
+    </div>
+
+
+
+    <!-- Review Submission Form -->
+    @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserId") != null)
+    {
+        <form method="post" action="@Url.Action("SubmitReview", "Review", new { area = "EndUser" })">
+            <input type="hidden" name="packageId" value="@Model.PackageId" />
+            <div class="form-group">
+                <label for="review">Your Review</label>
+                <textarea id="review" name="reviewText" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <select id="rating" name="rating" class="form-control" required>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-danger">Please <a href="@Url.Action("Login", "Account", new { area = "EndUser" })">login</a> to leave a review.</p>
+    }
+</div>
+
+<!-- Style for Timeline -->
+<style>
+    .timeline {
+        margin-top: 20px;
+        border-left: 3px solid #007bff;
+        padding-left: 20px;
+    }
+
+    .timeline-item {
+        margin-bottom: 20px;
+    }
+
+    .review {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .alert {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .scrollable-reviews {
+        max-height: 300px; /* Set the maximum height */
+        overflow-y: auto; /* Enable vertical scrolling */
+        border: 1px solid #ddd; /* Border around the container */
+        padding: 10px; /* Inner padding */
+        background-color: #ffffff; /* White background for the container */
+        border-radius: 5px; /* Round the corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a clean effect */
+    }
+
+    .scrollable-reviews .review {
+        padding: 10px; /* Add space inside each review card */
+        margin-bottom: 10px; /* Space between reviews */
+        border: 1px solid #e0e0e0; /* Border for each review card */
+        border-radius: 5px; /* Rounded corners for each card */
+        background-color: #f9f9f9; /* Light background for reviews */
+    }
+
+    .scrollable-reviews .review:last-child {
+        margin-bottom: 0; /* Remove bottom margin for the last review */
+    }
+
+    .scrollable-reviews .review p {
+        margin: 0; /* Reset margin for paragraphs inside reviews */
+        font-size: 0.95rem; /* Slightly smaller text size */
+    }
+
+    .scrollable-reviews .review p strong {
+        color: #007bff; /* Highlight reviewer names in blue */
+    }
+
+
+
+</style>

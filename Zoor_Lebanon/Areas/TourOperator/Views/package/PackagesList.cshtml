@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Zoor_Lebanon.Models.Package>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Packages List</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Packages List</h1>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Package ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Total Spots</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var package in Model)
+                {
+                    <tr>
+                        <td>@package.PackageId</td>
+                        <td>@package.PackageName</td>
+                        <td>@package.Description</td>
+                        <td>@package.UnitPrice</td>
+                        <td>@package.TotalSpots</td>
+                        <td>@package.StartDate?.ToShortDateString() ?? "-"</td>
+                        <td>@package.EndDate?.ToShortDateString() ?? "-"</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

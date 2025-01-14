@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Zoor_Lebanon.Models.Location>
+
+@{
+    ViewData["Title"] = "Manage Locations";
+}
+
+<h1>Manage Locations</h1>
+
+<p>
+    <!-- Explicitly specify area and controller to avoid routing issues -->
+    <a asp-area="Admin" asp-controller="Location" asp-action="Create" class="btn btn-primary">Add New Location</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>City</th>
+            <th>State</th>
+            <th>Active Packages</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.City</td>
+                <td>@item.State</td>
+                <td>
+                    @foreach (var package in item.Packages.Where(p => p.EndDate >= (DateTime.Now)))
+                    {
+                        <p>@package.PackageName</p>
+                    }
+                </td>
+                <td>
+                    <!-- Explicitly define routes to avoid misrouting -->
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Edit" asp-route-id="@item.LocationId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Delete" asp-route-id="@item.LocationId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
