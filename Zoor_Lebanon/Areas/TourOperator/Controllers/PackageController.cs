@@ -439,16 +439,41 @@ namespace Zoor_Lebanon.Areas.TourOperator.Controllers
             return RedirectToAction("ManagePackages");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> addpackage(Package package)
+        //[HttpPost]
+        //public async Task<IActionResult> addpackage(Package package)
+        //{
+
+
+
+        //    _context.Packages.Add(package);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction("ManagePackages");
+        //}
+        public async Task<IActionResult> AddPackage(PackageViewModel model, string state, string city)
         {
-            
+            // Fetch the location based on state and city from the user input
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(l => l.State == state && l.City == city);
+
+            // Validate location existence
+            if (location == null)
+            {
+                // Handle the error, perhaps by adding an error to the model state and returning a view
+                Console.WriteLine("error");
+            }
+
+            // Set package location
+            model.Package.LocationId = location.LocationId;
 
 
-            _context.Packages.Add(package);
+
+            // Add and save the package
+            _context.Packages.Add(model.Package);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("ManagePackages");
+            // Optionally, redirect or return a success response
+            return RedirectToAction("widgets");
         }
 
 
