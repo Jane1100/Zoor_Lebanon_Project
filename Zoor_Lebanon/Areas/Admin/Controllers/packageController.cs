@@ -58,7 +58,7 @@ namespace Zoor_Lebanon.Areas.admin.Controllers{    [Area("admin")]    public 
             // Create Package Object
             var package = new Package            {                PackageName = model.Package.PackageName,                Description = model.Package.Description,                UnitPrice = model.Package.UnitPrice,                TotalSpots = model.Package.TotalSpots,                AvailableSpots = model.Package.TotalSpots,                AverageDuration = model.Package.AverageDuration,                StartDate = model.Package.StartDate,                EndDate = model.Package.EndDate,                LocationId = location.LocationId, // Foreign key for Location
                 PackageTypeId = model.Package.PackageTypeId,// Foreign key for PackageType
-                 Status = "Active"
+                 ////Status = "Active"
             };            _context.Packages.Add(package);            await _context.SaveChangesAsync();
             return RedirectToAction("Index2", "Home", new { area = "admin" });        }*/
 
